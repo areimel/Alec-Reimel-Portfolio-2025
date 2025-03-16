@@ -1,0 +1,96 @@
+---
+const colorGroups = {
+  'Theme Colors': [
+    { class: 'terminal-100', name: 'terminal-100', description: 'Subtle overlay' },
+    { class: 'terminal-200', name: 'terminal-200', description: 'Light accent' },
+    { class: 'terminal-300', name: 'terminal-300', description: 'Muted text' },
+    { class: 'terminal-400', name: 'terminal-400', description: 'Medium emphasis' },
+    { class: 'terminal-500', name: 'terminal-500', description: 'Primary text' },
+    { class: 'terminal-600', name: 'terminal-600', description: 'Secondary emphasis' },
+    { class: 'terminal-700', name: 'terminal-700', description: 'High emphasis' },
+    { class: 'terminal-bright', name: 'terminal-bright', description: 'Phosphor glow' },
+  ],
+  'Background Colors': [
+    { class: 'terminal-bg-primary', name: 'terminal-bg-primary', description: 'Main background' },
+    { class: 'terminal-bg-secondary', name: 'terminal-bg-secondary', description: 'Secondary background' },
+    { class: 'terminal-bg-accent', name: 'terminal-bg-accent', description: 'Accent background' },
+  ]
+};
+---
+
+<section class="mb-12">
+  <h2 class="text-2xl font-bold mb-6 text-terminal-500">Color Palette</h2>
+  
+  {Object.entries(colorGroups).map(([groupName, colors]) => (
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 text-terminal-400">{groupName}</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {colors.map(({ class: colorClass, name, description }) => (
+          <div class="p-4 rounded border border-terminal-500">
+            <div class="color-sample h-16 rounded mb-2" style={`background-color: var(--${colorClass})`}></div>
+            <div class="flex items-center justify-between">
+              <p class="text-terminal-500 font-mono text-sm">.{name}</p>
+              <button 
+                class="copy-button text-sm text-terminal-300 hover:text-terminal-500"
+                data-class-name={name}
+                type="button"
+              >
+                Copy
+              </button>
+            </div>
+            <p class="text-terminal-400 text-sm mt-1">{description}</p>
+            <p class="text-terminal-300 text-xs mt-1 font-mono color-value"></p>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</section>
+
+<script>
+  function setupColorPalette() {
+    const copyButtons = document.querySelectorAll('.copy-button');
+    const colorSamples = document.querySelectorAll('.color-sample');
+
+    // Get computed colors
+    colorSamples.forEach(sample => {
+      const valueDisplay = sample.closest('div')?.querySelector('.color-value');
+      if (valueDisplay && sample instanceof HTMLElement) {
+        const computedStyle = window.getComputedStyle(sample);
+        valueDisplay.textContent = computedStyle.backgroundColor;
+      }
+    });
+
+    // Setup copy buttons
+    copyButtons.forEach(button => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      
+      button.addEventListener('click', () => {
+        const className = button.getAttribute('data-class-name') || '';
+        navigator.clipboard.writeText(className);
+        
+        // Show feedback
+        const originalText = button.textContent || 'Copy';
+        button.textContent = 'Copied!';
+        button.disabled = true;
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      });
+    });
+  }
+
+  // Setup on initial load
+  setupColorPalette();
+
+  // Setup on theme change
+  document.addEventListener('themeChanged', setupColorPalette);
+</script>
+
+<style>
+  .copy-button:disabled {
+    @apply text-terminal-700 cursor-default;
+  }
+</style>

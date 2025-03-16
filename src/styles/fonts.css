@@ -1,0 +1,105 @@
+/* Terminal/Console Fonts */
+@font-face {
+  font-family: 'Share Tech Mono';
+  src: url('/fonts/ShareTechMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VT323';
+  src: url('/fonts/VT323-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Windows Command Prompt';
+  src: url('/fonts/Windows-Command-Prompt.woff2') format('woff2'),
+       url('/fonts/Windows-Command-Prompt.woff') format('woff'),
+       url('/fonts/Windows-Command-Prompt.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Display/Title Fonts */
+@font-face {
+  font-family: 'Vermin Vibes';
+  src: url('/fonts/Vermin Vibes 1989.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nasalization';
+  src: url('/fonts/NasalizationRg-Regular.woff2') format('woff2'),
+       url('/fonts/NasalizationRg-Regular.woff') format('woff'),
+       url('/fonts/NasalizationRg-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Code/Monospace Fonts */
+@font-face {
+  font-family: 'Kode Mono';
+  src: url('/fonts/KodeMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kode Mono';
+  src: url('/fonts/KodeMono-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kode Mono';
+  src: url('/fonts/KodeMono-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kode Mono';
+  src: url('/fonts/KodeMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Special Purpose Fonts */
+@font-face {
+  font-family: 'UAV OSD Mono';
+  src: url('/fonts/UAV-OSD-Mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UAV OSD Sans';
+  src: url('/fonts/UAV-OSD-Sans-Mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computerfont';
+  src: url('/fonts/Computerfont.woff2') format('woff2'),
+       url('/fonts/Computerfont.woff') format('woff'),
+       url('/fonts/Computerfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+} 

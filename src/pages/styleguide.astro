@@ -1,0 +1,146 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import ColorPalette from '~/components/styleguide/ColorPalette.astro';
+import '../styles/fonts.css';
+
+const fontGroups = {
+  'Terminal/Console Fonts': [
+    { name: 'VT323', class: 'font-vt323' },
+    { name: 'Windows Command Prompt', class: 'font-cmd' },
+  ],
+  'Code/Monospace Fonts': [
+    { name: 'Kode Mono Regular', class: 'font-kode font-normal' },
+    { name: 'Kode Mono Medium', class: 'font-kode font-medium' },
+    { name: 'Kode Mono SemiBold', class: 'font-kode font-semibold' },
+    { name: 'Kode Mono Bold', class: 'font-kode font-bold' },
+  ],
+  'Display/Title Fonts': [
+    { name: 'UAV OSD Mono', class: 'font-uav-mono' },
+    { name: 'UAV OSD Sans', class: 'font-uav-sans' },
+    { name: 'Computerfont', class: 'font-computer' },
+  ],
+  
+};
+
+const sampleText = `ABCDEFGHIJKLMNOPQRSTUVWXYZ
+abcdefghijklmnopqrstuvwxyz
+1234567890
+!@#$%^&*()-=_+[]{}\\|;:'",.<>?/
+The quick brown fox jumps over the lazy dog`;
+---
+
+<Layout>
+  <main class="px-8 py-12 max-w-6xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8 text-terminal-500">Terminal Theme Styleguide</h1>
+    
+    <ColorPalette />
+
+    <!-- Typography Section -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-6 text-terminal-500">Typography</h2>
+      
+      {Object.entries(fontGroups).map(([groupName, fonts]) => (
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 text-terminal-400">{groupName}</h3>
+          <div class="space-y-6">
+            {fonts.map(({ name, class: fontClass }) => (
+              <div class="p-4 rounded border border-terminal-300/20">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="text-terminal-500">{name}</h4>
+                  <button 
+                    class="copy-button text-sm text-terminal-300 hover:text-terminal-500"
+                    data-class-name={fontClass}
+                  >
+                    Copy class
+                  </button>
+                </div>
+                <p class={`text-2xl text-terminal-500 ${fontClass} whitespace-pre-line`}>
+                  {sampleText}
+                </p>
+                <p class="text-terminal-300 text-sm mt-2">{fontClass}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <!-- Font Size Examples -->
+      <div class="mt-12">
+        <h3 class="text-xl font-semibold mb-4 text-terminal-400">Font Sizes</h3>
+        <div class="space-y-4">
+          {['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'].map((size) => (
+            <div>
+              <p class={`text-${size} text-terminal-500 font-share-tech`}>
+                The quick brown fox (text-{size})
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Examples -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-6 text-terminal-500">Component Examples</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Button Examples -->
+        <div class="space-y-4">
+          <h3 class="text-xl font-semibold mb-4 text-terminal-400">Buttons</h3>
+          
+          <button class="px-4 py-2 bg-terminal-500 text-terminal-bg-primary rounded hover:bg-terminal-600 transition-colors">
+            Primary Button
+          </button>
+          
+          <button class="px-4 py-2 border border-terminal-500 text-terminal-500 rounded hover:bg-terminal-500/10 transition-colors">
+            Secondary Button
+          </button>
+        </div>
+
+        <!-- Card Example -->
+        <div class="p-6 bg-terminal-bg-secondary rounded-lg border border-terminal-300/20">
+          <h3 class="text-xl font-semibold mb-2 text-terminal-500">Card Title</h3>
+          <p class="text-terminal-400">This is an example card component using the terminal theme colors.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold mb-6 text-terminal-500">Text Glow Effects</h2>
+      
+      <div class="space-y-6">
+        <div class="p-4 rounded border border-terminal-300/20">
+          <h4 class="text-terminal-500 mb-2">Default Glow</h4>
+          <p class="text-2xl text-terminal-500">
+            This text has the default terminal glow effect
+          </p>
+        </div>
+
+        <div class="p-4 rounded border border-terminal-300/20">
+          <h4 class="text-terminal-500 mb-2">Strong Glow</h4>
+          <p class="text-2xl text-terminal-500 text-glow-strong">
+            This text has an enhanced glow effect
+          </p>
+        </div>
+
+        <div class="p-4 rounded border border-terminal-300/20">
+          <h4 class="text-terminal-500 mb-2">Subtle Glow</h4>
+          <p class="text-2xl text-terminal-500 text-glow-subtle">
+            This text has a more subtle glow effect
+          </p>
+        </div>
+
+        <div class="p-4 rounded border border-terminal-300/20">
+          <h4 class="text-terminal-500 mb-2">Mixed Glow Examples</h4>
+          <div class="space-y-4">
+            <h3 class="text-3xl text-terminal-500 text-glow-strong">Main Heading</h3>
+            <h4 class="text-2xl text-terminal-400">Subheading</h4>
+            <p class="text-terminal-500 text-glow-subtle">
+              This is an example of how different glow effects can be combined in a layout to create visual hierarchy.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout> 

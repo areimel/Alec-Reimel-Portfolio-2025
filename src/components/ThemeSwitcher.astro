@@ -1,0 +1,78 @@
+---
+const themes = [
+  { 
+    id: 'green', 
+    name: 'Green Phosphor', 
+    class: 'theme-green',
+    preview: 'bg-terminal-700'
+  },
+  { 
+    id: 'amber', 
+    name: 'Amber', 
+    class: 'theme-amber',
+    preview: 'bg-terminal-700'
+  },
+  {
+    id: 'cyber',
+    name: 'Cyberpunk',
+    class: 'theme-cyber',
+    preview: 'bg-terminal-700'
+  }
+];
+---
+
+<div class="fixed bottom-4 right-4 z-50">
+  <div class="bg-terminal-bg-secondary p-2 rounded-lg border border-terminal-500">
+    <div class="flex flex-col gap-2">
+      {themes.map(theme => (
+        <button
+          class="theme-button px-4 py-2 rounded text-sm transition-colors flex items-center gap-2"
+          data-theme={theme.id}
+        >
+          <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
+          {theme.name}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.theme-button');
+  
+  // Get theme from localStorage or default to green
+  const currentTheme = localStorage.getItem('theme') || 'green';
+  document.documentElement.className = `theme-${currentTheme}`;
+  
+  buttons.forEach(button => {
+    const theme = button.getAttribute('data-theme') || 'green';
+    
+    // Set initial active state
+    if (theme === currentTheme) {
+      button.classList.add('active');
+    }
+    
+    button.addEventListener('click', () => {
+      // Remove old theme and active states
+      buttons.forEach(btn => btn.classList.remove('active'));
+      document.documentElement.classList.remove('theme-green', 'theme-amber', 'theme-cyber');
+      
+      // Add new theme
+      document.documentElement.classList.add(`theme-${theme}`);
+      button.classList.add('active');
+      
+      // Save preference
+      localStorage.setItem('theme', theme);
+    });
+  });
+</script>
+
+<style>
+  .theme-button {
+    @apply bg-terminal-bg-primary text-terminal-700 hover:bg-terminal-bg-accent;
+  }
+  
+  .theme-button.active {
+    @apply bg-terminal-bg-accent text-terminal-bright;
+  }
+</style> 

@@ -21,9 +21,9 @@ import '@fontsource-variable/inter';
 
 <style is:inline>
   :root {
-    --aw-font-sans: 'Inter Variable';
-    --aw-font-serif: 'Inter Variable';
-    --aw-font-heading: 'Inter Variable';
+    --aw-font-sans: 'Kode Mono';
+    --aw-font-serif: 'Kode Mono';
+    --aw-font-heading: 'UAV OSD Mono';
 
     --aw-color-primary: rgb(1 97 239);
     --aw-color-secondary: rgb(1 84 207);
@@ -36,33 +36,178 @@ import '@fontsource-variable/inter';
 
     --aw-color-bg-page-dark: #11581e;
 
+    /* AMBER OPTION 1 - Classic P3 Phosphor */
+    --amber1-100: rgba(255, 176, 96, 0.1);  /* Subtle overlay */
+    --amber1-200: rgba(255, 176, 96, 0.2);  /* Light accent */
+    --amber1-300: rgba(255, 176, 96, 0.4);  /* Muted text */
+    --amber1-400: rgba(255, 176, 96, 0.6);  /* Medium emphasis */
+    --amber1-500: rgba(255, 176, 96, 0.8);  /* Primary text */
+    --amber1-600: rgba(255, 166, 76, 0.9);  /* Secondary emphasis */
+    --amber1-700: rgba(255, 156, 56, 1.0);  /* High emphasis */
+    --amber1-bright: rgba(255, 196, 128, 0.95); /* Phosphor glow */
+    --amber1-bg-primary: #1a1000;    /* Main background */
+    --amber1-bg-secondary: #261500;  /* Secondary background */
+    --amber1-bg-accent: #332211;     /* Accent background */
+
+    /* AMBER OPTION 2 - Warm Honey */
+    --amber2-100: rgba(255, 183, 77, 0.1);
+    --amber2-200: rgba(255, 183, 77, 0.2);
+    --amber2-300: rgba(255, 183, 77, 0.4);
+    --amber2-400: rgba(255, 183, 77, 0.6);
+    --amber2-500: rgba(255, 183, 77, 0.8);
+    --amber2-600: rgba(255, 170, 60, 0.9);
+    --amber2-700: rgba(255, 160, 40, 1.0);
+    --amber2-bright: rgba(255, 207, 118, 0.95);
+    --amber2-bg-primary: #201200;
+    --amber2-bg-secondary: #2d1900;
+    --amber2-bg-accent: #3a2000;
+
+    /* AMBER OPTION 3 - Digital Gold */
+    --amber3-100: rgba(255, 191, 64, 0.1);
+    --amber3-200: rgba(255, 191, 64, 0.2);
+    --amber3-300: rgba(255, 191, 64, 0.4);
+    --amber3-400: rgba(255, 191, 64, 0.6);
+    --amber3-500: rgba(255, 191, 64, 0.8);
+    --amber3-600: rgba(255, 180, 50, 0.9);
+    --amber3-700: rgba(255, 170, 35, 1.0);
+    --amber3-bright: rgba(255, 215, 128, 0.95);
+    --amber3-bg-primary: #160e00;
+    --amber3-bg-secondary: #221500;
+    --amber3-bg-accent: #2e1c00;
+
+    /* Amber Theme - Warm Honey */
+    --amber-100: rgba(255, 183, 77, 0.1);
+    --amber-200: rgba(255, 183, 77, 0.2);
+    --amber-300: rgba(255, 183, 77, 0.4);
+    --amber-400: rgba(255, 183, 77, 0.6);
+    --amber-500: rgba(255, 183, 77, 0.8);
+    --amber-600: rgba(255, 170, 60, 0.9);
+    --amber-700: rgba(255, 160, 40, 1.0);
+    --amber-bright: rgba(255, 207, 118, 0.95);
+    --amber-bg-primary: #201200;
+    --amber-bg-secondary: #2d1900;
+    --amber-bg-accent: #3a2000;
+
     ::selection {
       background-color: lavender;
     }
   }
 
-  .dark {
-    --aw-font-sans: 'Inter Variable';
-    --aw-font-serif: 'Inter Variable';
-    --aw-font-heading: 'Inter Variable';
+  /* Green Theme */
+  .theme-green {
+    /* Copy all current .dark theme variables here */
+    --aw-font-sans: 'Kode Mono';
+    --aw-font-serif: 'Kode Mono';
+    --aw-font-heading: 'UAV OSD Mono';
+    
+    /* Terminal colors */
+    --theme-100: rgba(128, 255, 128, 0.1);
+    --theme-200: rgba(128, 255, 128, 0.2);
+    --theme-300: rgba(128, 255, 128, 0.3);
+    --theme-400: rgba(128, 255, 128, 0.5);
+    --theme-500: rgba(128, 255, 128, 0.8);
+    --theme-600: rgba(96, 255, 96, 0.8);
+    --theme-700: rgba(64, 255, 64, 0.8);
+    --theme-bright: rgba(180, 255, 180, 0.95);
+    
+    --theme-bg-primary: #023612;
+    --theme-bg-secondary: #11581e;
+    --theme-bg-accent: #0d4417;
+    
+    /* Text glow for this theme */
+    --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
+    --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
+    --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+  }
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+  /* Amber Theme */
+  .theme-amber {
+    --theme-100: var(--amber-100);
+    --theme-200: var(--amber-200);
+    --theme-300: var(--amber-300);
+    --theme-400: var(--amber-400);
+    --theme-500: var(--amber-500);
+    --theme-600: var(--amber-600);
+    --theme-700: var(--amber-700);
+    --theme-bright: var(--amber-bright);
+    
+    --theme-bg-primary: var(--amber-bg-primary);
+    --theme-bg-secondary: var(--amber-bg-secondary);
+    --theme-bg-accent: var(--amber-bg-accent);
+    
+    --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
+    --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
+    --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+  }
 
-    --aw-color-text-heading: rgb(247, 248, 248);
-    --aw-color-text-default: rgba(128,255,128,0.8);
-    --aw-color-text-muted: rgb(247, 248, 248);
-    --aw-color-bg-page: #023612;
+  /* Cyberpunk Theme */
+  .theme-cyber {
+    --theme-100: rgba(255, 0, 60, 0.1);
+    --theme-200: rgba(255, 0, 60, 0.2);
+    --theme-300: rgba(255, 0, 60, 0.4);
+    --theme-400: rgba(255, 0, 60, 0.6);
+    --theme-500: rgba(255, 0, 60, 0.8);
+    --theme-600: rgba(255, 0, 60, 0.9);
+    --theme-700: rgba(255, 0, 60, 1.0);
+    --theme-bright: rgba(255, 71, 108, 0.95);
+    
+    --theme-bg-primary: #0a0a0a;
+    --theme-bg-secondary: #1a1a1a;
+    --theme-bg-accent: #2a2a2a;
+    
+    --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
+    --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
+    --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+  }
 
+  /* Global theme properties - Update to use theme variables */
+  [class*="theme-"] {
+    /* Font settings */
+    --aw-font-sans: 'Kode Mono';
+    --aw-font-serif: 'Kode Mono';
+    --aw-font-heading: 'UAV OSD Mono';
+
+    /* Color mappings */
+    --terminal-100: var(--theme-100);
+    --terminal-200: var(--theme-200);
+    --terminal-300: var(--theme-300);
+    --terminal-400: var(--theme-400);
+    --terminal-500: var(--theme-500);
+    --terminal-600: var(--theme-600);
+    --terminal-700: var(--theme-700);
+    --terminal-bright: var(--theme-bright);
+    
+    --terminal-bg-primary: var(--theme-bg-primary);
+    --terminal-bg-secondary: var(--theme-bg-secondary);
+    --terminal-bg-accent: var(--theme-bg-accent);
+
+    /* AstroWind color system mappings */
+    --aw-color-primary: var(--theme-500);
+    --aw-color-secondary: var(--theme-600);
+    --aw-color-accent: var(--theme-700);
+    
+    --aw-color-text-heading: var(--theme-500);
+    --aw-color-text-default: var(--theme-500);
+    --aw-color-text-muted: var(--theme-300);
+    --aw-color-bg-page: var(--theme-bg-primary);
+    
+    /* Selection color */
     ::selection {
-      background-color: black;
-      color: snow;
-    } 
+      background-color: var(--theme-500);
+      color: var(--theme-bg-primary);
+    }
 
-    body{
-      /* color: rgba(128,255,128,0.8); */
-		  text-shadow: 0 0 2ex #3f3, 0 0 2px rgba(255,255,255,0.8);
+    /* Glow effects */
+    & body {
+      text-shadow: var(--theme-glow);
+    }
+    
+    & .text-glow-strong {
+      text-shadow: var(--theme-glow-strong);
+    }
+    
+    & .text-glow-subtle {
+      text-shadow: var(--theme-glow-subtle);
     }
   }
 </style>
