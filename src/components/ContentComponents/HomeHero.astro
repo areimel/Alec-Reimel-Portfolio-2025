@@ -1,0 +1,49 @@
+---
+// Component props (if needed)
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const { title = "Welcome", subtitle = "This is the hero section" } = Astro.props;
+---
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Alec Reimel: Dev Profile</h1>
+      <p>Typewriter effect text</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+  }
+</style>
