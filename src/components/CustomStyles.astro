@@ -95,12 +95,7 @@ import '@fontsource-variable/inter';
 
   /* Green Theme */
   .theme-green {
-    /* Copy all current .dark theme variables here */
-    --aw-font-sans: 'Kode Mono';
-    --aw-font-serif: 'Kode Mono';
-    --aw-font-heading: 'UAV OSD Mono';
-    
-    /* Terminal colors */
+    /* Main colors - Green spectrum */
     --theme-100: rgba(128, 255, 128, 0.1);
     --theme-200: rgba(128, 255, 128, 0.2);
     --theme-300: rgba(128, 255, 128, 0.3);
@@ -110,38 +105,61 @@ import '@fontsource-variable/inter';
     --theme-700: rgba(64, 255, 64, 0.8);
     --theme-bright: rgba(180, 255, 180, 0.95);
     
+    /* Backgrounds */
     --theme-bg-primary: #023612;
     --theme-bg-secondary: #11581e;
     --theme-bg-accent: #0d4417;
     
-    /* Text glow for this theme */
+    /* Accent colors - Amber */
+    --theme-accent-500: rgba(255, 183, 77, 0.8);
+    --theme-accent-600: rgba(255, 170, 60, 0.9);
+    --theme-accent-700: rgba(255, 160, 40, 1.0);
+    --theme-accent-bright: rgba(255, 207, 118, 0.95);
+    
+    /* Glow effects */
     --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
     --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
     --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+    
+    /* Accent glow */
+    --theme-accent-glow: 0 0 3ex var(--theme-accent-600), 0 0 5px var(--theme-accent-bright);
   }
 
   /* Amber Theme */
   .theme-amber {
-    --theme-100: var(--amber-100);
-    --theme-200: var(--amber-200);
-    --theme-300: var(--amber-300);
-    --theme-400: var(--amber-400);
-    --theme-500: var(--amber-500);
-    --theme-600: var(--amber-600);
-    --theme-700: var(--amber-700);
-    --theme-bright: var(--amber-bright);
+    /* Main colors - Amber spectrum */
+    --theme-100: rgba(255, 183, 77, 0.1);
+    --theme-200: rgba(255, 183, 77, 0.2);
+    --theme-300: rgba(255, 183, 77, 0.4);
+    --theme-400: rgba(255, 183, 77, 0.6);
+    --theme-500: rgba(255, 183, 77, 0.8);
+    --theme-600: rgba(255, 170, 60, 0.9);
+    --theme-700: rgba(255, 160, 40, 1.0);
+    --theme-bright: rgba(255, 207, 118, 0.95);
     
-    --theme-bg-primary: var(--amber-bg-primary);
-    --theme-bg-secondary: var(--amber-bg-secondary);
-    --theme-bg-accent: var(--amber-bg-accent);
+    /* Backgrounds */
+    --theme-bg-primary: #201200;
+    --theme-bg-secondary: #2d1900;
+    --theme-bg-accent: #3a2000;
     
+    /* Accent colors - Green */
+    --theme-accent-500: rgba(128, 255, 128, 0.8);
+    --theme-accent-600: rgba(96, 255, 96, 0.9);
+    --theme-accent-700: rgba(64, 255, 64, 1.0);
+    --theme-accent-bright: rgba(180, 255, 180, 0.95);
+    
+    /* Glow effects */
     --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
     --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
     --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+    
+    /* Accent glow */
+    --theme-accent-glow: 0 0 3ex var(--theme-accent-600), 0 0 5px var(--theme-accent-bright);
   }
 
   /* Cyberpunk Theme */
   .theme-cyber {
+    /* Main colors - Red spectrum */
     --theme-100: rgba(255, 0, 60, 0.1);
     --theme-200: rgba(255, 0, 60, 0.2);
     --theme-300: rgba(255, 0, 60, 0.4);
@@ -151,13 +169,62 @@ import '@fontsource-variable/inter';
     --theme-700: rgba(255, 0, 60, 1.0);
     --theme-bright: rgba(255, 71, 108, 0.95);
     
+    /* Backgrounds */
     --theme-bg-primary: #0a0a0a;
-    --theme-bg-secondary: #1a1a1a;
-    --theme-bg-accent: #2a2a2a;
+    --theme-bg-secondary: #1a0f12;
+    --theme-bg-accent: #2a1216;
     
-    --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
-    --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
-    --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+    /* Accent colors - Teal */
+    --theme-accent-100: rgba(0, 255, 240, 0.1);
+    --theme-accent-200: rgba(0, 255, 240, 0.2);
+    --theme-accent-300: rgba(0, 255, 240, 0.4);
+    --theme-accent-400: rgba(0, 255, 240, 0.6);
+    --theme-accent-500: rgba(0, 255, 240, 0.8);
+    --theme-accent-600: rgba(0, 255, 240, 0.9);
+    --theme-accent-700: rgba(0, 255, 240, 1.0);
+    --theme-accent-bright: rgba(64, 255, 248, 0.95);
+    
+    /* Glow effects */
+    --theme-glow: 0 0 3ex rgba(255, 0, 60, 0.6), 0 0 5px rgba(255, 71, 108, 0.95);
+    --theme-glow-strong: 0 0 5ex rgba(255, 0, 60, 1.0), 0 0 3ex rgba(255, 0, 60, 0.6), 0 0 7px rgba(255, 71, 108, 0.95);
+    --theme-glow-subtle: 0 0 2ex rgba(255, 0, 60, 0.4), 0 0 3px rgba(255, 71, 108, 0.95);
+    
+    /* Success state glow (teal) */
+    --theme-glow-success: 0 0 3ex rgba(0, 255, 240, 0.6), 0 0 5px rgba(64, 255, 248, 0.95);
+    --theme-glow-success-strong: 0 0 5ex rgba(0, 255, 240, 1.0), 0 0 3ex rgba(0, 255, 240, 0.6), 0 0 7px rgba(64, 255, 248, 0.95);
+  }
+
+  /* Cyberpunk Yellow Theme */
+  .theme-cyber-yellow {
+    /* Main colors - Yellow spectrum */
+    --theme-100: rgba(255, 230, 0, 0.1);
+    --theme-200: rgba(255, 230, 0, 0.2);
+    --theme-300: rgba(255, 230, 0, 0.4);
+    --theme-400: rgba(255, 230, 0, 0.6);
+    --theme-500: rgba(255, 230, 0, 0.8);
+    --theme-600: rgba(255, 230, 0, 0.9);
+    --theme-700: rgba(255, 230, 0, 1.0);
+    --theme-bright: rgba(255, 240, 60, 0.95);
+    
+    /* Backgrounds - Pure black with slight yellow tint for depth */
+    --theme-bg-primary: #000000;
+    --theme-bg-secondary: #1a1a00;
+    --theme-bg-accent: #2a2a00;
+    
+    /* Accent colors - Teal (same as cyber theme) */
+    --theme-accent-500: rgba(0, 255, 240, 0.8);
+    --theme-accent-600: rgba(0, 255, 240, 0.9);
+    --theme-accent-700: rgba(0, 255, 240, 1.0);
+    --theme-accent-bright: rgba(64, 255, 248, 0.95);
+    
+    /* Glow effects */
+    --theme-glow: 0 0 3ex rgba(255, 230, 0, 0.6), 0 0 5px rgba(255, 240, 60, 0.95);
+    --theme-glow-strong: 0 0 5ex rgba(255, 230, 0, 1.0), 0 0 3ex rgba(255, 230, 0, 0.6), 0 0 7px rgba(255, 240, 60, 0.95);
+    --theme-glow-subtle: 0 0 2ex rgba(255, 230, 0, 0.4), 0 0 3px rgba(255, 240, 60, 0.95);
+    
+    /* Success state glow (teal) - same as cyber theme */
+    --theme-glow-success: 0 0 3ex rgba(0, 255, 240, 0.6), 0 0 5px rgba(64, 255, 248, 0.95);
+    --theme-glow-success-strong: 0 0 5ex rgba(0, 255, 240, 1.0), 0 0 3ex rgba(0, 255, 240, 0.6), 0 0 7px rgba(64, 255, 248, 0.95);
   }
 
   /* Global theme properties - Update to use theme variables */

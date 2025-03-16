@@ -4,19 +4,25 @@ const themes = [
     id: 'green', 
     name: 'Green Phosphor', 
     class: 'theme-green',
-    preview: 'bg-terminal-700'
+    preview: 'bg-[#40FF40]'
   },
   { 
     id: 'amber', 
     name: 'Amber', 
     class: 'theme-amber',
-    preview: 'bg-terminal-700'
+    preview: 'bg-[#FFA028]'
   },
   {
     id: 'cyber',
-    name: 'Cyberpunk',
+    name: 'Cyberpunk Red',
     class: 'theme-cyber',
-    preview: 'bg-terminal-700'
+    preview: 'bg-[#FF003C]'
+  },
+  {
+    id: 'cyber-yellow',
+    name: 'Cyberpunk Yellow',
+    class: 'theme-cyber-yellow',
+    preview: 'bg-[#FFE600]'
   }
 ];
 ---
@@ -55,7 +61,7 @@ const themes = [
     button.addEventListener('click', () => {
       // Remove old theme and active states
       buttons.forEach(btn => btn.classList.remove('active'));
-      document.documentElement.classList.remove('theme-green', 'theme-amber', 'theme-cyber');
+      document.documentElement.classList.remove('theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow');
       
       // Add new theme
       document.documentElement.classList.add(`theme-${theme}`);

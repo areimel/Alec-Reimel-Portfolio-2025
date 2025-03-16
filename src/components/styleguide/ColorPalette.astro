@@ -14,6 +14,12 @@ const colorGroups = {
     { class: 'terminal-bg-primary', name: 'terminal-bg-primary', description: 'Main background' },
     { class: 'terminal-bg-secondary', name: 'terminal-bg-secondary', description: 'Secondary background' },
     { class: 'terminal-bg-accent', name: 'terminal-bg-accent', description: 'Accent background' },
+  ],
+  'Accent Colors': [
+    { class: 'theme-accent-500', name: 'theme-accent-500', description: 'Primary accent' },
+    { class: 'theme-accent-600', name: 'theme-accent-600', description: 'Secondary accent' },
+    { class: 'theme-accent-700', name: 'theme-accent-700', description: 'High emphasis accent' },
+    { class: 'theme-accent-bright', name: 'theme-accent-bright', description: 'Accent glow' },
   ]
 };
 ---
@@ -87,6 +93,20 @@ const colorGroups = {
 
   // Setup on theme change
   document.addEventListener('themeChanged', setupColorPalette);
+
+  // Watch for theme changes through the theme switcher
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'class') {
+        setupColorPalette();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
 </script>
 
 <style>
