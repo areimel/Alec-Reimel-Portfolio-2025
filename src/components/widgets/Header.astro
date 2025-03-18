@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import Logo from '~/components/Logo.astro';
-import ToggleTheme from '~/components/common/ToggleTheme.astro';
+import ThemeSwitcher from '~/components/ThemeSwitcher.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
 import Button from '~/components/ui/Button.astro';
 
@@ -50,7 +50,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 <header
   class:list={[
     { sticky: isSticky, relative: !isSticky, dark: isDark },
-    'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out',
+    'top-0 z-40 flex-none mx-auto w-full border-b border-terminal-300/20 transition-[opacity] ease-in-out bg-terminal-bg-primary',
   ]}
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
@@ -58,7 +58,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
   <div class="absolute inset-0"></div>
   <div
     class:list={[
-      'relative text-default py-3 px-3 md:px-6 mx-auto w-full',
+      'relative text-terminal-500 py-3 px-3 md:px-6 mx-auto w-full',
       {
         'md:flex md:justify-between': position !== 'center',
       },
@@ -79,11 +79,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
       </div>
     </div>
     <nav
-      class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
+      class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-terminal-500 overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
       aria-label="Main navigation"
     >
       <ul
-        class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center"
+        class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center font-kode"
       >
         {
           links.map(({ text, href, links }) => (
@@ -92,18 +92,18 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                 <>
                   <button
                     type="button"
-                    class="hover:text-link dark:hover:text-white px-4 py-3 flex items-center whitespace-nowrap"
+                    class="hover:text-terminal-bright text-terminal-500 px-4 py-3 flex items-center whitespace-nowrap transition-colors"
                   >
                     {text}{' '}
                     <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
                   </button>
-                  <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
+                  <ul class="dropdown-menu rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-terminal-bg-secondary md:min-w-[200px] drop-shadow-xl border border-terminal-300/20">
                     {links.map(({ text: text2, href: href2 }) => (
                       <li>
                         <a
                           class:list={[
-                            'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
-                            { 'aw-link-active': href2 === currentPath },
+                            'first:rounded-t last:rounded-b md:hover:bg-terminal-bg-primary hover:text-terminal-bright text-terminal-400 py-2 px-5 block whitespace-no-wrap transition-colors',
+                            { 'text-terminal-bright': href2 === currentPath },
                           ]}
                           href={href2}
                         >
@@ -116,8 +116,8 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
               ) : (
                 <a
                   class:list={[
-                    'hover:text-link dark:hover:text-white px-4 py-3 flex items-center whitespace-nowrap',
-                    { 'aw-link-active': href === currentPath },
+                    'hover:text-terminal-bright text-terminal-500 px-4 py-3 flex items-center whitespace-nowrap transition-colors',
+                    { 'text-terminal-bright': href === currentPath },
                   ]}
                   href={href}
                 >
@@ -137,11 +137,26 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
     >
       <div class="items-center flex justify-between w-full md:w-auto">
         <div class="flex">
-          {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
+          {showToggleTheme && (
+            <div class="relative dropdown-container">
+              <button
+                class="text-terminal-500 bg-terminal-bg-primary hover:bg-terminal-bg-secondary focus:outline-none focus:ring-2 focus:ring-terminal-400 rounded-lg text-sm px-3 py-2 inline-flex items-center gap-2 transition-colors"
+                aria-label="Theme Options"
+              >
+                <Icon name="tabler:palette" class="w-5 h-5" />
+                <span class="font-medium">Color Palette</span>
+              </button>
+              <div class="absolute right-0 top-full mt-0 hidden z-50 dropdown-menu">
+                <div class="bg-terminal-bg-secondary border border-terminal-300/20 rounded-lg p-2">
+                  <ThemeSwitcher isDropdown={true} />
+                </div>
+              </div>
+            </div>
+          )}
           {
             showRssFeed && (
               <a
-                class="text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
+                class="text-terminal-400 hover:text-terminal-bright hover:bg-terminal-bg-secondary focus:outline-none focus:ring-2 focus:ring-terminal-400 rounded-lg text-sm p-2.5 inline-flex items-center transition-colors"
                 aria-label="RSS Feed"
                 href={getAsset('/rss.xml')}
               >
@@ -150,18 +165,53 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
             )
           }
         </div>
-        {
-          actions?.length ? (
-            <span class="ml-4 rtl:ml-0 rtl:mr-4">
-              {actions.map((btnProps) => (
-                <Button {...btnProps} class="ml-2 py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto" />
-              ))}
-            </span>
-          ) : (
-            ''
-          )
-        }
       </div>
     </div>
   </div>
 </header>
+
+<style>
+  .dropdown-container {
+    @apply h-auto pb-[5px] -mb-[5px];
+  }
+  
+  .dropdown-container .dropdown-menu {
+    @apply translate-y-0;
+  }
+  
+  /* Add glow effect to the palette icon */
+  .dropdown-container button {
+    @apply relative;
+  }
+  
+  .dropdown-container button svg {
+    @apply text-terminal-bright;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropdownContainers = document.querySelectorAll('.dropdown-container');
+    
+    dropdownContainers.forEach(container => {
+      const menu = container.querySelector('.dropdown-menu');
+      let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+      
+      if (menu) {
+        container.addEventListener('mouseenter', () => {
+          if (timeoutId !== undefined) {
+            clearTimeout(timeoutId);
+            timeoutId = undefined;
+          }
+          menu.classList.remove('hidden');
+        });
+        
+        container.addEventListener('mouseleave', () => {
+          timeoutId = setTimeout(() => {
+            menu.classList.add('hidden');
+          }, 100);
+        });
+      }
+    });
+  });
+</script>

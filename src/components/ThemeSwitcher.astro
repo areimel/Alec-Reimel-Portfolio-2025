@@ -25,23 +25,45 @@ const themes = [
     preview: 'bg-[#FFE600]'
   }
 ];
+
+export interface Props {
+  isDropdown?: boolean;
+}
+
+const { isDropdown = false } = Astro.props;
 ---
 
-<div class="fixed bottom-4 right-4 z-50">
-  <div class="bg-terminal-bg-secondary p-2 rounded-lg border border-terminal-500">
-    <div class="flex flex-col gap-2">
+{isDropdown ? (
+  <div class="bg-terminal-bg-secondary p-2 rounded-lg border border-terminal-500 w-48 shadow-lg">
+    <div class="flex flex-col gap-1">
       {themes.map(theme => (
         <button
-          class="theme-button px-4 py-2 rounded text-sm transition-colors flex items-center gap-2"
+          class="theme-button px-2 py-1 rounded text-xs transition-colors flex items-center gap-2"
           data-theme={theme.id}
         >
-          <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
+          <span class={`w-3 h-3 rounded-full ${theme.preview}`}></span>
           {theme.name}
         </button>
       ))}
     </div>
   </div>
-</div>
+) : (
+  <div class="fixed bottom-4 right-4 z-50">
+    <div class="bg-terminal-bg-secondary p-2 rounded-lg border border-terminal-500">
+      <div class="flex flex-col gap-2">
+        {themes.map(theme => (
+          <button
+            class="theme-button px-4 py-2 rounded text-sm transition-colors flex items-center gap-2"
+            data-theme={theme.id}
+          >
+            <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
+            {theme.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
 
 <script>
   const buttons = document.querySelectorAll('.theme-button');

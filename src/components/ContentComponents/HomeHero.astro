@@ -1,0 +1,154 @@
+---
+  
+  import TerminalPrefix from "../TerminalComponents/TerminalPrefix.astro";
+  import ContactFormSmall from "../Forms/ContactFormSmall.astro";
+
+---
+
+<section class="w-full min-h-screen p-4 md:p-8 bg-terminal-bg-primary">
+  <div class="w-full h-full max-w-screen-2xl mx-auto">
+    <div class="bento-grid">
+      
+      <!-- Cell 1: Main hero section -->
+      <div class="div1 bento-cell">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-terminal-500 font-uav-mono text-glow-strong">
+          <TerminalPrefix />Alec Reimel
+        </h1>
+        <p class="text-xl md:text-2xl text-terminal-400 mb-8">
+          Coder // Designer // Hacker
+        </p>
+        <p class="text-xl md:text-2xl text-terminal-400 font-kode">
+          10 years of industry experience, lifelong cyberpunk.
+          <br/><br/>
+          I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along with highly optimized, conversion-centric marketing websites. 
+          <br/><br/>
+          Beyond frontend, I have multiple other niche skills - ranging from tracking and analytics to virtual reality and custom private AI. I've on projects as simple as basic landing pages to as complex as a live interactive art installation.
+        </p>
+      </div>
+      
+      <!-- Cell 2 -->
+      <div class="div2 bento-cell">
+        <h2>//Skillsets</h2>
+        <ul class="list-disc list-outside pl-4">
+          <li><strong>Primary Skillset</strong>: Frontend Web Development</li>
+          <li><strong>Marketing Skills</strong>: UI/UX, Accessibility, SEO, Tracking & Analytics</li>
+          <li><strong>Advanced Skills</strong>: AI Development, Virtual Reality, Augmented Reality, Custom Hardware</li>
+        </ul>
+      </div>
+      
+      <!-- Cell 3 -->
+      <div class="div3 bento-cell">
+        <h2>//Tech_Stack</h2>
+        <ul class="list-disc list-outside pl-4">
+          <li><strong>Standard</strong>: HTML/CSS/Javascript</li>
+          <li><strong>Frameworks</strong>: Node.js, React, Next.js, Astro</li>
+          <li><strong>Libraries</strong>: Tailwind CSS, Shadcn-UI</li>
+          <li><strong>OS</strong>: Windows, Linux, Android</li>
+          <li><strong>Hosting & Data</strong>: Github, Netlify, Supabase</li>
+        </ul>
+      </div>
+      
+      <!-- Cell 4 -->
+      <div class="div4 bento-cell">
+        <h2>//Now_Playing</h2>
+        <p class="text-terminal-400 font-kode">Listen to my coding playlist</p>
+      </div>
+      
+      <!-- Cell 5 -->
+      <div class="div5 bento-cell">
+        <h2>//Latest_Projects</h2>
+        <p class="text-terminal-400 font-kode mb-4">Check out my latest, coolest projects</p>
+        <ul class="list-disc list-outside pl-4">
+          <li>Augmented Reality Business Card</li>
+          <li>Private AI Server</li>
+          <li>AI Prompt Directory</li>
+          <li>Virtual Reality Desktop</li>
+          <li></li>
+        </ul>
+      </div>
+      
+      <!-- Cell 6 -->
+      <div class="div6 bento-cell">
+        <h2 class="">//Contact</h2>
+        <ContactFormSmall /> 
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 15px;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .div1 {
+    grid-column: span 3 / span 3;
+    grid-row: span 4 / span 4;
+  }
+  
+  .div2 {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+  }
+  
+  .div3 {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+  }
+  
+  .div4 {
+    grid-row: span 3 / span 3;
+    grid-row-start: 5;
+  }
+  
+  .div5 {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    grid-column-start: 2;
+    grid-row-start: 5;
+  }
+  
+  .div6 {
+    grid-column: span 2 / span 2;
+    grid-row: span 3 / span 3;
+    grid-column-start: 4;
+    grid-row-start: 5;
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    
+    .div1, .div2, .div3, .div4, .div5, .div6 {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+
+  .bento-cell{
+    @apply bg-terminal-bg-secondary p-6 shadow-md flex flex-col justify-start border border-terminal-300;
+  }
+
+  h2{
+    @apply text-xl md:text-2xl font-semibold mb-2 text-terminal-500 font-uav-mono;
+  }
+  ul{
+    @apply text-lg text-terminal-400 font-kode;
+    ::marker{
+      content: "> "
+    }
+  }
+  strong{
+    @apply text-terminal-bright;
+  }
+</style>
