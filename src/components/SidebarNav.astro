@@ -1,0 +1,136 @@
+---
+import { Icon } from 'astro-icon/components';
+import ThemeSwitcher from './ThemeSwitcher.astro';
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["sidebar-nav-container", className]}>
+  <!-- Hamburger Toggle Button -->
+  <button
+    id="sidebar-toggle"
+    class="fixed top-4 left-4 z-50 p-2 text-terminal-500 hover:text-terminal-bright transition-colors outline-none ring-2 ring-terminal-400  transition-all duration-300"
+    aria-label="Toggle Navigation Menu"
+  >
+    <Icon name="tabler:menu-2" class="w-8 h-8" />
+  </button>
+
+  <!-- Sidebar Navigation -->
+  <nav
+    id="sidebar-nav"
+    class="fixed top-0 left-0 h-full w-64 bg-terminal-bg-secondary border-r border-terminal-300/20 transform -translate-x-full transition-transform duration-300 ease-in-out z-40"
+  >
+    <div class="p-6">
+      <div class="mb-8 pt-16 relative flex justify-between items-center">
+        <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Alec_Reimel</h2>
+        <button
+          id="sidebar-close"
+          class="p-2 text-terminal-500 hover:text-terminal-bright transition-colors focus:outline-none ring-2 ring-terminal-400 absolute -top-2 -left-2"
+          aria-label="Close Navigation Menu"
+        >
+          <Icon name="tabler:x" class="w-8 h-8" />
+        </button>
+      </div>
+
+      <ul class="space-y-0 font-kode divide-y divide-terminal-300/20">
+        <li>
+          <a href="/" class="nav-link">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="/about" class="nav-link">
+            About
+          </a>
+        </li>
+        <li>
+          <a href="/projects" class="nav-link">
+            Projects
+          </a>
+        </li>
+        <li>
+            <a href="/blog" class="nav-link">
+              Blog
+            </a>
+          </li>
+        <li>
+          <a href="/contact" class="nav-link">
+            Contact
+          </a>
+        </li>
+      </ul>
+
+      <div class="absolute bottom-4 left-0 w-full flex flex-col items-center">
+        <p class="text-terminal-500 text-sm">Theme Picker</p>
+        <ThemeSwitcher/>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Overlay -->
+  <div
+    id="sidebar-overlay"
+    class="fixed inset-0 bg-terminal-bg-primary/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-30"
+  >
+  </div>
+</div>
+
+<script>
+  function setupSidebar() {
+    const toggle = document.getElementById('sidebar-toggle');
+    const closeBtn = document.getElementById('sidebar-close');
+    const nav = document.getElementById('sidebar-nav');
+    const overlay = document.getElementById('sidebar-overlay');
+    let isOpen = false;
+
+    function toggleSidebar() {
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        nav?.classList.remove('-translate-x-full');
+        overlay?.classList.remove('opacity-0', 'pointer-events-none');
+        toggle?.classList.add('invisible', '-z-10');
+      } else {
+        nav?.classList.add('-translate-x-full');
+        overlay?.classList.add('opacity-0', 'pointer-events-none');
+        toggle?.classList.remove('invisible', '-z-10');
+      }
+    }
+
+    toggle?.addEventListener('click', toggleSidebar);
+    closeBtn?.addEventListener('click', toggleSidebar);
+    overlay?.addEventListener('click', () => {
+      if (isOpen) toggleSidebar();
+    });
+
+    // Close sidebar on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) toggleSidebar();
+    });
+  }
+
+  // Handle both initial load and subsequent navigation
+  document.addEventListener('astro:page-load', setupSidebar);
+</script>
+
+<style>
+  /* Add glow effect to the toggle and close buttons on hover */
+  #sidebar-toggle:hover,
+  #sidebar-close:hover {
+    text-shadow: var(--theme-glow-strong);
+  }
+
+  /* Navigation link styling */
+  :global(.nav-link) {
+    @apply block text-terminal-500 hover:text-terminal-bright transition-all duration-200 py-3 px-4 -mx-4 hover:bg-terminal-bg-accent border-l-2 border-transparent hover:border-terminal-bright;
+  }
+
+  /* Add glow effect to navigation links on hover */
+  :global(.nav-link:hover) {
+    text-shadow: var(--theme-glow);
+  }
+</style> 
