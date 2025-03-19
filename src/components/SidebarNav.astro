@@ -53,9 +53,14 @@ const { class: className } = Astro.props;
         </li>
         <li>
             <a href="/blog" class="nav-link">
-              Blog
+                Blog
             </a>
-          </li>
+        </li>
+        <li>
+            <a href="/styleguide" class="nav-link">
+                Styleguide
+            </a>
+        </li>
         <li>
           <a href="/contact" class="nav-link">
             Contact
@@ -126,7 +131,7 @@ const { class: className } = Astro.props;
 
   /* Navigation link styling */
   :global(.nav-link) {
-    @apply block text-terminal-500 hover:text-terminal-bright transition-all duration-200 py-3 px-4 -mx-4 hover:bg-terminal-bg-accent border-l-2 border-transparent hover:border-terminal-bright;
+    @apply block text-xl md:text-2xl text-terminal-500 hover:text-terminal-bright transition-all duration-200 py-3 px-4 -mx-4 hover:bg-terminal-bg-accent border-l-2 border-transparent hover:border-terminal-bright;
   }
 
   /* Add glow effect to navigation links on hover */
