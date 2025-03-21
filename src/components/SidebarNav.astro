@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import ThemeSwitcher from './ThemeSwitcher.astro';
+import ExtraMenu from './ExtraMenu.astro';
 interface Props {
   class?: string;
 }
@@ -21,7 +22,7 @@ const { class: className } = Astro.props;
   <!-- Sidebar Navigation -->
   <nav
     id="sidebar-nav"
-    class="fixed top-0 left-0 h-full w-64 bg-terminal-bg-secondary border-r border-terminal-300/20 transform -translate-x-full transition-transform duration-300 ease-in-out z-40"
+    class="fixed top-0 left-0 h-full w-64 bg-terminal-bg-secondary border-r border-terminal-300/20 transform -translate-x-full transition-transform duration-300 ease-in-out z-50"
   >
     <div class="p-6">
       <div class="mb-8 pt-16 relative flex justify-between items-center">
@@ -82,6 +83,14 @@ const { class: className } = Astro.props;
     class="fixed inset-0 bg-terminal-bg-primary/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-30"
   >
   </div>
+
+  <!-- Extra Menu Layer -->
+  <div 
+    id="extra-menu-container" 
+    class="fixed inset-0 z-35 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out flex items-center justify-center p-24 pl-72 z-40"
+  >
+    <ExtraMenu />
+  </div>
 </div>
 
 <script>
@@ -90,6 +99,7 @@ const { class: className } = Astro.props;
     const closeBtn = document.getElementById('sidebar-close');
     const nav = document.getElementById('sidebar-nav');
     const overlay = document.getElementById('sidebar-overlay');
+    const extraMenu = document.getElementById('extra-menu-container');
     let isOpen = false;
 
     function toggleSidebar() {
@@ -98,10 +108,12 @@ const { class: className } = Astro.props;
       if (isOpen) {
         nav?.classList.remove('-translate-x-full');
         overlay?.classList.remove('opacity-0', 'pointer-events-none');
+        extraMenu?.classList.remove('opacity-0', 'pointer-events-none');
         toggle?.classList.add('invisible', '-z-10');
       } else {
         nav?.classList.add('-translate-x-full');
         overlay?.classList.add('opacity-0', 'pointer-events-none');
+        extraMenu?.classList.add('opacity-0', 'pointer-events-none');
         toggle?.classList.remove('invisible', '-z-10');
       }
     }

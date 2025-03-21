@@ -1,0 +1,75 @@
+---
+import ContactFormSmall from "~/components/Forms/ContactFormSmall.astro";
+import QRCode from "~/components/QRCode.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["parent", className]}>
+  
+  <div class="div1 gridCell">
+    <h2>//Free_Stuff</h2>
+    <ul class="customList">
+      <li>
+        <a href="/free/1">Free Stuff 1</a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="div2 gridCell">
+    <h2 class="">//Contact</h2>
+    <ContactFormSmall />
+  </div>
+  
+  <div class="div3 gridCell">
+    <h2>//Quick_Links</h2>
+    <ul class="customList">
+      <li>
+        <a href="/projects/1">Crash Course: Web Dev in Marketing Agencies</a>
+      </li>
+      <li>
+        <a href="/projects/2">Crash Course: Web Dev in Marketing Agencies</a>
+      </li>
+      <li>
+        <a href="/projects/3">Crash Course: Web Dev in Marketing Agencies</a>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="div4 gridCell">
+    <h2>//Mobile_Scan</h2>
+    <p>Scan this QR code to open the current page on your mobile device</p>
+    <QRCode currentUrl={true} width={200} height={200} />
+  </div>
+
+</div>
+
+<style>
+  .parent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4/3;
+    z-index: 40;
+
+    @apply aspect-square;
+  }
+
+  .gridCell {
+    @apply bg-terminal-bg-secondary p-6 shadow-md flex flex-col justify-start border border-terminal-300;
+  }
+
+  h2{
+    @apply text-2xl md:text-3xl font-semibold mb-2 text-terminal-500 font-uav-mono;
+  }
+  ul{
+    @apply text-xl;
+  }
+</style> 

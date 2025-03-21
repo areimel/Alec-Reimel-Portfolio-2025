@@ -1,0 +1,154 @@
+---
+import TerminalPrefix from '../TerminalComponents/TerminalPrefix.astro';
+---
+
+<form action="https://api.web3forms.com/submit" method="POST" class="w-full space-y-4">
+
+    <!-- Replace with your Access Key -->
+    <input type="hidden" name="access_key" value="75f8b211-81aa-45c2-9c7b-c11f447d30a0">
+
+    <!-- Name Input -->
+    <div class="form-group">
+        <label for="name" class="block text-terminal-400 font-kode text-sm mb-1">Name</label>
+        <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            required
+            placeholder="Your name"
+            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+        >
+    </div>
+
+    <!-- Email Input -->
+    <div class="form-group">
+        <label for="email" class="block text-terminal-400 font-kode text-sm mb-1">Email</label>
+        <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required
+            placeholder="your@email.com"
+            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+        >
+    </div>
+
+    <!-- Phone Input -->
+    <div class="form-group">
+        <label for="phone" class="block text-terminal-400 font-kode text-sm mb-1">Phone (optional)</label>
+        <input 
+            type="tel" 
+            id="phone" 
+            name="phone"
+            placeholder="+1 (234) 567-8900"
+            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+        >
+    </div>
+
+    <!-- Subject Input -->
+    <div class="form-group">
+        <label for="subject" class="block text-terminal-400 font-kode text-sm mb-1">Subject</label>
+        <select 
+            id="subject" 
+            name="subject" 
+            required
+            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+        >
+            <option value="">Select a subject...</option>
+            <option value="general">General Inquiry</option>
+            <option value="support">Technical Support</option>
+            <option value="business">Business Opportunity</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+
+    <!-- Message Input -->
+    <div class="form-group">
+        <label for="message" class="block text-terminal-400 font-kode text-sm mb-1">Message</label>
+        <textarea 
+            id="message" 
+            name="message" 
+            required
+            placeholder="Your message here..."
+            rows="6"
+            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+        ></textarea>
+    </div>
+
+    <!-- Preferred Contact Method -->
+    <div class="form-group">
+        <label class="block text-terminal-400 font-kode text-sm mb-2">Preferred Contact Method</label>
+        <div class="space-y-2">
+            <label class="flex items-center">
+                <input 
+                    type="radio" 
+                    name="contact_method" 
+                    value="email" 
+                    checked
+                    class="mr-2 bg-terminal-bg-primary border-terminal-300 text-terminal-500"
+                >
+                <span class="text-terminal-400 font-kode text-sm">Email</span>
+            </label>
+            <label class="flex items-center">
+                <input 
+                    type="radio" 
+                    name="contact_method" 
+                    value="phone"
+                    class="mr-2 bg-terminal-bg-primary border-terminal-300 text-terminal-500"
+                >
+                <span class="text-terminal-400 font-kode text-sm">Phone</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Agreement -->
+    <div class="form-group">
+        <label class="flex items-start">
+            <input 
+                type="checkbox" 
+                name="privacy_agreement" 
+                required
+                class="mt-1 mr-2 bg-terminal-bg-primary border-terminal-300 text-terminal-500"
+            >
+            <span class="text-terminal-300 font-kode text-sm">
+                I agree to the collection and processing of my personal information as described in the Privacy Policy.
+            </span>
+        </label>
+    </div>
+
+    <!-- Honeypot Spam Protection -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+    <!-- Submit Button -->
+    <button 
+        type="submit"
+        class="w-full px-4 py-2.5 bg-terminal-500 text-terminal-bg-primary font-uav-mono rounded hover:bg-terminal-600 transition-colors text-glow-subtle text-sm"
+    >
+        <TerminalPrefix />SUBMIT_MESSAGE
+    </button>
+
+    <!-- Response Message -->
+    <div class="text-center mt-4">
+        <p class="text-sm text-terminal-400 font-kode">Our team typically responds within 24 business hours.</p>
+    </div>
+</form>
+
+<style>
+    /* Add any additional component-specific styles here */
+    input, textarea, select {
+        transition: all 0.2s ease;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+        box-shadow: 0 0 8px rgba(var(--color-terminal-500-rgb), 0.5);
+    }
+
+    /* Custom radio and checkbox styling */
+    input[type="radio"], input[type="checkbox"] {
+        @apply appearance-none w-4 h-4 border border-terminal-300 bg-terminal-bg-primary rounded-full checked:bg-terminal-500 checked:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500 transition-all;
+    }
+
+    input[type="checkbox"] {
+        @apply rounded;
+    }
+</style> 

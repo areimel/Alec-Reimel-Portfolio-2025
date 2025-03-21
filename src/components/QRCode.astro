@@ -1,0 +1,70 @@
+---
+interface Props {
+  currentUrl?: boolean;
+  text?: string;
+  width?: number;
+  height?: number;
+  colorDark?: string;
+  colorLight?: string;
+}
+
+const {
+  currentUrl = false,
+  text = "",
+  width = 128,
+  height = 128,
+  colorDark = "#000000",
+  colorLight = "#ffffff",
+} = Astro.props;
+---
+
+<div class="qr-code-container">
+  <div id="qrcode"></div>
+</div>
+
+<script define:vars={{ currentUrl, text, width, height, colorDark, colorLight }}>
+// Load QRCode.js from CDN
+const script = document.createElement('script');
+script.src = 'https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js';
+document.head.appendChild(script);
+
+script.onload = function() {
+  const qrContainer = document.getElementById('qrcode');
+  if (!qrContainer) return;
+
+  // Clear any existing QR code
+  qrContainer.innerHTML = '';
+
+  // Determine the text to encode
+  const qrText = currentUrl ? window.location.href : text;
+
+  // Create new QR code
+  new QRCode(qrContainer, {
+    text: qrText,
+    width: width,
+    height: height,
+    colorDark: colorDark,
+    colorLight: colorLight,
+    correctLevel: QRCode.CorrectLevel.H
+  });
+};
+</script>
+
+<style>
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#qrcode {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+#qrcode img {
+  display: block;
+}
+</style> 
