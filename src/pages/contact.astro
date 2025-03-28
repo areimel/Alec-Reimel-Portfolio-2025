@@ -1,7 +1,7 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
-import ContactUs from '~/components/widgets/Contact.astro';
+import ContactFormFull from '~/components/Forms/ContactFormFull.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
 const metadata = {
@@ -14,36 +14,33 @@ const metadata = {
 
   <HeroText tagline="Contact" title="Let's Connect!" />
 
-  <ContactUs
-    id="form"
-    title="Drop us a message today!"
-    subtitle="For quicker answers, explore our FAQs section. You may find the solution you're looking  for right there! If not, our support team is delighted to help you."
-    inputs={[
-      {
-        type: 'text',
-        name: 'name',
-        label: 'Name',
-      },
-      {
-        type: 'email',
-        name: 'email',
-        label: 'Email',
-      },
-    ]}
-    textarea={{
-      label: 'Message',
-    }}
-    disclaimer={{
-      label:
-        'By submitting this contact form, you acknowledge and agree to the collection of your personal information.',
-    }}
-    description="Our support team typically responds within 24 business hours."
-  />
+  <!-- Contact Form Section -->
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="py-12">
+      <div class="text-center max-w-3xl mx-auto mb-8">
+        <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4">Drop us a message today!</h2>
+        <p class="text-terminal-400 font-kode">For quicker answers, explore our FAQs section below. You may find the solution you're looking for right there!</p>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <div class="rounded-lg backdrop-blur border border-terminal-300/20 bg-terminal-bg-secondary shadow p-4 sm:p-6 lg:p-8">
+          <ContactFormFull />
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Features2 Widget ************** -->
 
   <Features2
     title="We are here to help!"
+    classes={{
+      container: 'max-w-6xl mx-auto',
+      items: 'gap-6',
+      item: 'bg-terminal-bg-secondary border border-terminal-300/20 rounded-lg p-6',
+      title: 'text-terminal-500 font-kode',
+      description: 'text-terminal-400 font-kode',
+      icon: 'text-terminal-500'
+    }}
     items={[
       {
         title: 'General support',

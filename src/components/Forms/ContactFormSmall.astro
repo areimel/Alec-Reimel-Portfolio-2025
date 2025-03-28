@@ -1,5 +1,5 @@
 ---
-
+import TerminalPrefix from '../TerminalComponents/TerminalPrefix.astro';
 ---
 
 <form action="https://api.web3forms.com/submit" method="POST" class="w-full space-y-3">
@@ -57,7 +57,7 @@
         type="submit"
         class="px-3 py-1.5 bg-terminal-500 text-terminal-bg-primary font-uav-mono rounded hover:bg-terminal-600 transition-colors text-glow-subtle text-sm"
     >
-        SUBMIT_
+    <TerminalPrefix />SUBMIT
     </button>
 
 </form>
