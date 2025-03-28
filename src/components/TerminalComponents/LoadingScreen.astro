@@ -1,0 +1,383 @@
+---
+// No need to import SITE as it's not used
+---
+
+<div id="loadingScreen" class="loading-screen font-kode">
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="terminal-title font-uav-mono">SYSTEM INITIALIZATION</div>
+    </div>
+    <div class="terminal-content">
+      <div class="terminal-lines" id="terminalLines">
+        <div class="line">Initializing system components...</div>
+        <div class="line">Loading runtime environment: <span class="highlight">done</span></div>
+        <div class="line">Verifying system integrity... <span class="highlight">OK</span></div>
+        <div class="line">Connecting to server: <span class="highlight">connected</span></div>
+        <div class="line output">$ make example name=download</div>
+        <div class="line"><span class="checkmark">✓</span> [00:01] <span class="progress-indicator">[####################]</span> 20.3 MiB</div>
+        <div class="line"><span class="checkmark">✓</span> [00:02] <span class="progress-indicator">[####################]</span> 38.1 MiB</div>
+        <div class="line status-in-progress">[00:05] <span class="progress-indicator">[#################----]</span> 86.1 MiB (eta: 00:00)</div>
+        <div class="line status-waiting">[00:02] <span class="progress-indicator">[############---------]</span> 26.1 MiB (eta: 00:17)</div>
+        <div class="line output">$ sudo apt install emacs25</div>
+        <div class="line">Reading package lists... <span class="highlight">Done</span></div>
+        <div class="line">Building dependency tree</div>
+        <div class="line">Reading state information... <span class="highlight">Done</span></div>
+        <div class="line">The following NEW packages will be installed:</div>
+        <div class="line indented">emacs25</div>
+        <div class="line">0 upgraded, 1 newly installed, 0 to remove and 8 not upgraded.</div>
+        <div class="line">Need to get 0 B/3,468 kB of archives.</div>
+        <div class="line">After this operation, 19.19 MB of additional disk space will be used.</div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-label">Overall Progress: <span id="progressPercent">0%</span></div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="progress-details">Starting application initialization...</div>
+      </div>
+    </div>
+  </div>
+  <div class="noise"></div>
+  <div class="scan-overlay"></div>
+</div>
+
+<script>
+  // Detect and set the theme on the loading screen to match site theme
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check for theme preference in localStorage or default to green theme
+    const currentTheme = localStorage.getItem('theme') || 'theme-green';
+    const loadingScreen = document.getElementById('loadingScreen');
+    
+    if (loadingScreen && currentTheme) {
+      // Apply the theme class to the loading screen
+      loadingScreen.classList.add(currentTheme);
+    }
+    
+    // Simulate loading progress
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+    const terminalLines = document.getElementById('terminalLines');
+    
+    if (!loadingScreen || !progressFill || !progressPercent || !terminalLines) return;
+    
+    // Additional lines to add as loading progresses
+    const additionalLines = [
+      '<div class="line">Unpacking emacs25 (25.2+1-6)...</div>',
+      '<div class="line">Processing triggers for mime-support (3.60ubuntu1)...</div>',
+      '<div class="line">Processing triggers for desktop-file-utils (0.23-1ubuntu3.18.04.2)...</div>',
+      '<div class="line">Processing triggers for bamfdaemon (0.5.3+18.04.20180207.2-0ubuntu1)...</div>',
+      '<div class="line">Rebuilding /usr/share/applications/bamf-2.index...</div>',
+      '<div class="line">Processing triggers for man-db (2.8.3-2ubuntu0.1)...</div>',
+      '<div class="line">Setting up emacs25 (25.2+1-6)...</div>',
+      '<div class="line">Generating grub configuration file...</div>',
+      '<div class="line">Found linux image: /boot/vmlinuz-4.15.0-64-generic</div>',
+      '<div class="line">Found linux image: /boot/vmlinuz-4.15.0-47-generic</div>',
+      '<div class="line">Found initrd image: /boot/initrd.img-4.15.0-47-generic</div>',
+      '<div class="line output">$ npm run build</div>',
+      '<div class="line">Building production assets...</div>'
+    ];
+    
+    let progress = 0;
+    let lineIndex = 0;
+    
+    // Typewriter effect for the final line
+    function typeWriter(element, text, i = 0, callback) {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(() => typeWriter(element, text, i, callback), 20);
+      } else if (callback) {
+        callback();
+      }
+    }
+    
+    // Update terminal lines and progress periodically
+    const interval = setInterval(() => {
+      progress += Math.random() * 8;
+      if (progress > 100) progress = 100;
+      
+      progressFill.style.width = `${progress}%`;
+      progressPercent.textContent = `${Math.floor(progress)}%`;
+      
+      // Add a new line every few updates
+      if (lineIndex < additionalLines.length && Math.random() > 0.6) {
+        terminalLines.insertAdjacentHTML('beforeend', additionalLines[lineIndex]);
+        terminalLines.scrollTop = terminalLines.scrollHeight;
+        lineIndex++;
+      }
+      
+      if (progress === 100) {
+        clearInterval(interval);
+        
+        // Add final success message with typewriter effect
+        const finalLine = document.createElement('div');
+        finalLine.className = 'line highlight-line';
+        terminalLines.appendChild(finalLine);
+        
+        typeWriter(finalLine, 'Initialization complete. Launching application...', 0, () => {
+          // Add the hidden class after typing completes
+          setTimeout(() => {
+            if (loadingScreen) {
+              loadingScreen.classList.add('hidden');
+              // Remove from DOM after animation completes
+              setTimeout(() => {
+                if (loadingScreen) {
+                  loadingScreen.style.display = 'none';
+                }
+              }, 1000);
+            }
+          }, 500);
+        });
+      }
+    }, 200);
+  });
+</script>
+
+<style>
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--terminal-bg-primary);
+    color: var(--terminal-500);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+  }
+  
+  .loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .terminal-container {
+    width: 80%;
+    max-width: 800px;
+    background-color: var(--terminal-bg-secondary);
+    border: 1px solid var(--terminal-500);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--terminal-500), 0 0 20px var(--terminal-300);
+    overflow: hidden;
+    position: relative;
+    z-index: 100;
+  }
+  
+  .terminal-header {
+    background-color: var(--terminal-bg-accent);
+    padding: 8px 15px;
+    border-bottom: 1px solid var(--terminal-500);
+    display: flex;
+    justify-content: center;
+  }
+  
+  .terminal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: var(--theme-glow);
+  }
+  
+  .terminal-content {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .terminal-lines {
+    margin-bottom: 25px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  
+  .line {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 20px;
+    line-height: 1.4;
+    color: var(--terminal-400);
+  }
+  
+  .line::before {
+    content: ">";
+    position: absolute;
+    left: 0;
+    color: var(--terminal-500);
+  }
+  
+  .line.output::before {
+    content: "$";
+  }
+  
+  .line.indented {
+    padding-left: 40px;
+  }
+  
+  .highlight {
+    color: var(--terminal-bright);
+    font-weight: bold;
+    text-shadow: var(--theme-glow-strong);
+  }
+  
+  .highlight-line {
+    color: var(--terminal-700);
+    text-shadow: var(--theme-glow-strong);
+  }
+  
+  .blink {
+    animation: blink 1s infinite;
+  }
+  
+  .checkmark {
+    color: var(--terminal-700);
+    margin-right: 6px;
+  }
+  
+  .progress-indicator {
+    color: var(--terminal-500);
+    margin: 0 10px;
+  }
+  
+  .status-in-progress {
+    color: var(--terminal-500);
+  }
+  
+  .status-in-progress::before {
+    content: ":";
+  }
+  
+  .status-waiting {
+    color: var(--terminal-300);
+  }
+  
+  .status-waiting::before {
+    content: "·";
+  }
+  
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  
+  .progress-container {
+    border: 1px solid var(--terminal-300);
+    padding: 15px;
+    background-color: var(--terminal-bg-accent);
+  }
+  
+  .progress-label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--terminal-500);
+  }
+  
+  .progress-bar {
+    height: 25px;
+    background-color: var(--terminal-bg-primary);
+    border: 1px solid var(--terminal-500);
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--terminal-500);
+    background-image: linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 30px 30px;
+    animation: progress-animation 2s linear infinite;
+    transition: width 0.3s ease;
+  }
+  
+  @keyframes progress-animation {
+    0% { background-position: 0 0; }
+    100% { background-position: 30px 0; }
+  }
+  
+  .progress-details {
+    text-align: right;
+    font-style: italic;
+    color: var(--terminal-300);
+  }
+  
+  /* CRT effects */
+  .noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/terminal-static-animated.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  
+  .scan-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  .scan-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+      0deg,
+      transparent 0%,
+      rgba(32, 128, 32, 0.2) 2%,
+      rgba(32, 128, 32, 0.8) 3%,
+      rgba(32, 128, 32, 0.2) 3%,
+      transparent 100%
+    );
+    background-repeat: no-repeat;
+    animation: scan 7.5s linear 0s infinite;
+  }
+  
+  @keyframes scan {
+    0% { background-position: 0 -100vh; }
+    35%, 100% { background-position: 0 100vh; }
+  }
+  
+  /* Responsive styles for smaller screens */
+  @media (max-width: 768px) {
+    .terminal-container {
+      width: 95%;
+      max-width: none;
+    }
+    
+    .terminal-lines {
+      max-height: 40vh;
+    }
+  }
+</style> 
