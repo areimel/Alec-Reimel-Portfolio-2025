@@ -42,17 +42,15 @@
 </div>
 
 <script>
-  // Detect and set the theme on the loading screen to match site theme
+  // Apply theme immediately to prevent FOUC
+  const savedTheme = localStorage.getItem('theme') || 'green';
+  const loadingScreen = document.getElementById('loadingScreen');
+  if (loadingScreen) {
+    loadingScreen.classList.add(`theme-${savedTheme}`);
+  }
+
+  // The rest of the initialization happens on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
-    // Check for theme preference in localStorage or default to green theme
-    const currentTheme = localStorage.getItem('theme') || 'theme-green';
-    const loadingScreen = document.getElementById('loadingScreen');
-    
-    if (loadingScreen && currentTheme) {
-      // Apply the theme class to the loading screen
-      loadingScreen.classList.add(currentTheme);
-    }
-    
     // Simulate loading progress
     const progressFill = document.getElementById('progressFill');
     const progressPercent = document.getElementById('progressPercent');

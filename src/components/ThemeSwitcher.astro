@@ -66,12 +66,14 @@ const { isDropdown = false } = Astro.props;
 )}
 
 <script>
+  // This script now only handles theme switching, not initial application
+  // (initial application is handled in ApplyColorMode.astro)
   const buttons = document.querySelectorAll('.theme-button');
   
   // Get theme from localStorage or default to green
   const currentTheme = localStorage.getItem('theme') || 'green';
-  document.documentElement.className = `theme-${currentTheme}`;
   
+  // Set initial active state based on current theme
   buttons.forEach(button => {
     const theme = button.getAttribute('data-theme') || 'green';
     
@@ -83,7 +85,11 @@ const { isDropdown = false } = Astro.props;
     button.addEventListener('click', () => {
       // Remove old theme and active states
       buttons.forEach(btn => btn.classList.remove('active'));
-      document.documentElement.classList.remove('theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow');
+      
+      // Remove all possible theme classes
+      document.documentElement.classList.remove(
+        'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow'
+      );
       
       // Add new theme
       document.documentElement.classList.add(`theme-${theme}`);
