@@ -2,27 +2,33 @@
 const themes = [
   { 
     id: 'green', 
-    name: 'Green Phosphor', 
+    name: 'Vintage Green', 
     class: 'theme-green',
     preview: 'bg-[#40FF40]'
   },
   { 
     id: 'amber', 
-    name: 'Amber', 
+    name: 'Cozy Amber', 
     class: 'theme-amber',
     preview: 'bg-[#FFA028]'
   },
   {
     id: 'cyber',
-    name: 'Cyberpunk Red',
+    name: 'Hacker Red',
     class: 'theme-cyber',
     preview: 'bg-[#FF003C]'
   },
   {
     id: 'cyber-yellow',
-    name: 'Cyberpunk Yellow',
+    name: 'Industrial Yellow',
     class: 'theme-cyber-yellow',
     preview: 'bg-[#FFE600]'
+  },
+  {
+    id: 'severance',
+    name: 'Severance Blue',
+    class: 'theme-severance',
+    preview: 'bg-[#8CF0FF]'
   }
 ];
 
@@ -88,7 +94,7 @@ const { isDropdown = false } = Astro.props;
       
       // Remove all possible theme classes
       document.documentElement.classList.remove(
-        'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow'
+        'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
       );
       
       // Add new theme

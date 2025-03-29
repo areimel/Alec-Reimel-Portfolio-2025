@@ -96,14 +96,14 @@ import '@fontsource-variable/inter';
   /* Green Theme */
   .theme-green {
     /* Main colors - Green spectrum */
-    --theme-100: rgba(128, 255, 128, 0.1);
-    --theme-200: rgba(128, 255, 128, 0.2);
-    --theme-300: rgba(128, 255, 128, 0.3);
-    --theme-400: rgba(128, 255, 128, 0.5);
-    --theme-500: rgba(128, 255, 128, 0.8);
-    --theme-600: rgba(96, 255, 96, 0.8);
-    --theme-700: rgba(64, 255, 64, 0.8);
-    --theme-bright: rgba(180, 255, 180, 0.95);
+    --theme-100: rgba(160, 255, 160, 0.25);  /* Subtle overlay */
+    --theme-200: rgba(160, 255, 160, 0.35);  /* Light accent */
+    --theme-300: rgba(160, 255, 160, 0.55);  /* Muted text */
+    --theme-400: rgba(160, 255, 160, 0.75);  /* Medium emphasis */
+    --theme-500: rgba(160, 255, 160, 0.9);   /* Primary text */
+    --theme-600: rgba(128, 255, 128, 0.95);  /* Secondary emphasis */
+    --theme-700: rgba(128, 255, 128, 1.0);   /* High emphasis */
+    --theme-bright: rgba(200, 255, 200, 1.0); /* Phosphor glow - even brighter */
     
     /* Backgrounds */
     --theme-bg-primary: #023612;
@@ -117,9 +117,9 @@ import '@fontsource-variable/inter';
     --theme-accent-bright: rgba(255, 207, 118, 0.95);
     
     /* Glow effects */
-    --theme-glow: 0 0 3ex var(--theme-600), 0 0 5px var(--theme-bright);
-    --theme-glow-strong: 0 0 5ex var(--theme-700), 0 0 3ex var(--theme-600), 0 0 7px var(--theme-bright);
-    --theme-glow-subtle: 0 0 2ex var(--theme-300), 0 0 3px var(--theme-bright);
+    --theme-glow: 0 0 3ex rgba(128, 255, 128, 0.6), 0 0 5px rgba(200, 255, 200, 0.95);
+    --theme-glow-strong: 0 0 5ex rgba(128, 255, 128, 1.0), 0 0 3ex rgba(128, 255, 128, 0.6), 0 0 7px rgba(200, 255, 200, 0.95);
+    --theme-glow-subtle: 0 0 2ex rgba(128, 255, 128, 0.4), 0 0 3px rgba(200, 255, 200, 0.95);
     
     /* Accent glow */
     --theme-accent-glow: 0 0 3ex var(--theme-accent-600), 0 0 5px var(--theme-accent-bright);
@@ -225,6 +225,38 @@ import '@fontsource-variable/inter';
     /* Success state glow (teal) - same as cyber theme */
     --theme-glow-success: 0 0 3ex rgba(0, 255, 240, 0.6), 0 0 5px rgba(64, 255, 248, 0.95);
     --theme-glow-success-strong: 0 0 5ex rgba(0, 255, 240, 1.0), 0 0 3ex rgba(0, 255, 240, 0.6), 0 0 7px rgba(64, 255, 248, 0.95);
+  }
+
+  /* Severance Blue Theme */
+  .theme-severance {
+    /* Main colors - Blue spectrum inspired by Severance computer terminals */
+    --theme-100: rgba(110, 230, 255, 0.25);  /* Subtle overlay */
+    --theme-200: rgba(110, 230, 255, 0.35);  /* Light accent */
+    --theme-300: rgba(110, 230, 255, 0.55);  /* Muted text */
+    --theme-400: rgba(110, 230, 255, 0.75);  /* Medium emphasis */
+    --theme-500: rgba(110, 230, 255, 0.9);   /* Primary text */
+    --theme-600: rgba(110, 230, 255, 0.95);  /* Secondary emphasis */
+    --theme-700: rgba(110, 230, 255, 1.0);   /* High emphasis */
+    --theme-bright: rgba(140, 240, 255, 1.0); /* Phosphor glow - even brighter */
+    
+    /* Backgrounds - Dark blue/black backgrounds */
+    --theme-bg-primary: #000e14;    /* Main background - almost black with blue tint */
+    --theme-bg-secondary: #001824;  /* Secondary background - slightly lighter */
+    --theme-bg-accent: #002638;     /* Accent background - for interactive elements */
+    
+    /* Accent colors - Bright white for contrast */
+    --theme-accent-500: rgba(220, 240, 255, 0.8);
+    --theme-accent-600: rgba(220, 240, 255, 0.9);
+    --theme-accent-700: rgba(220, 240, 255, 1.0);
+    --theme-accent-bright: rgba(240, 250, 255, 0.95);
+    
+    /* Glow effects */
+    --theme-glow: 0 0 3ex rgba(110, 230, 255, 0.6), 0 0 5px rgba(140, 240, 255, 0.95);
+    --theme-glow-strong: 0 0 5ex rgba(110, 230, 255, 1.0), 0 0 3ex rgba(110, 230, 255, 0.6), 0 0 7px rgba(140, 240, 255, 0.95);
+    --theme-glow-subtle: 0 0 2ex rgba(110, 230, 255, 0.4), 0 0 3px rgba(140, 240, 255, 0.95);
+    
+    /* Accent glow */
+    --theme-accent-glow: 0 0 3ex var(--theme-accent-600), 0 0 5px var(--theme-accent-bright);
   }
 
   /* Global theme properties - Update to use theme variables */

@@ -8,7 +8,15 @@ import { UI } from 'astrowind:config';
   // First apply terminal theme before any content renders
   function applyTerminalTheme() {
     const savedTheme = localStorage.getItem('theme') || 'green';
-    document.documentElement.className = `theme-${savedTheme}`;
+    
+    // First remove all possible theme classes
+    document.documentElement.classList.remove(
+      'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
+    );
+    
+    // Then add the saved theme
+    document.documentElement.classList.add(`theme-${savedTheme}`);
+    
     return savedTheme;
   }
   
@@ -44,4 +52,9 @@ import { UI } from 'astrowind:config';
       applyColorScheme('light');
     }
   }
+
+  // Handle View Transitions API
+  document.addEventListener('astro:page-load', () => {
+    applyTerminalTheme();
+  });
 </script>

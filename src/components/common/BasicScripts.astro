@@ -17,6 +17,21 @@ import { UI } from 'astrowind:config';
     }
   }
 
+  // Terminal theme application function
+  function applyTerminalTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'green';
+    
+    // First remove all possible theme classes
+    document.documentElement.classList.remove(
+      'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
+    );
+    
+    // Then add the saved theme
+    document.documentElement.classList.add(`theme-${savedTheme}`);
+    
+    return savedTheme;
+  }
+
   const initTheme = function () {
     if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
       applyTheme(defaultTheme.replace(':only', ''));
@@ -155,9 +170,16 @@ import { UI } from 'astrowind:config';
   window.onpageshow = onPageShow;
 
   document.addEventListener('astro:after-swap', () => {
+    // Apply terminal theme first (highest priority)
+    applyTerminalTheme();
+    
+    // Then apply dark/light theme if needed
     initTheme();
     onLoad();
     onPageShow();
+    
+    // Dispatch a custom event that components can listen for
+    document.dispatchEvent(new CustomEvent('themeChanged'));
   });
 </script>
 
