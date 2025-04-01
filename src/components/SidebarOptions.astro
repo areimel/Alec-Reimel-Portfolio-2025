@@ -1,0 +1,104 @@
+---
+import ThemeSwitcher from './ThemeSwitcher.astro';
+import TerminalEffectsControls from './TerminalEffectsControls.astro';
+import SidebarButton from './SidebarButton.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["sidebar-options-container", className]}>
+  <!-- Options Toggle Button -->
+  <SidebarButton
+    id="options-toggle"
+    icon="tabler:terminal"
+    position="fixed top-20 left-4 z-50"
+    ariaLabel="Theme Options"
+  />
+  
+  <!-- Options Sidebar -->
+  <nav
+    id="options-sidebar"
+    class="fixed top-0 left-0 h-full w-64 bg-terminal-bg-secondary border-r border-terminal-300/20 transform -translate-x-full transition-transform duration-300 ease-in-out z-50"
+  >
+    <div class="p-6">
+      <div class="mb-8 pt-16 relative flex justify-between items-center">
+        <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Options</h2>
+        <SidebarButton
+          id="options-close"
+          icon="tabler:x"
+          position="absolute -top-2 -left-2"
+          ariaLabel="Close"
+        />
+      </div>
+
+      <div class="space-y-8 overflow-y-auto max-h-[calc(100vh-120px)]">
+        <!-- Theme Switcher Section -->
+        <div class="space-y-4">
+          <p class="text-terminal-500 text-lg font-bold">Terminal Theme</p>
+          <div class="mb-8">
+            <ThemeSwitcher />
+          </div>
+        </div>
+        
+        <!-- Terminal Effects Controls Section -->
+        <div class="pt-2 border-t border-terminal-300/20">
+          <TerminalEffectsControls />
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Overlay -->
+  <div
+    id="options-overlay"
+    class="fixed inset-0 bg-terminal-bg-primary/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-30"
+  >
+  </div>
+</div>
+
+<script>
+  function setupOptionsSidebar() {
+    const toggle = document.getElementById('options-toggle');
+    const closeBtn = document.getElementById('options-close');
+    const sidebar = document.getElementById('options-sidebar');
+    const overlay = document.getElementById('options-overlay');
+    let isOpen = false;
+
+    function toggleSidebar() {
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        sidebar?.classList.remove('-translate-x-full');
+        overlay?.classList.remove('opacity-0', 'pointer-events-none');
+        toggle?.classList.add('invisible', '-z-10');
+      } else {
+        sidebar?.classList.add('-translate-x-full');
+        overlay?.classList.add('opacity-0', 'pointer-events-none');
+        toggle?.classList.remove('invisible', '-z-10');
+      }
+    }
+
+    toggle?.addEventListener('click', toggleSidebar);
+    closeBtn?.addEventListener('click', toggleSidebar);
+    overlay?.addEventListener('click', () => {
+      if (isOpen) toggleSidebar();
+    });
+
+    // Close sidebar on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) toggleSidebar();
+    });
+  }
+
+  // Handle both initial load and subsequent navigation
+  document.addEventListener('astro:page-load', setupOptionsSidebar);
+</script>
+
+<style>
+  /* This style is now handled by the SidebarButton component */
+</style> 

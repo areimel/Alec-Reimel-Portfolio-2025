@@ -9,11 +9,11 @@ import Favicons from '~/components/Favicons.astro';
 import CustomStyles from '~/components/CustomStyles.astro';
 import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
 import Metadata from '~/components/common/Metadata.astro';
-import SiteVerification from '~/components/common/SiteVerification.astro';
-import Analytics from '~/components/common/Analytics.astro';
+// import SiteVerification from '~/components/common/SiteVerification.astro';
+// import Analytics from '~/components/common/Analytics.astro';
 import BasicScripts from '~/components/common/BasicScripts.astro';
 import TerminalOverlay from '~/components/TerminalComponents/TerminalOverlay.astro';
-import LoadingScreen from '~/components/TerminalComponents/LoadingScreen.astro';
+// import LoadingScreen from '~/components/TerminalComponents/LoadingScreen.astro';
 // Comment the line below to disable View Transitions
 import { ClientRouter } from 'astro:transitions';
 
@@ -25,10 +25,13 @@ export interface Props {
 
 const { metadata = {} } = Astro.props;
 const { language, textDirection } = I18N;
+
+// Server-side default theme application (will be overridden by client-side code if needed)
+const defaultTheme = 'theme-green';
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
+<html lang={language} dir={textDirection} class={`2xl:text-[20px] ${defaultTheme}`}>
   <head>
     <CommonMeta />
     <Favicons />

@@ -1,0 +1,54 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id: string;
+  icon: string;
+  position: string;
+  ariaLabel: string;
+  class?: string;
+}
+
+const { id, icon, position, ariaLabel, class: className } = Astro.props;
+---
+
+<button
+  id={id}
+  class:list={[
+    "p-2 text-terminal-500 hover:text-terminal-bg-primary transition-all duration-300 outline-none ring-2 ring-terminal-400 hover:bg-terminal-500 hover:ring-terminal-bright",
+    position,
+    className
+  ]}
+  aria-label={ariaLabel}
+>
+  <Icon name={icon} class="w-8 h-8" />
+
+  <span data-tooltip={ariaLabel} class="text-xs w-fit h-8 ring-2 ring-terminal-400 bg-terminal-bg-secondary">{ariaLabel}</span>
+</button>
+
+<style>
+  [data-tooltip] {
+    position: absolute;
+    left: calc(100% + 1em);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--terminal-bg-secondary);
+    color: var(--terminal-500);
+    padding: 4px 8px;
+    text-wrap: nowrap;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  button:hover {
+    text-shadow: none;
+    [data-tooltip]{
+        opacity: 1;
+        visibility: visible;
+    }
+  }
+
+</style> 

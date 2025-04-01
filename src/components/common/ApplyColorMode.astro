@@ -1,12 +1,31 @@
 ---
 import { UI } from 'astrowind:config';
 
-// TODO: This code is temporary
+// This component handles both theme system (terminal themes) and color scheme (light/dark)
 ---
 
 <script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
-  function applyTheme(theme) {
-    if (theme === 'dark') {
+  // First apply terminal theme before any content renders
+  function applyTerminalTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'green';
+    
+    // First remove all possible theme classes
+    document.documentElement.classList.remove(
+      'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
+    );
+    
+    // Then add the saved theme
+    document.documentElement.classList.add(`theme-${savedTheme}`);
+    
+    return savedTheme;
+  }
+  
+  // Apply terminal theme immediately to prevent FOUC
+  const currentTerminalTheme = applyTerminalTheme();
+  
+  // Then handle light/dark mode (secondary to terminal themes)
+  function applyColorScheme(scheme) {
+    if (scheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
@@ -15,19 +34,27 @@ import { UI } from 'astrowind:config';
 
     if (matches && matches.length) {
       matches.forEach((elem) => {
-        elem.checked = theme !== 'dark';
+        elem.checked = scheme !== 'dark';
       });
     }
   }
 
-  if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-    applyTheme(defaultTheme.replace(':only', ''));
-  } else if (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    applyTheme('dark');
-  } else {
-    applyTheme('light');
+  // Only apply color scheme if we're not using terminal themes
+  if (currentTerminalTheme === 'system') {
+    if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
+      applyColorScheme(defaultTheme.replace(':only', ''));
+    } else if (
+      localStorage.theme === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      applyColorScheme('dark');
+    } else {
+      applyColorScheme('light');
+    }
   }
+
+  // Handle View Transitions API
+  document.addEventListener('astro:page-load', () => {
+    applyTerminalTheme();
+  });
 </script>

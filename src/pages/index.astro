@@ -1,13 +1,13 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import Note from '~/components/widgets/Note.astro';
-import Features from '~/components/widgets/Features.astro';
 import PersonalFacts from '~/components/ContentComponents/PersonalFacts.astro';
+import Skills from '~/components/ContentComponents/Skills.astro';
 
 import HomeHero from '~/components/ContentComponents/HomeHero.astro';
 
 const metadata = {
-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+  title: 'Alec Reimel | Developer Portfolio',
   ignoreTitleTemplate: true,
 };
 ---
@@ -21,52 +21,9 @@ const metadata = {
 
   <Note />
 
-  <!-- Features Widget *************** -->
+  <!-- Skills Widget *************** -->
 
-  <Features
-    id="features"
-    tagline="Skills"
-    title="What I can do"
-    subtitle=""
-    items={[
-      {
-        title: 'Frontend Web Development',
-        description:
-          'I can create beautiful and functional websites using HTML, CSS, and JavaScript.',
-        icon: 'tabler:brand-tailwind',
-      },
-      {
-        title: 'Tracking & Analytics',
-        description:
-          'I can implement tracking and analytics to help you understand your users and improve your website.',
-        icon: 'tabler:components',
-      },
-      {
-        title: 'SEO',
-        description:
-          'Creating secure, efficient, and user-friendly websites that deliver exceptional experiences and lasting value.',
-        icon: 'tabler:list-check',
-      },
-      {
-        title: 'Accessibility',
-        description:
-          'Having a good page speed impacts organic search ranking, improves user experience (UI/UX) and increase conversion rates.',
-        icon: 'tabler:rocket',
-      },
-      {
-        title: 'Search Engine Optimization (SEO)',
-        description:
-          "SEO lies in its ability to enhance a website's visibility, driving organic traffic and enabling it to reach a wider audience.",
-        icon: 'tabler:arrows-right-left',
-      },
-      {
-        title: 'Open to new ideas and contributions',
-        description:
-          'Embracing a culture that is open to new ideas and contributions is integral fostering innovation, collaboration, and a dynamic user experience.',
-        icon: 'tabler:bulb',
-      },
-    ]}
-  />
+  <Skills />
 
   <!-- Personal Facts Widget *************** -->
   <PersonalFacts />

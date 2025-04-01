@@ -1,0 +1,126 @@
+---
+// Component to control terminal effects visibility
+---
+
+<div class="terminal-effects-controls space-y-4">
+  <h3 class="text-terminal-500 text-lg font-bold">Terminal Effects</h3>
+  
+  <div class="space-y-2">
+    <div class="flex items-center">
+      <input 
+        type="checkbox" 
+        id="noise-effect" 
+        class="effect-toggle mr-2 h-4 w-4 accent-terminal-500 bg-terminal-bg-accent"
+        data-effect="noise"
+        checked
+      />
+      <label for="noise-effect" class="text-terminal-400 cursor-pointer select-none">CRT Noise</label>
+    </div>
+    
+    <div class="flex items-center">
+      <input 
+        type="checkbox" 
+        id="scanline-effect" 
+        class="effect-toggle mr-2 h-4 w-4 accent-terminal-500 bg-terminal-bg-accent"
+        data-effect="scanline"
+        checked
+      />
+      <label for="scanline-effect" class="text-terminal-400 cursor-pointer select-none">Scanlines</label>
+    </div>
+    
+    <div class="flex items-center">
+      <input 
+        type="checkbox" 
+        id="overlay-effect" 
+        class="effect-toggle mr-2 h-4 w-4 accent-terminal-500 bg-terminal-bg-accent"
+        data-effect="overlay"
+        checked
+      />
+      <label for="overlay-effect" class="text-terminal-400 cursor-pointer select-none">CRT Overlay</label>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupTerminalEffectsControls() {
+    const toggles = document.querySelectorAll('.effect-toggle');
+    
+    // Load saved preferences
+    toggles.forEach(toggle => {
+      const effectName = toggle.getAttribute('data-effect');
+      const savedState = localStorage.getItem(`terminal-effect-${effectName}`);
+      
+      // If we have a saved state, apply it
+      if (savedState !== null) {
+        const isEnabled = savedState === 'true';
+        const toggleInput = toggle as HTMLInputElement;
+        toggleInput.checked = isEnabled;
+        updateEffectVisibility(effectName, isEnabled);
+      }
+    });
+    
+    // Add event listeners to toggles
+    toggles.forEach(toggle => {
+      toggle.addEventListener('change', (e) => {
+        const target = e.currentTarget as HTMLInputElement;
+        const effectName = target.getAttribute('data-effect');
+        const isEnabled = target.checked;
+        
+        // Update the effect visibility
+        updateEffectVisibility(effectName, isEnabled);
+        
+        // Save the preference
+        localStorage.setItem(`terminal-effect-${effectName}`, isEnabled.toString());
+      });
+    });
+  }
+  
+  function updateEffectVisibility(effectName, isEnabled) {
+    const effectElement = document.querySelector(`.terminal-overlay .${effectName}`);
+    if (effectElement) {
+      if (isEnabled) {
+        effectElement.classList.remove('hidden');
+      } else {
+        effectElement.classList.add('hidden');
+      }
+    }
+  }
+
+  // Set up controls on initial load and on navigation
+  document.addEventListener('astro:page-load', setupTerminalEffectsControls);
+</script>
+
+<style>
+  /* Custom checkbox styling */
+  input[type="checkbox"].effect-toggle {
+    position: relative;
+    appearance: none;
+    background-color: var(--terminal-bg-secondary);
+    border: 1px solid var(--terminal-400);
+    padding: 8px;
+    border-radius: 2px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  input[type="checkbox"].effect-toggle:checked {
+    background-color: var(--terminal-bg-accent);
+    border-color: var(--terminal-500);
+  }
+
+  input[type="checkbox"].effect-toggle:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--terminal-500);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  input[type="checkbox"].effect-toggle:hover {
+    border-color: var(--terminal-bright);
+  }
+</style> 

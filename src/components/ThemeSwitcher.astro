@@ -2,27 +2,33 @@
 const themes = [
   { 
     id: 'green', 
-    name: 'Green Phosphor', 
+    name: 'Vintage Green', 
     class: 'theme-green',
     preview: 'bg-[#40FF40]'
   },
   { 
     id: 'amber', 
-    name: 'Amber', 
+    name: 'Cozy Amber', 
     class: 'theme-amber',
     preview: 'bg-[#FFA028]'
   },
   {
     id: 'cyber',
-    name: 'Cyberpunk Red',
+    name: 'Hacker Red',
     class: 'theme-cyber',
     preview: 'bg-[#FF003C]'
   },
   {
     id: 'cyber-yellow',
-    name: 'Cyberpunk Yellow',
+    name: 'Industrial Yellow',
     class: 'theme-cyber-yellow',
     preview: 'bg-[#FFE600]'
+  },
+  {
+    id: 'severance',
+    name: 'Severance Blue',
+    class: 'theme-severance',
+    preview: 'bg-[#8CF0FF]'
   }
 ];
 
@@ -53,7 +59,7 @@ const { isDropdown = false } = Astro.props;
       <div class="flex flex-col gap-2">
         {themes.map(theme => (
           <button
-            class="theme-button px-4 py-2 rounded text-sm transition-colors flex items-center gap-2"
+            class="theme-button px-4 py-2 rounded text-xs transition-colors flex items-center gap-2"
             data-theme={theme.id}
           >
             <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
@@ -66,12 +72,14 @@ const { isDropdown = false } = Astro.props;
 )}
 
 <script>
+  // This script now only handles theme switching, not initial application
+  // (initial application is handled in ApplyColorMode.astro)
   const buttons = document.querySelectorAll('.theme-button');
   
   // Get theme from localStorage or default to green
   const currentTheme = localStorage.getItem('theme') || 'green';
-  document.documentElement.className = `theme-${currentTheme}`;
   
+  // Set initial active state based on current theme
   buttons.forEach(button => {
     const theme = button.getAttribute('data-theme') || 'green';
     
@@ -83,7 +91,11 @@ const { isDropdown = false } = Astro.props;
     button.addEventListener('click', () => {
       // Remove old theme and active states
       buttons.forEach(btn => btn.classList.remove('active'));
-      document.documentElement.classList.remove('theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow');
+      
+      // Remove all possible theme classes
+      document.documentElement.classList.remove(
+        'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
+      );
       
       // Add new theme
       document.documentElement.classList.add(`theme-${theme}`);
