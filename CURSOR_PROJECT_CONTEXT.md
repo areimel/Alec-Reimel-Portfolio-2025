@@ -2,7 +2,7 @@
 
 ## Technical Stack
 ### Core Framework
-- Astro v3.x
+- Astro v5.x
 - Astrowind template base
 - TypeScript support enabled
 
@@ -14,5 +14,3 @@
 ### Deployment
 - Netlify hosting
 - Continuous deployment from main branch
-
-## Project Structure 

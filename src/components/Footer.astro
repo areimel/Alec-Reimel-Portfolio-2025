@@ -1,0 +1,43 @@
+---
+// Astro Props
+// interface Props {
+//     title: string;
+// }
+// const { title } = Astro.props;
+
+// Get current year for copyright
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-terminal-bg-secondary border-t border-terminal-300/20 py-8 px-4 mt-16 text-center">
+    <nav class="mb-4">
+        <ul class="flex justify-center space-x-6 font-kode">
+            <li>
+                <a href="/" class="footer-link">Home</a>
+            </li>
+            <li>
+                <a href="/about" class="footer-link">About</a>
+            </li>
+            <li>
+                <a href="/projects" class="footer-link">Projects</a>
+            </li>
+            <li>
+                <a href="/contact" class="footer-link">Contact</a>
+            </li>
+        </ul>
+    </nav>
+    <p class="text-terminal-400 text-sm font-kode text-glow-subtle">
+        &copy; {currentYear} Alec Reimel. All rights reserved.
+    </p>
+</footer>
+
+<style>
+  .footer-link {
+    @apply text-terminal-400 hover:text-terminal-bright transition-all duration-200 hover:underline;
+  }
+
+  /* Optional: Add glow effect on hover if desired */
+  /* .footer-link:hover {
+    text-shadow: var(--theme-glow); 
+  } */
+</style>
