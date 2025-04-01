@@ -59,7 +59,7 @@ const { isDropdown = false } = Astro.props;
       <div class="flex flex-col gap-2">
         {themes.map(theme => (
           <button
-            class="theme-button px-4 py-2 rounded text-sm transition-colors flex items-center gap-2"
+            class="theme-button px-4 py-2 rounded text-xs transition-colors flex items-center gap-2"
             data-theme={theme.id}
           >
             <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>

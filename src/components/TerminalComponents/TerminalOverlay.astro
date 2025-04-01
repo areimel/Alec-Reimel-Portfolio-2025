@@ -1,12 +1,13 @@
 ---
+//Astro frontmatter section: props, data, etc.
 ---
 <div class="terminal-overlay">
-    <div class="loader"></div>
 
     <div class="noise"></div>
+	
+	<div class="scanline"></div>
 
     <div class="overlay">
-        <div class="scanline"></div>
         <!-- <div class="corner topRight">&urcorner;</div>
         <div class="corner topLeft">&ulcorner;</div>
         <div class="corner bottomRight">&lrcorner;</div>
@@ -48,7 +49,12 @@
 		background-size: cover;
 		z-index: 100;
 		opacity: 0.02;
+        transition: opacity 0.3s ease;
 	}
+
+    .noise.hidden {
+        opacity: 0 !important;
+    }
 
 	.overlay {
 		pointer-events: none;
@@ -58,7 +64,13 @@
 		background: repeating-linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%);
 		background-size: auto 5px;
 		z-index: 101;
+        opacity: 1;
+        transition: opacity 0.3s ease;
 	}
+    
+    .overlay.hidden {
+        opacity: 0 !important;
+    }
 	
 	.scanline {
 		content: "";
@@ -77,7 +89,13 @@
 		animation: scan 7.5s linear 0s infinite;
 		opacity: 0.5;
 		z-index: 102;
+        transition: opacity 0.3s ease;
 	}
+
+    .scanline.hidden {
+        opacity: 0 !important;
+        animation: none !important;
+    }
 
 	.overlay .corner{
 		font-size:  5vw;

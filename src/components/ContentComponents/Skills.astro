@@ -1,0 +1,110 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const skills = [
+  {
+    prefix: "//01_",
+    title: 'Frontend Web Development',
+    description:
+      "The foundation of my work is HTML, CSS, and JavaScript, but beyond that I build websites with modern frameworks and tools such as React, Next.js, and Tailwind CSS. <br/><br/> I'm currently diving deeper into React and Astro, and I'm always looking for new ways to improve my skills.",
+    icon: 'tabler:brand-tailwind',
+  },
+  {
+    prefix: "//02_",
+    title: 'Tracking & Analytics',
+    description:
+      "I'm an expert in behavioral tracking and user analytics, having published multiple website plugins and tools for helping marketers understand their users - currently in use by a number of household name brands. <br/><br/> I specialize in Google Analytics and Google Tag Manager, and I've acted as the tech lead on dozens of marketing campaigns.",
+    icon: 'tabler:components',
+  },
+  {
+    prefix: "//03_",
+    title: 'UI/UX Design',
+    description:
+      "Building websites isn't just about making them look cool, it's about making them work well and guiding your users to the information they need. <br/><br/> My approach focuses on creating intuitive, easy to use interfaces that are both aesthetically pleasing and highly functional.",
+    icon: 'tabler:rocket',
+  },
+  {
+    prefix: "//04_",
+    title: 'Accessibility',
+    description:
+      "Accessibility is a crucial but often overlooked aspect of web development, and it's something I've always been a strong advocate for.  <br/><br/> All of my projects are built with solid accessibility baked in from the start - but I'm also an expert at fixing up websites that aren't up to ADA specs.",
+    icon: 'tabler:list-check',
+  },
+  {
+    prefix: "//05_",
+    title: 'SEO',
+    description:
+      "Working in the marketing industry has given me a keen understanding of Search Engine Optimization, both from a content and a technical standpoint. <br/><br/> SEO is more than just keywords, it's about building your website in a way that's optimized for search engines, social media, and AI.",
+    icon: 'tabler:rocket',
+  },
+  {
+    prefix: "//06_",
+    title: 'Custom Projects',
+    description: `
+    I love a challenge, and I love to build truly unique and creative projects that go beyond the definition of just "website".
+      <ul class="mt-4 space-y-1 pl-6">
+        <li>Touchscreen Kiosks for trade shows</li>
+        <li>Virtual Reality Experiences</li>  
+        <li>Twitter-controlled Christmas Lights</li>
+        <li>Custom, Private AI Servers</li>
+        <li>And more...</li>
+      </ul>`,
+    icon: 'tabler:bulb',
+  },
+];
+---
+
+<section id="skills" class="w-full p-4 md:p-8 bg-terminal-bg-primary">
+  <div class="w-full h-full max-w-screen-2xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="text-terminal-500 font-uav-mono text-lg">Skills</span>
+      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">What I can do</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[15px]">
+      {skills.map(({ prefix, title, description, icon }) => (
+        <div class="skill-card bg-terminal-bg-secondary p-6 border border-terminal-300 shadow-md flex flex-col h-full">
+          <div class="flex items-center mb-6">
+            <p class="skill-prefix text-xl font-semibold text-terminal-500 font-uav-mono mr-3">{prefix}</p>
+            <Icon name={icon} class="w-8 h-8 text-terminal-500" />
+          </div>
+          
+          <h3 class="skill-title text-3xl font-semibold text-terminal-500 font-uav-mono mb-4">{title}</h3>
+          
+          <div class="skill-content mt-auto">
+            <p class="text-terminal-400 font-kode text-lg" set:html={description} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  #skills{
+    ::marker{
+    content: "> ";
+    @apply text-terminal-700;
+  }
+  }
+</style>
+
+<style>
+  
+  .skill-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .skill-card:hover {
+    /* transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(var(--terminal-500-rgb, 0, 0, 0), 0.1); */
+  }
+  
+  .skill-prefix {
+    text-shadow: var(--theme-glow-subtle);
+  }
+  
+  .skill-title {
+    text-shadow: var(--theme-glow);
+  }
+</style> 

@@ -1,7 +1,8 @@
 ---
-import { Icon } from 'astro-icon/components';
-import ThemeSwitcher from './ThemeSwitcher.astro';
+import SidebarOptions from './SidebarOptions.astro';
 import ExtraMenu from './ExtraMenu.astro';
+import SidebarButton from './SidebarButton.astro';
+
 interface Props {
   class?: string;
 }
@@ -11,13 +12,15 @@ const { class: className } = Astro.props;
 
 <div class:list={["sidebar-nav-container", className]}>
   <!-- Hamburger Toggle Button -->
-  <button
+  <SidebarButton 
     id="sidebar-toggle"
-    class="fixed top-4 left-4 z-50 p-2 text-terminal-500 hover:text-terminal-bright transition-colors outline-none ring-2 ring-terminal-400  transition-all duration-300"
-    aria-label="Toggle Navigation Menu"
-  >
-    <Icon name="tabler:menu-2" class="w-8 h-8" />
-  </button>
+    icon="tabler:menu-2"
+    position="fixed top-4 left-4 z-50"
+    ariaLabel="Navigation"
+  />
+  
+  <!-- Include the SidebarOptions component -->
+  <SidebarOptions />
 
   <!-- Sidebar Navigation -->
   <nav
@@ -27,13 +30,12 @@ const { class: className } = Astro.props;
     <div class="p-6">
       <div class="mb-8 pt-16 relative flex justify-between items-center">
         <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Alec_Reimel</h2>
-        <button
+        <SidebarButton 
           id="sidebar-close"
-          class="p-2 text-terminal-500 hover:text-terminal-bright transition-colors focus:outline-none ring-2 ring-terminal-400 absolute -top-2 -left-2"
-          aria-label="Close Navigation Menu"
-        >
-          <Icon name="tabler:x" class="w-8 h-8" />
-        </button>
+          icon="tabler:x"
+          position="absolute -top-2 -left-2"
+          ariaLabel="Close"
+        />
       </div>
 
       <ul class="space-y-0 font-kode divide-y divide-terminal-300/20">
@@ -68,12 +70,6 @@ const { class: className } = Astro.props;
           </a>
         </li>
       </ul>
-
-      <div class="absolute bottom-4 left-0 w-full flex flex-col items-center">
-        <p class="text-terminal-500 text-sm">Theme Picker</p>
-        <ThemeSwitcher/>
-      </div>
-
     </div>
   </nav>
 
@@ -135,12 +131,6 @@ const { class: className } = Astro.props;
 </script>
 
 <style>
-  /* Add glow effect to the toggle and close buttons on hover */
-  #sidebar-toggle:hover,
-  #sidebar-close:hover {
-    text-shadow: var(--theme-glow-strong);
-  }
-
   /* Navigation link styling */
   :global(.nav-link) {
     @apply block text-xl md:text-2xl text-terminal-500 hover:text-terminal-bright transition-all duration-200 py-3 px-4 -mx-4 hover:bg-terminal-bg-accent border-l-2 border-transparent hover:border-terminal-bright;
