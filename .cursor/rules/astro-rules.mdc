@@ -86,7 +86,7 @@ alwaysApply: true
   - Leverage Tailwind's responsive design utilities (sm:, md:, lg:, etc.).
   - Utilize Tailwind's color palette and spacing scale for consistency.
   - Implement custom theme extensions in tailwind.config.cjs when necessary.
-  - Never use the @apply directive
+  - Use utility classes for the majority of styling elements, but switch to using Tailwind's `@apply` method if you need to style 3 or more elements with the same classes.
 
   Testing
   - Implement unit tests for utility functions and helpers.
