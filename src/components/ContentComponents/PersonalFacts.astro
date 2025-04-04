@@ -2,16 +2,6 @@
 const facts = [
     {
         prefix: "//01_",
-        title: "Hobbies",
-        content: `
-        <ul class="mt-4 space-y-4 pl-6">
-          <li><strong>Music</strong>: I play guitar, bass, and dabble in synthesizers. I'm forever in the middle of recording my demo album that never seems to be finished.</li>
-          <li><strong>Books, Movies, and TV</strong>: I'm a huge media nerd, with some of my favorites being books like Neuromancer by William Gibson and films like The Matrix, both major influences on my style and philosophy.</li>
-          <li><strong>Digital Art</strong>: I've done graphic design work for bands and artists - once I was even asked for a sample t-shirt by a Japanese heavy metal band.</li>
-        </ul>`
-    },
-    {
-        prefix: "//02_",
         title: "Location",
         content: `Based in the Pennsylvania/New Jersey area.
         <br/><br/>
@@ -19,6 +9,16 @@ const facts = [
         <br/><br/>
         I've worked with clients from all over the US, and from across the globe. From local brick and mortar shops on Main Street to Fortune 500s and multinational conglomerates.
         `
+    },
+    {
+        prefix: "//02_",
+        title: "Hobbies",
+        content: `
+        <ul class="mt-4 space-y-4 pl-6">
+          <li><strong>Music</strong>: I play guitar, bass, and dabble in synthesizers. I'm forever in the middle of recording my demo album that never seems to be finished.</li>
+          <li><strong>Books, Movies, and TV</strong>: I'm a huge media nerd, with some of my favorites being books like Neuromancer by William Gibson and films like The Matrix, both major influences on my style and philosophy.</li>
+          <li><strong>Digital Art</strong>: I've done graphic design work for bands and artists - once I was even asked for a sample t-shirt by a Japanese heavy metal band.</li>
+        </ul>`
     },
     {
         prefix: "//03_",
@@ -63,7 +63,7 @@ const facts = [
 <style>
   .facts-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(1, 1fr);
     gap: 15px;
     width: 100%;
@@ -75,7 +75,7 @@ const facts = [
   }
 
   .facts-header {
-    grid-column: span 1 / span 1;
+    grid-column: span 2 / span 2;
   }
 
   .facts-content {
