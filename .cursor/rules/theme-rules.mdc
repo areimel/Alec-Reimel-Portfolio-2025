@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Project Theme Classes
+
+When using Tailwind CSS, reference the files @tailwind.config.js, @CustomStyles.astro, and @styleguide.astro to get the site's color palette classes. You should always try to use color and text treatment classes from these files, because the project uses multiple themes that can be switched between.

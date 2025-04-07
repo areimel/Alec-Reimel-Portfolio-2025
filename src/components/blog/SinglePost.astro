@@ -26,14 +26,14 @@ const { post, url } = Astro.props;
         : 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'}
     >
       <div class="flex justify-between flex-col sm:flex-row max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 sm:items-center">
-        <p>
-          <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
+        <p class="text-terminal-400">
+          <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 text-terminal-400" />
           <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
           {
             post.author && (
               <>
                 {' '}
-                · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
+                · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 text-terminal-400" />
                 <span class="inline-block">{post.author}</span>
               </>
             )
@@ -43,7 +43,7 @@ const { post, url } = Astro.props;
               <>
                 {' '}
                 ·{' '}
-                <a class="hover:underline inline-block" href={getPermalink(post.category.slug, 'category')}>
+                <a class="hover:underline inline-block text-terminal-500 hover:text-terminal-700 transition-colors" href={getPermalink(post.category.slug, 'category')}>
                   {post.category.title}
                 </a>
               </>
@@ -60,12 +60,12 @@ const { post, url } = Astro.props;
       </div>
 
       <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading"
+        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold font-heading text-terminal-500 text-glow-subtle"
       >
         {post.title}
       </h1>
       <p
-        class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify"
+        class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-terminal-400 text-justify"
       >
         {post.excerpt}
       </p>
@@ -74,7 +74,7 @@ const { post, url } = Astro.props;
         post.image ? (
           <Image
             src={post.image}
-            class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-gray-400 dark:bg-slate-700"
+            class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-terminal-bg-secondary"
             widths={[400, 900]}
             sizes="(max-width: 900px) 400px, 900px"
             alt={post?.excerpt || ''}
@@ -85,19 +85,37 @@ const { post, url } = Astro.props;
           />
         ) : (
           <div class="max-w-3xl mx-auto px-4 sm:px-6">
-            <div class="border-t dark:border-slate-700" />
+            <div class="border-t border-terminal-300/20" />
           </div>
         )
       }
     </header>
     <div
-      class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
+      class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-xl 
+      prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold 
+      prose-headings:text-terminal-500 prose-headings:scroll-mt-[80px] 
+      prose-p:text-terminal-500 
+      prose-a:text-terminal-700 hover:prose-a:text-terminal-bright 
+      prose-strong:text-terminal-600 
+      prose-img:rounded-md prose-img:shadow-lg 
+      prose-li:text-terminal-500 prose-li:my-0 
+      prose-code:text-terminal-bright
+      mt-8"
     >
       <slot />
     </div>
     <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8 flex justify-between flex-col sm:flex-row">
       <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
-      <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-gray-500 dark:text-slate-600" />
+      <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-terminal-400" />
     </div>
   </article>
 </section>
+
+<style>
+  h1{
+    line-height: 1.2;
+    text-align: center;
+    text-wrap: balance;
+  }
+</style>
+
