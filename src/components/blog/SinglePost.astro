@@ -60,7 +60,7 @@ const { post, url } = Astro.props;
       </div>
 
       <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading text-terminal-500 text-glow-subtle"
+        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold font-heading text-terminal-500 text-glow-subtle"
       >
         {post.title}
       </h1>
@@ -110,3 +110,12 @@ const { post, url } = Astro.props;
     </div>
   </article>
 </section>
+
+<style>
+  h1{
+    line-height: 1.2;
+    text-align: center;
+    text-wrap: balance;
+  }
+</style>
+
