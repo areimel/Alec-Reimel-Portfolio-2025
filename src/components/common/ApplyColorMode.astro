@@ -7,6 +7,7 @@ import { UI } from 'astrowind:config';
 <script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
   // First apply terminal theme before any content renders
   function applyTerminalTheme() {
+    // Always use 'green' as the default terminal theme if not in localStorage
     const savedTheme = localStorage.getItem('theme') || 'green';
     
     // First remove all possible theme classes
@@ -17,11 +18,16 @@ import { UI } from 'astrowind:config';
     // Then add the saved theme
     document.documentElement.classList.add(`theme-${savedTheme}`);
     
+    // Save the default theme to localStorage if not already set
+    if (!localStorage.getItem('theme')) {
+      localStorage.setItem('theme', 'green');
+    }
+    
     return savedTheme;
   }
   
   // Apply terminal theme immediately to prevent FOUC
-  const currentTerminalTheme = applyTerminalTheme();
+  applyTerminalTheme();
   
   // Then handle light/dark mode (secondary to terminal themes)
   function applyColorScheme(scheme) {
@@ -39,18 +45,16 @@ import { UI } from 'astrowind:config';
     }
   }
 
-  // Only apply color scheme if we're not using terminal themes
-  if (currentTerminalTheme === 'system') {
-    if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-      applyColorScheme(defaultTheme.replace(':only', ''));
-    } else if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      applyColorScheme('dark');
-    } else {
-      applyColorScheme('light');
-    }
+  // Apply color scheme if needed
+  if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
+    applyColorScheme(defaultTheme.replace(':only', ''));
+  } else if (
+    localStorage.theme === 'dark' ||
+    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  ) {
+    applyColorScheme('dark');
+  } else {
+    applyColorScheme('light');
   }
 
   // Handle View Transitions API
