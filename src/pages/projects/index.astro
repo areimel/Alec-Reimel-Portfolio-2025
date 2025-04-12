@@ -1,0 +1,72 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'Projects & Case Studies',
+  description: 'Explore my featured projects and case studies showcasing my development expertise and problem-solving skills.',
+};
+
+// This would typically come from a CMS or data file
+const projects = [
+  {
+    title: 'Project One',
+    description: 'Description of the first project showcasing key achievements and technologies used.',
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // You'll need to add actual images
+    link: getPermalink('/projects/project-1'),
+    technologies: ['React', 'Node.js', 'MongoDB'],
+  },
+  {
+    title: 'Project Two',
+    description: 'Description of the second project highlighting complex problems solved and impact.',
+    image: '/placeholder-hero.jpg', // You'll need to add actual images
+    link: getPermalink('/projects/project-2'),
+    technologies: ['Vue.js', 'Express', 'PostgreSQL'],
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-4xl">
+    <div class="mb-10 md:mx-auto text-center md:mb-12 max-w-3xl">
+      <h1 class="text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 font-heading">
+        Projects & Case Studies
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-slate-400">
+        Explore my featured projects and technical case studies
+      </p>
+    </div>
+
+    <div class="grid gap-6 row-gap-5 md:grid-cols-1">
+      {projects.map((project) => (
+        <article class="mb-6 transition">
+          <div class="relative md:h-64 bg-gray-400 dark:bg-slate-700 rounded shadow-lg mb-6">
+            <img
+              src={project.image}
+              class="w-full md:h-64 object-cover rounded shadow-lg bg-gray-400 dark:bg-slate-700"
+              alt={`Preview of ${project.title}`}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <h2 class="mb-2 text-xl font-bold leading-snug sm:text-2xl font-heading">
+            <a
+              href={project.link}
+              class="hover:text-primary-600 underline underline-offset-4 decoration-1 decoration-dotted transition ease-in duration-200"
+            >
+              {project.title}
+            </a>
+          </h2>
+          <p class="text-gray-700 dark:text-gray-400">{project.description}</p>
+          <div class="mt-4">
+            {project.technologies.map((tech) => (
+              <span class="inline-block bg-gray-200 dark:bg-slate-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-300 mr-2 mb-2">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout> 

@@ -1,0 +1,98 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import ProjectHeader from '~/components/project/ProjectHeader.astro';
+import ProjectQuickFacts from '~/components/project/ProjectQuickFacts.astro';
+
+const metadata = {
+  title: 'Project Two Case Study',
+  description: 'Detailed case study of Project Two, showcasing the development process, challenges overcome, and technical solutions implemented.',
+};
+
+// Project details - In a real setup, this would likely come from a CMS or data file
+const project = {
+  title: 'Project Two',
+  client: 'Client Name',
+  duration: '4 months',
+  role: 'Full Stack Developer',
+  technologies: ['Vue.js', 'Express', 'PostgreSQL', 'Docker'],
+  liveUrl: 'https://project-two-url.com',
+  githubUrl: 'https://github.com/username/project-two',
+  overview: 'A comprehensive overview of Project Two, detailing the technical challenges and innovative solutions implemented.',
+  challenges: [
+    {
+      title: 'Real-time Data Synchronization',
+      description: 'Implementing real-time updates across multiple clients while maintaining data consistency.',
+    },
+    {
+      title: 'Scalable Architecture',
+      description: 'Designing a system that could handle increasing load and maintain performance.',
+    },
+  ],
+  solutions: [
+    'Implemented WebSocket connections for real-time updates',
+    'Designed a microservices architecture using Docker',
+    'Created an efficient caching layer with Redis',
+  ],
+  results: [
+    'Achieved 99.9% uptime',
+    'Reduced API response time by 65%',
+    'Successfully handling 10,000+ concurrent users',
+  ],
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-4xl">
+    <ProjectHeader 
+      title={project.title}
+      technologies={project.technologies}
+    />
+
+    <ProjectQuickFacts 
+      client={project.client}
+      duration={project.duration}
+      role={project.role}
+      liveUrl={project.liveUrl}
+      githubUrl={project.githubUrl}
+    />
+
+    {/* Project Overview */}
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Project Overview</h2>
+      <p class="text-gray-700 dark:text-gray-400">{project.overview}</p>
+    </div>
+
+    {/* Challenges & Solutions */}
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6">Challenges & Solutions</h2>
+      <div class="space-y-6">
+        {project.challenges.map((challenge) => (
+          <div class="bg-gray-50 dark:bg-slate-800 p-6 rounded-lg">
+            <h3 class="font-bold mb-2">{challenge.title}</h3>
+            <p class="text-gray-700 dark:text-gray-400">{challenge.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Technical Solutions */}
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Technical Solutions</h2>
+      <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-400">
+        {project.solutions.map((solution) => (
+          <li>{solution}</li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Results */}
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">Results & Impact</h2>
+      <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-400">
+        {project.results.map((result) => (
+          <li>{result}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout> 
