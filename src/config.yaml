@@ -62,6 +62,36 @@ apps:
 
     isRelatedPostsEnabled: true
     relatedPostsCount: 4
+    
+  projects:
+    isEnabled: true
+    projectsPerPage: 12
+
+    project:
+      isEnabled: true
+      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'projects' # Projects main path
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      pathname: 'category' # Category main path /projects/category/some-category
+      robots:
+        index: true
+
+    tag:
+      isEnabled: true
+      pathname: 'tag' # Tag main path /projects/tag/some-tag
+      robots:
+        index: false
+
+    isRelatedProjectsEnabled: false
 
 analytics:
   vendors:

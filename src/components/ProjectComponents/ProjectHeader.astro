@@ -1,61 +1,125 @@
 ---
+import { Icon } from 'astro-icon/components';
+import { getFormattedDate } from '~/utils/utils';
+import Image from '~/components/common/Image.astro';
+
 interface Props {
   title: string;
-  technologies: string[];
-  client: string;
-  duration: string;
-  role: string;
-  liveUrl: string;
-  githubUrl: string;
+  technologies?: string[];
+  client?: string;
+  duration?: string;
+  role?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  publishDate?: Date;
+  author?: string;
+  category?: string;
+  readingTime?: string;
+  image?: string;
+  description?: string;
 }
 
-const { title, technologies, client, duration, role, liveUrl, githubUrl } = Astro.props;
+const { 
+  title, 
+  technologies = [], 
+  liveUrl, 
+  githubUrl, 
+  publishDate, 
+  author, 
+  readingTime, 
+  image,
+  description
+} = Astro.props;
 ---
 
-<div class="grid md:grid-cols-2 gap-6">
+<div class="grid md:grid-cols-5 gap-2 mb-12">
   
-  <div class="p-6 ">
+  <div class="p-6 pt-0 col-span-3">
+    <p class="text-terminal-400">
+      <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 text-terminal-400" />
+      <time datetime={publishDate ? publishDate.toISOString() : ''} class="inline-block">
+        {publishDate && getFormattedDate(publishDate)}
+      </time>
+      {
+        author && (
+          <>
+            {' '}
+            · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 text-terminal-400" />
+            <span class="inline-block">{author}</span>
+          </>
+        )
+      }
+      {
+        readingTime && (
+          <>
+            &nbsp;· <span>{readingTime}</span> min read
+          </>
+        )
+      }
+    </p>
+
     <h1 class="text-4xl md:text-5xl font-bold leading-10 tracking-tighter mb-4 font-heading text-terminal-500 text-glow-strong">
       {title}
     </h1>
-    <div class="flex flex-wrap gap-4">
-      {technologies.map((tech) => (
-        <span class="bg-terminal-bg-secondary border border-terminal-300/20 px-3 py-1 text-sm font-semibold text-terminal-400">
-          {tech}
-        </span>
-      ))}
-    </div>
+    
+    <Image
+        src={image}
+        class="max-w-full lg:max-w-[900px] bg-terminal-bg-secondary border border-terminal-300/20"
+        widths={[400, 900]}
+        sizes="(max-width: 900px) 400px, 900px"
+        alt={title || ''}
+        width={900}
+        height={506}
+        loading="eager"
+        decoding="async"
+      />
+
+    
   </div>
 
-  <div class="p-6 bg-terminal-bg-secondary rounded-lg border border-terminal-300/20 grid md:grid-cols-2 gap-6">
-    <h2 class="font-bold mb-2 text-terminal-500 text-glow-subtle col-span-2 border-b border-terminal-300/20 pb-2">
-      Project Details
-    </h2>
-
-    <div>
+ 
+  <div class="mb-8 col-span-2">
+    <div class=" flex justify-end gap-2">
+      {liveUrl && (
+        <a href={liveUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary px-2">View Live Site</a>
+      )}
+      /
+      {githubUrl && (
+        <a href={githubUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary px-2">View on GitHub</a>
+      )}
+    </div>
+ 
+    <div class="p-6 pt-4 bg-terminal-bg-secondary border border-terminal-300/20 ">
       
-      <dl class="space-y-2 text-terminal-400">
-        <div>
-          <dt class="font-semibold text-terminal-500">Client:</dt>
-          <dd>{client}</dd>
-        </div>
-        <div>
-          <dt class="font-semibold text-terminal-500">Duration:</dt>
-          <dd>{duration}</dd>
-        </div>
-        <div>
-          <dt class="font-semibold text-terminal-500">Role:</dt>
-          <dd>{role}</dd>
-        </div>
-      </dl>
+      <div class="flex justify-between border-b border-terminal-300/20 pb-2 mb-2">
+        <div class="font-bold text-terminal-500 text-glow-subtle inline-block text-lg">
+          Project Details
+        </div> 
+        
+      </div>
+
+      <div class="">
+        {technologies.length > 0 && (
+          <span class="font-bold text-terminal-500 text-glow-subtle">Technology:</span>
+          <ul class="customList">
+            {technologies.map((tech) => (
+              <li class="">
+                {tech}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
 
-    <div class="space-y-2">
-      <a href={liveUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary block">View Live Site →</a>
-      <a href={githubUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary block">View on GitHub →</a>
+    <div class=" pt-4  ">
+      {description && (
+        <p class="text-terminal-400">{description}</p>
+      )}
     </div>
-
+    
   </div>
 
   
-</div> 
+</div>
+

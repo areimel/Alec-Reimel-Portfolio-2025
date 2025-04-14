@@ -65,6 +65,35 @@ const postCollection = defineCollection({
   }),
 });
 
+// Define project collection schema
+const projectCollection = defineCollection({
+  loader: glob({ pattern: ['*.md', '*.mdx'], base: 'src/data/projects' }),
+  schema: z.object({
+    publishDate: z.date().optional(),
+    updateDate: z.date().optional(),
+    draft: z.boolean().optional(),
+
+    title: z.string(),
+    excerpt: z.string().optional(),
+    image: z.string().optional(),
+    
+    // Project specific fields
+    projectUrl: z.string().url().optional(),
+    repoUrl: z.string().url().optional(),
+    technologies: z.array(z.string()).optional(),
+    client: z.string().optional(),
+    duration: z.string().optional(),
+    role: z.string().optional(),
+    
+    category: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    author: z.string().optional(),
+
+    metadata: metadataDefinition(),
+  }),
+});
+
 export const collections = {
   post: postCollection,
+  project: projectCollection,
 };
