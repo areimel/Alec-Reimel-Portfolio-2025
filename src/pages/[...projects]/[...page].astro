@@ -1,0 +1,44 @@
+---
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+
+import Layout from '~/layouts/PageLayout.astro';
+import BlogList from '~/components/blog/List.astro';
+import Headline from '~/components/blog/Headline.astro';
+import Pagination from '~/components/blog/Pagination.astro';
+
+import { projectsListRobots, getStaticPathsProjectsList } from '~/utils/projects';
+
+export const prerender = true;
+
+export const getStaticPaths = (async ({ paginate }) => {
+  return await getStaticPathsProjectsList({ paginate });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props as Props;
+const currentPage = page.currentPage ?? 1;
+
+const metadata = {
+  title: `Projects${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
+  robots: {
+    index: projectsListRobots?.index && currentPage === 1,
+    follow: projectsListRobots?.follow,
+  },
+  openGraph: {
+    type: 'website',
+  },
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+    <Headline
+      subtitle="Explore my portfolio of projects showcasing my skills, expertise, and creative solutions."
+    >
+      Projects
+    </Headline>
+    <BlogList posts={page.data} />
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  </section>
+</Layout> 

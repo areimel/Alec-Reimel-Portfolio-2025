@@ -25,7 +25,13 @@ export const BLOG_BASE = cleanSlug(APP_BLOG?.list?.pathname);
 export const CATEGORY_BASE = cleanSlug(APP_BLOG?.category?.pathname);
 export const TAG_BASE = cleanSlug(APP_BLOG?.tag?.pathname) || 'tag';
 
+// Project constants
+export const PROJECTS_BASE = 'projects';
+export const PROJECT_CATEGORY_BASE = 'category';
+export const PROJECT_TAG_BASE = 'tag';
+
 export const POST_PERMALINK_PATTERN = trimSlash(APP_BLOG?.post?.permalink || `${BLOG_BASE}/%slug%`);
+export const PROJECT_PERMALINK_PATTERN = trimSlash(`${PROJECTS_BASE}/%slug%`);
 
 /** */
 export const getCanonical = (path = ''): string | URL => {
@@ -61,6 +67,10 @@ export const getPermalink = (slug = '', type = 'page'): string => {
       permalink = getBlogPermalink();
       break;
 
+    case 'projects':
+      permalink = getProjectsPermalink();
+      break;
+
     case 'asset':
       permalink = getAsset(slug);
       break;
@@ -73,8 +83,20 @@ export const getPermalink = (slug = '', type = 'page'): string => {
       permalink = createPath(TAG_BASE, trimSlash(slug));
       break;
 
+    case 'project-category':
+      permalink = createPath(PROJECTS_BASE, PROJECT_CATEGORY_BASE, trimSlash(slug));
+      break;
+
+    case 'project-tag':
+      permalink = createPath(PROJECTS_BASE, PROJECT_TAG_BASE, trimSlash(slug));
+      break;
+
     case 'post':
       permalink = createPath(trimSlash(slug));
+      break;
+
+    case 'project':
+      permalink = createPath(PROJECTS_BASE, trimSlash(slug));
       break;
 
     case 'page':
@@ -91,6 +113,9 @@ export const getHomePermalink = (): string => getPermalink('/');
 
 /** */
 export const getBlogPermalink = (): string => getPermalink(BLOG_BASE);
+
+/** */
+export const getProjectsPermalink = (): string => getPermalink(PROJECTS_BASE);
 
 /** */
 export const getAsset = (path: string): string =>
@@ -118,6 +143,8 @@ export const applyGetPermalinks = (menu: object = {}) => {
             obj[key] = getHomePermalink();
           } else if (menu[key].type === 'blog') {
             obj[key] = getBlogPermalink();
+          } else if (menu[key].type === 'projects') {
+            obj[key] = getProjectsPermalink();
           } else if (menu[key].type === 'asset') {
             obj[key] = getAsset(menu[key].url);
           } else if (menu[key].url) {

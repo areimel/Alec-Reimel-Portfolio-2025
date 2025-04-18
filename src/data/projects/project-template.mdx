@@ -1,0 +1,75 @@
+---
+publishDate: 2023-01-02T00:00:00Z
+title: Markdown elements demo post
+excerpt: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+image: https://images.unsplash.com/photo-1710170601257-242514895755?q=80&w=2832&auto=format&fit=crop
+tags:
+  - markdown
+  - blog
+  - Astro
+# Project specific fields
+projectUrl: https://example.com
+repoUrl: https://github.com/username/repo
+technologies: 
+  - "Astro: website architecture"
+  - "A-Frame: VR/AR Code"
+  - "Tailwind CSS: UI Styling"
+---
+
+import Logo from '~/components/Logo.astro';
+import { YouTube, Tweet, Vimeo } from 'astro-embed';
+import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
+
+
+<TextAndImage
+  headline="Project Overview"
+  bodyText='An interactive augmented reality business card that transforms a traditional paper card into a 3D immersive experience, showcasing my portfolio, skills, and contact information in an engaging spatial interface.'
+  imageSrc="https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  imageAlt="AR Business Card being scanned by a smartphone showing 3D elements"
+  flexDirection="text-first"
+/>
+
+
+<TextAndImage
+  headline="Technical Architecture"
+  bodyText="The application was built on two primary technologies: A-Frame for handling the VR/AR functionality and Astro as the framework for the overall project architecture. A-Frame provided the entity-component system needed for creating interactive 3D elements, while Astro's partial hydration approach was perfect for delivering the AR experience with minimal JavaScript overhead. This combination allowed for efficient content delivery, with heavy 3D assets loaded only when needed during the AR experience."
+  imageSrc="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  imageAlt="Technical diagram showing A-Frame and Astro integration for AR functionality"
+  flexDirection="image-first"
+/>
+
+<TextAndImage
+  headline="User Experience & AR Interactions"
+  bodyText={`Working in augmented reality presented unique UX challenges compared to traditional web development. Many users were encountering AR for the first time, requiring an intuitive approach to spatial interactions. Key results included:
+  <ul class="customList my-4">
+    <li>Seamless integration between physical business card and digital AR experience</li>
+    <li>Cross-device compatibility with 90% of modern smartphones</li>
+    <li>Positive user feedback with 80% completion rate of the AR experience</li>
+    <li>Featured in web development and AR technology showcases</li>
+  </ul>
+  
+  I implemented progressive onboarding that guided users through their first AR experience, with visual cues that helped establish spatial awareness in the 3D environment.`}
+  imageSrc="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  imageAlt="User interacting with AR business card elements floating in 3D space"
+  flexDirection="text-first"
+/>
+
+<ProjectStats 
+  prefix="8k+"
+  title="Users"  
+  content={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`}
+/>
+
+<ProjectStats 
+  prefix="23"
+  title="Leads"
+  content={`Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+/>
+
+<ProjectStats 
+  prefix="+400%"
+  title="ROI"
+  content={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+/>
+

@@ -1,0 +1,98 @@
+---
+interface Props {
+  /**
+   * The heading text for the section
+   */
+  headline: string;
+  /**
+   * The body content that can include HTML markup
+   * @type {string} HTML string
+   */
+  bodyText: string;
+  /**
+   * The source URL for the image
+   */
+  imageSrc: string;
+  /**
+   * Alt text for the image
+   */
+  imageAlt: string;
+  /**
+   * Controls the order of text and image sections
+   * 'text-first' puts text on the left, image on the right
+   * 'image-first' puts image on the left, text on the right
+   */
+  flexDirection?: 'text-first' | 'image-first';
+  /**
+   * Applies a 3D transform effect to the image
+   */
+  skew?: boolean;
+}
+
+const {
+  headline,
+  bodyText,
+  imageSrc,
+  imageAlt,
+  flexDirection = 'text-first', // default to text on the left
+  skew = false // default to no skew effect
+} = Astro.props;
+
+// Determine the order classes based on flexDirection
+const containerClasses = flexDirection === 'image-first' ? 'flex-row-reverse' : 'flex-row';
+
+// Determine if the skew transform should be applied
+const imageClasses = skew ? 'skew-transform' : '';
+---
+
+<div class={`flex ${containerClasses} gap-8 items-start mb-24`}>
+  {/* Text Section */}
+  <div class="w-1/2 pr-4">
+    <h2 class="text-2xl font-bold mb-4 font-heading text-terminal-500 text-glow-subtle">
+      {headline}
+    </h2>
+    <div class="text-terminal-400 space-y-4 ">
+      <Fragment set:html={bodyText} />
+    </div>
+  </div>
+
+  {/* Image Section */}
+  <div class="w-1/2">
+    <div class={`relative aspect-video border border-terminal-300/20 ${imageClasses}`}>
+      <img
+        src={imageSrc}
+        alt={imageAlt}
+        class="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* 3D transform effect based on the screenshot */
+  .skew-transform {
+    transform: 
+      perspective(1000px)
+      rotateX(4deg)
+      rotateY(-16deg)
+      rotateZ(4deg);
+    /* Enhanced neon glow effect using terminal-500 color */
+    box-shadow: 0 0 15px 5px var(--terminal-500, #00ffff);
+    /* filter: drop-shadow(0 0 10px var(--terminal-500, #00ffff)); */
+  }
+
+  /* Add responsive styles for mobile */
+  @media (max-width: 768px) {
+    div {
+      flex-direction: column !important; /* Override the flex-row classes */
+    }
+    
+    div > div {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 2rem;
+    }
+  }
+</style> 

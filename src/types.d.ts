@@ -5,7 +5,7 @@ export interface Post {
   /** A unique ID number that identifies a post. */
   id: string;
 
-  /** A post’s unique slug – part of the post’s URL based on its name, i.e. a post called “My Sample Page” has a slug “my-sample-page”. */
+  /** A post's unique slug – part of the post's URL based on its name, i.e. a post called "My Sample Page" has a slug "my-sample-page". */
   slug: string;
 
   /**  */
@@ -42,6 +42,20 @@ export interface Post {
 
   /**  */
   readingTime?: number;
+  
+  // Project specific fields
+  /** URL to the live project */
+  projectUrl?: string;
+  /** URL to the repository */
+  repoUrl?: string;
+  /** Array of technologies used */
+  technologies?: string[];
+  /** Client name for the project */
+  client?: string;
+  /** Duration of the project */
+  duration?: string;
+  /** Role in the project */
+  role?: string;
 }
 
 export interface Taxonomy {

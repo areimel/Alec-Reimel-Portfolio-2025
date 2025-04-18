@@ -6,6 +6,15 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,json,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
+      fontSize: {
+        // Add default line heights for heading sizes
+        '4xl': ['2.25rem', { lineHeight: '1.25' }],
+        '5xl': ['3rem', { lineHeight: '1.25' }],
+        '6xl': ['3.75rem', { lineHeight: '1.25' }],
+        '7xl': ['4.5rem', { lineHeight: '1.25' }],
+        '8xl': ['6rem', { lineHeight: '1.25' }],
+        '9xl': ['8rem', { lineHeight: '1.25' }],
+      },
       colors: {
         primary: 'var(--aw-color-primary)',
         secondary: 'var(--aw-color-secondary)',
