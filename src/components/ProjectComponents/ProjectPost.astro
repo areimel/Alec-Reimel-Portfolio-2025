@@ -27,28 +27,7 @@ const { post, url } = Astro.props;
       image={post.image}
       description={post.excerpt}
     />
-    <header
-      class="intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-    >
-      <div class="flex justify-between flex-col sm:flex-row mt-0 mb-2 px-4 sm:px-6 sm:items-center">
-        
-      </div>
-
-      
-      <p
-        class="mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-terminal-400 text-justify"
-      >
-        
-      </p>
-
-      {
-        !post.image && (
-          <div class="mx-auto px-4 sm:px-6">
-            <div class="border-t border-terminal-300/20" />
-          </div>
-        )
-      }
-    </header>
+    
     <div
       class=""
     >

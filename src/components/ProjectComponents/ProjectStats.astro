@@ -1,0 +1,86 @@
+---
+// Define and accept props for a single fact item
+interface Props {
+  prefix: string;
+  title: string;
+  content: string;
+}
+
+const { prefix, title, content } = Astro.props;
+---
+
+<div class="facts-grid">
+  <div class="facts-cell facts-header">
+    <h3 class="facts-title">{title}</h3>
+  </div>
+  <div class="facts-cell facts-content">
+    <div class="facts-text" set:html={content} />
+  </div>
+</div>
+
+<style is:global>
+  .facts-text a{
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+</style>
+
+<style>
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 15px;
+    width: 100%;
+    min-height: 150px; /* Reduced from 600px since this is now a single item */
+  }
+
+  .facts-cell {
+    @apply bg-terminal-bg-secondary p-6 mb-[15px] shadow-md flex flex-col justify-start border border-terminal-300;
+  }
+
+  .facts-header {
+    grid-column: span 2 / span 2;
+  }
+
+  .facts-content {
+    grid-column: span 4 / span 4;
+  }
+
+  .facts-prefix {
+    @apply text-5xl font-semibold text-terminal-500 font-uav-mono mb-4;
+  }
+
+  .facts-title {
+    @apply text-2xl font-semibold text-terminal-500 font-uav-mono;
+  }
+
+  .facts-text {
+    @apply text-terminal-400 font-kode text-xl;
+    
+    ::marker{
+      content: "> ";
+      @apply text-terminal-700;
+    }
+  }
+
+
+  ul{
+    @apply text-lg text-terminal-400 font-kode pl-4;
+    
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .facts-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      gap: 15px;
+    }
+
+    .facts-header,
+    .facts-content {
+      grid-column: 1;
+    }
+  }
+</style> 

@@ -54,21 +54,7 @@ const metadata = merge(
     {project.Content ? <project.Content /> : <Fragment set:html={project.content || ''} />}
   </ProjectPost>
   
-  {/* Project links section */}
-  <div class="mx-auto max-w-3xl px-6 py-8">
-    <div class="flex flex-wrap gap-4">
-      {project.projectUrl && (
-        <a href={project.projectUrl} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-          View Live Project
-        </a>
-      )}
-      {project.repoUrl && (
-        <a href={project.repoUrl} class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-          View Source Code
-        </a>
-      )}
-    </div>
-  </div>
+  
   
   
 </Layout> 

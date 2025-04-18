@@ -23,6 +23,10 @@ interface Props {
    * 'image-first' puts image on the left, text on the right
    */
   flexDirection?: 'text-first' | 'image-first';
+  /**
+   * Applies a 3D transform effect to the image
+   */
+  skew?: boolean;
 }
 
 const {
@@ -30,11 +34,15 @@ const {
   bodyText,
   imageSrc,
   imageAlt,
-  flexDirection = 'text-first' // default to text on the left
+  flexDirection = 'text-first', // default to text on the left
+  skew = false // default to no skew effect
 } = Astro.props;
 
 // Determine the order classes based on flexDirection
 const containerClasses = flexDirection === 'image-first' ? 'flex-row-reverse' : 'flex-row';
+
+// Determine if the skew transform should be applied
+const imageClasses = skew ? 'skew-transform' : '';
 ---
 
 <div class={`flex ${containerClasses} gap-8 items-start mb-24`}>
@@ -50,7 +58,7 @@ const containerClasses = flexDirection === 'image-first' ? 'flex-row-reverse' : 
 
   {/* Image Section */}
   <div class="w-1/2">
-    <div class="relative aspect-video rounded-lg overflow-hidden shadow-lg border border-terminal-300/20">
+    <div class={`relative aspect-video border border-terminal-300/20 ${imageClasses}`}>
       <img
         src={imageSrc}
         alt={imageAlt}
@@ -63,6 +71,18 @@ const containerClasses = flexDirection === 'image-first' ? 'flex-row-reverse' : 
 </div>
 
 <style>
+  /* 3D transform effect based on the screenshot */
+  .skew-transform {
+    transform: 
+      perspective(1000px)
+      rotateX(4deg)
+      rotateY(-16deg)
+      rotateZ(4deg);
+    /* Enhanced neon glow effect using terminal-500 color */
+    box-shadow: 0 0 15px 5px var(--terminal-500, #00ffff);
+    /* filter: drop-shadow(0 0 10px var(--terminal-500, #00ffff)); */
+  }
+
   /* Add responsive styles for mobile */
   @media (max-width: 768px) {
     div {

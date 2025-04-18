@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
 import Image from '~/components/common/Image.astro';
 
+
 interface Props {
   title: string;
   technologies?: string[];
@@ -32,94 +33,168 @@ const {
 } = Astro.props;
 ---
 
-<div class="grid md:grid-cols-5 gap-2 mb-12">
-  
-  <div class="p-6 pt-0 col-span-3">
-    <p class="text-terminal-400">
-      <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 text-terminal-400" />
-      <time datetime={publishDate ? publishDate.toISOString() : ''} class="inline-block">
-        {publishDate && getFormattedDate(publishDate)}
-      </time>
-      {
-        author && (
-          <>
-            {' '}
-            · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 text-terminal-400" />
-            <span class="inline-block">{author}</span>
-          </>
-        )
-      }
-      {
-        readingTime && (
-          <>
-            &nbsp;· <span>{readingTime}</span> min read
-          </>
-        )
-      }
-    </p>
-
-    <h1 class="text-4xl md:text-5xl font-bold leading-10 tracking-tighter mb-4 font-heading text-terminal-500 text-glow-strong">
-      {title}
-    </h1>
-    
-    <Image
-        src={image}
-        class="max-w-full lg:max-w-[900px] bg-terminal-bg-secondary border border-terminal-300/20"
-        widths={[400, 900]}
-        sizes="(max-width: 900px) 400px, 900px"
-        alt={title || ''}
-        width={900}
-        height={506}
-        loading="eager"
-        decoding="async"
-      />
-
-    
-  </div>
-
- 
-  <div class="mb-8 col-span-2">
-    <div class=" flex justify-end gap-2">
-      {liveUrl && (
-        <a href={liveUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary px-2">View Live Site</a>
-      )}
-      /
-      {githubUrl && (
-        <a href={githubUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary px-2">View on GitHub</a>
-      )}
-    </div>
- 
-    <div class="p-6 pt-4 bg-terminal-bg-secondary border border-terminal-300/20 ">
+<section class="mb-8">
+  <div class="w-full h-full max-w-screen-2xl mx-auto">
+    <div class="project-grid">
       
-      <div class="flex justify-between border-b border-terminal-300/20 pb-2 mb-2">
-        <div class="font-bold text-terminal-500 text-glow-subtle inline-block text-lg">
-          Project Details
-        </div> 
-        
-      </div>
+      <!-- Cell 1: Project title and metadata -->
+      <div class="div1 project-cell !bg-terminal-500">
+        <p class="text-terminal-bg-primary">
+          <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 text-terminal-bg-primary" />
+          <time datetime={publishDate ? publishDate.toISOString() : ''} class="inline-block">
+            {publishDate && getFormattedDate(publishDate)}
+          </time>
+          {
+            author && (
+              <>
+                {' '}
+                · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 text-terminal-bg-primary" />
+                <span class="inline-block">{author}</span>
+              </>
+            )
+          }
+          {
+            readingTime && (
+              <>
+                &nbsp;· <span>{readingTime}</span> min read
+              </>
+            )
+          }
+        </p>
 
-      <div class="">
-        {technologies.length > 0 && (
-          <span class="font-bold text-terminal-500 text-glow-subtle">Technology:</span>
-          <ul class="customList">
-            {technologies.map((tech) => (
-              <li class="">
-                {tech}
-              </li>
-            ))}
-          </ul>
+        <h1 class="text-4xl md:text-5xl font-bold leading-10 tracking-tighter mb-4 font-heading text-terminal-bg-primary">
+          {title}
+        </h1>
+      </div>
+      
+      <!-- Cell 2: Project image -->
+      <div class="div2 project-cell flex justify-center items-center p-0 overflow-hidden">
+        <Image
+          src={image}
+          class="w-full h-auto object-cover "
+          widths={[400, 900]}
+          sizes="(max-width: 900px) 400px, 900px"
+          alt={title || ''}
+          width={900}
+          height={506}
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      
+      <!-- Cell 3: Project details -->
+      <div class="div3 project-cell">
+        <div class="font-bold font-heading text-terminal-500 text-glow-subtle inline-block text-lg border-b border-terminal-300 pb-2 mb-2">
+          //Technology
+        </div>
+
+        <div>
+          {technologies.length > 0 && (
+            <ul class="customList">
+              {technologies.map((tech) => (
+                <li class="">
+                  {tech}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+      
+      <!-- Cell 4: Project description -->
+      <div class="div4 project-cell">
+        <div class="font-bold font-heading text-terminal-500 text-glow-subtle inline-block text-lg border-b border-terminal-300 pb-2 mb-2">
+          //Project_Description
+        </div>
+        {description && (
+          <p class="text-terminal-400">{description}</p>
         )}
       </div>
-    </div>
+      
+      <!-- Cell 5: Project links -->
+      <div class="div5 project-cell">
+        <div class="flex justify-center gap-4">
+          {liveUrl && (
+            <a href={liveUrl} target="_blank" class="textLink text-terminal-500 hover:text-terminal-bg-primary">
+              <Icon name="tabler:world" class="w-5 h-5 inline-block mr-1" />
+              View Live Site
+            </a>
+          )}
+          <span>//</span>
+          {githubUrl && (
+            <a href={githubUrl} target="_blank" class="textLink text-terminal-500 hover:text-terminal-bg-primary">
+              <Icon name="tabler:brand-github" class="w-5 h-5 inline-block mr-1" />
+              View on GitHub
+            </a>
+          )}
+        </div>
+      </div>
 
-    <div class=" pt-4  ">
-      {description && (
-        <p class="text-terminal-400">{description}</p>
-      )}
     </div>
-    
   </div>
+</section>
 
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    width: 100%;
+    height: 100%;
+    /* Define grid areas using matrix notation */
+    grid-template-areas: 
+      "title title title details details"
+      "image image image desc desc"
+      "image image image links links";
+  }
   
-</div>
+  /* Assign each div to its corresponding grid area */
+  .div1 {
+    grid-area: title;
+  }
+  
+  .div2 {
+    grid-area: image;
+  }
+  
+  .div3 {
+    grid-area: details;
+  }
+  
+  .div4 {
+    grid-area: desc;
+  }
+  
+  .div5 {
+    grid-area: links;
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: 
+        "title"
+        "image"
+        "details"
+        "desc"
+        "links";
+      gap: 16px;
+    }
+  }
+
+  .project-cell {
+    @apply bg-terminal-bg-secondary p-6 shadow-md flex flex-col justify-start border border-terminal-300;
+  }
+
+  /* Customizing the list markers */
+  ul.customList {
+    @apply text-sm text-terminal-400 font-kode list-outside pl-4;
+  }
+  
+  ul.customList li::marker {
+    content: "> ";
+    @apply text-terminal-500;
+  }
+</style>
 
