@@ -16,7 +16,7 @@ const facts = [
         content: `
         <ul class="mt-4 space-y-4 pl-6">
           <li><strong>Music</strong>: I play guitar, bass, and dabble in synthesizers. I'm forever in the middle of recording my demo album that never seems to be finished.</li>
-          <li><strong>Books, Movies, and TV</strong>: I'm a huge media nerd, with some of my favorites being books like Neuromancer by William Gibson and films like The Matrix, both major influences on my style and philosophy.</li>
+          <li><strong>Books, Movies, and TV</strong>: I'm a huge media nerd, with some of my favorites being books like Neuromancer by William Gibson and films like Tron and The Matrix, all major influences on my style and philosophy towards technology.</li>
           <li><strong>Digital Art</strong>: I've done graphic design work for bands and artists - once I was even asked for a sample t-shirt by a Japanese heavy metal band.</li>
         </ul>`
     },
@@ -27,14 +27,14 @@ const facts = [
         <ul class="mt-4 space-y-4 pl-6">
           <li>Open Source Technology: My personal projects are typically free to use, download, modify, and learn from.</li>
           <li>Sustainable Technology: I recycle old tech for new projects. That old laptop you're about to throw out could be your new private AI server.</li>
-          <li>Developer Ease-Of-Use: I build my projects with lots of documentation and easy to read code, so anyone can jump in and use it.</li>
+          <li>Developer Ease-Of-Use: I build my projects with lots of documentation and easy to read code, so anyone can jump in and use my code with minimal overhead.</li>
         </ul>`
     },
     {
         prefix: "//04_",
         title: "Goals",
         content: `
-        Modern technology, as advanced as it is, can be a bit dull and boring at times. We walk around with computers in our pockets that are a million times more powerful than the computers that NASA used for the moon landings - and it's just a boring everyday thing.
+        Modern technology, as advanced as it is, can be a bit dull and boring at times. We walk around with computers in our pockets that are a million times more powerful than the computers that NASA used for the moon landings - and it's just a boring everyday thing that we barely pay attention to.
         <br/><br/>
         I want to change that. I want the future that we were promised by science fiction. Technology doesn't have to be plain - it's up to us coders to make things exciting and fun to use.
         `
@@ -42,8 +42,14 @@ const facts = [
 ];
 ---
 
-<section class="w-full p-4 md:p-8 bg-terminal-bg-primary">
+<section class="w-full p-4 md:p-8 mb-12 bg-terminal-bg-primary">
   <div class="w-full h-full max-w-screen-2xl mx-auto">
+    
+    <div class="text-center mb-12">
+      <span class="text-terminal-500 font-uav-mono text-lg">Personal Facts</span>
+      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">Get to know me</h2>
+    </div>
+
     <div class="facts-grid">
       {facts.map(({ prefix, title, content }) => (
         <>
