@@ -1,19 +1,20 @@
 ---
-
+//Astro Component
 ---
-<span class="TerminalPrefix">><span class="flashing">_</span></span>
 
-<!-- <span class="HeadingPrefix">&#62;_</span> -->
+<span class="TerminalPrefix">&#62;<span class="flashing">_</span></span>
 
 <style>
   .TerminalPrefix{
 	  font-size: inherit;
     margin: 0px;
-    margin-right: -0.65em;
+    /* margin-right: -0.65em; */
     padding: 0px;
   }
   .flashing{
     animation: flash 1s infinite linear;
+    margin: 0px;
+    padding: 0px
   }
   @keyframes flash {
     0%, 49% {
