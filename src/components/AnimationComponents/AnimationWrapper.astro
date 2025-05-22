@@ -1,0 +1,155 @@
+---
+interface Props {
+  animation: string; // Animation component name to use (e.g., "DecoderText")
+  trigger: "in-view" | "loadingScreenEnd" | "hover" | "click"; // Trigger method for the animation
+  mobileDisable?: boolean; // Whether to disable animation on mobile
+  delay?: number; // Animation delay in ms
+  text?: string; // Text content for text-based animations
+  // Other common props that might be needed
+  className?: string;
+  duration?: number;
+  charDelay?: number;
+  as?: string;
+  // Allow rest props using Record type instead of any
+  [key: string]: unknown;
+}
+
+const { 
+  animation, 
+  trigger = "in-view", 
+  mobileDisable = false,
+  delay = 0,
+  text = "",
+  ...restProps 
+} = Astro.props;
+
+// Import the animation component dynamically based on the animation prop
+const animationComponents = {
+  "DecoderText": (await import('./DecoderText.astro')).default,
+  // Add more animations here as they are created
+};
+
+const AnimationComponent = animationComponents[animation];
+
+// Error checking
+if (!AnimationComponent) {
+  throw new Error(`Animation component "${animation}" not found`);
+}
+---
+
+<div 
+  class:list={["animation-wrapper", { "mobile-disabled": mobileDisable }]} 
+  data-animation={animation}
+  data-trigger={trigger}
+  data-delay={delay}
+>
+  {animation === "DecoderText" ? (
+    <AnimationComponent text={text} delay={delay} {...restProps} />
+  ) : (
+    <AnimationComponent {...restProps} />
+  )}
+</div>
+
+<script>
+  // Setup all animation wrappers
+  function setupAnimationWrappers() {
+    const wrappers = document.querySelectorAll<HTMLElement>('.animation-wrapper');
+    
+    wrappers.forEach(wrapper => {
+      const trigger = wrapper.dataset.trigger;
+      const mobileDisabled = wrapper.classList.contains('mobile-disabled');
+      
+      // Skip setup if animations are disabled on mobile and device is mobile
+      if (mobileDisabled && window.innerWidth < 768) {
+        return;
+      }
+      
+      // Setup based on trigger type
+      switch (trigger) {
+        case 'in-view':
+          setupInViewTrigger(wrapper);
+          break;
+        case 'loadingScreenEnd':
+          triggerOnLoadingScreenEnd(wrapper);
+          break;
+        case 'hover':
+          setupHoverTrigger(wrapper);
+          break;
+        case 'click':
+          setupClickTrigger(wrapper);
+          break;
+      }
+    });
+  }
+  
+  // Setup IntersectionObserver for in-view triggers
+  function setupInViewTrigger(wrapper: HTMLElement) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Find the animation element inside the wrapper
+          const animationElement = wrapper.querySelector('.decoder-text'); 
+          if (animationElement) {
+            // Trigger the animation by dispatching a custom event
+            const event = new CustomEvent('trigger-animation');
+            animationElement.dispatchEvent(event);
+          }
+          
+          // Unobserve after triggering to prevent repeated animations
+          observer.unobserve(wrapper);
+        }
+      });
+    }, { threshold: 0.2 }); // Trigger when 20% of element is visible
+    
+    observer.observe(wrapper);
+  }
+  
+  // Trigger when loading screen ends
+  function triggerOnLoadingScreenEnd(wrapper: HTMLElement) {
+    document.addEventListener('loading-screen-end', () => {
+      const animationElement = wrapper.querySelector('.decoder-text');
+      if (animationElement) {
+        const event = new CustomEvent('trigger-animation');
+        animationElement.dispatchEvent(event);
+      }
+    });
+  }
+  
+  // Setup hover trigger
+  function setupHoverTrigger(wrapper: HTMLElement) {
+    wrapper.addEventListener('mouseenter', () => {
+      const animationElement = wrapper.querySelector('.decoder-text');
+      if (animationElement) {
+        const event = new CustomEvent('trigger-animation');
+        animationElement.dispatchEvent(event);
+      }
+    });
+  }
+  
+  // Setup click trigger
+  function setupClickTrigger(wrapper: HTMLElement) {
+    wrapper.addEventListener('click', () => {
+      const animationElement = wrapper.querySelector('.decoder-text');
+      if (animationElement) {
+        const event = new CustomEvent('trigger-animation');
+        animationElement.dispatchEvent(event);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', setupAnimationWrappers);
+</script>
+
+<style>
+  .animation-wrapper {
+    display: inline-block;
+  }
+  
+  /* When mobile-disabled is true and screen is small */
+  @media (max-width: 768px) {
+    .mobile-disabled > :global(.decoder-text) {
+      opacity: 1 !important;
+    }
+  }
+</style> 

@@ -58,33 +58,21 @@ const words = text.split(' ');
   // Utility to get a random character from the pool
   const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
   
-  // Intersection Observer to detect when element enters viewport
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        startAnimation(entry.target as HTMLElement);
-        // Stop observing after animation starts
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.2 // Start animation when 20% of element is visible
-  });
-  
   // Setup animation for all decoder text elements
   function setupDecoderElements() {
     const decoderElements = document.querySelectorAll<HTMLElement>('.decoder-text');
     
     decoderElements.forEach((element) => {
-      // Start observing the element
-      observer.observe(element);
+      // Listen for custom trigger event from AnimationWrapper
+      element.addEventListener('trigger-animation', () => {
+        startAnimation(element);
+      });
     });
   }
   
   // Start the animation for a specific element
   function startAnimation(element: HTMLElement) {
     const charElements = element.querySelectorAll<HTMLElement>('.decoder-char');
-    const text = element.dataset.text || '';
     const duration = parseInt(element.dataset.duration || '500');
     const charDelay = parseInt(element.dataset.charDelay || '150');
     const initialDelay = parseInt(element.dataset.delay || '0');
@@ -98,7 +86,7 @@ const words = text.split(' ');
       element.style.opacity = '1';
       
       // Start the decoder animation for each character
-      charElements.forEach((charElement, index) => {
+      charElements.forEach((charElement) => {
         const finalChar = charElement.dataset.char || '';
         const charIndex = parseInt(charElement.dataset.index || '0');
         
