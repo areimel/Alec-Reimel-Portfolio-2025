@@ -1,0 +1,155 @@
+---
+// No props needed for this component
+---
+
+<div id="loading-screen" class="fixed inset-0 bg-terminal-bg-primary z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
+  <!-- Terminal-style loading container -->
+  <div class="loading-container bg-terminal-bg-secondary border border-terminal-500 p-8 rounded-lg shadow-lg max-w-md w-full mx-4">
+    <!-- Terminal header -->
+    <div class="terminal-header text-center mb-6">
+      <h2 class="text-2xl font-bold text-terminal-bright font-mono text-glow-strong">
+        //LOADING
+      </h2>
+      <p class="text-terminal-400 font-mono mt-2">Initializing terminal interface...</p>
+    </div>
+    
+    <!-- Progress bar container -->
+    <div class="progress-container">
+      <div class="w-full h-3 bg-terminal-bg-primary border border-terminal-300 rounded-sm overflow-hidden mb-3">
+        <div id="loading-progress-bar" class="h-full bg-terminal-500 w-0 transition-all duration-300 shadow-lg"></div>
+      </div>
+      
+      <!-- Progress text -->
+      <div class="flex justify-between items-center text-sm">
+        <span id="loading-status" class="text-terminal-400 font-mono">Starting up...</span>
+        <span id="loading-percentage" class="text-terminal-500 font-mono font-bold">0%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const loadingScreen = document.getElementById('loading-screen');
+  const progressBar = document.getElementById('loading-progress-bar');
+  const loadingStatus = document.getElementById('loading-status');
+  const loadingPercentage = document.getElementById('loading-percentage');
+  
+  // Loading status messages
+  const statusMessages = [
+    'Starting up...',
+    'Loading terminal interface...',
+    'Initializing components...',
+    'Connecting to systems...',
+    'Finalizing setup...',
+    'Ready!'
+  ];
+  
+  // Function to update progress bar and status
+  const updateProgress = (progress) => {
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+      
+      // Add glow effect when progress increases
+      if (progress > 0) {
+        progressBar.style.boxShadow = `0 0 10px var(--terminal-500), 0 0 20px var(--terminal-300)`;
+      }
+    }
+    
+    if (loadingPercentage) {
+      loadingPercentage.textContent = `${Math.round(progress)}%`;
+    }
+    
+    // Update status message based on progress
+    if (loadingStatus) {
+      const messageIndex = Math.min(Math.floor(progress / 20), statusMessages.length - 1);
+      loadingStatus.textContent = statusMessages[messageIndex];
+    }
+  }
+  
+  // Initial progress
+  let progress = 0;
+  
+  // Simulate progress until page is fully loaded
+  const progressInterval = setInterval(() => {
+    // Increment progress, but slow down as it approaches 90%
+    const increment = progress < 70 ? 15 : 5;
+    progress = Math.min(progress + increment, 90);
+    updateProgress(progress);
+  }, 200);
+  
+  // When page is fully loaded
+  window.addEventListener('load', () => {
+    clearInterval(progressInterval);
+    updateProgress(100);
+    
+    // Wait for the progress bar to reach 100% before hiding
+    setTimeout(() => {
+      if (loadingScreen) {
+        loadingScreen.style.opacity = '0';
+        
+        // Remove from DOM after fade out
+        setTimeout(() => {
+          if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+            
+            // Dispatch custom event to notify that loading screen is complete
+            document.dispatchEvent(new CustomEvent('loadingScreenComplete'));
+          }
+        }, 500);
+      }
+    }, 300);
+  });
+</script>
+
+<style>
+  /* Terminal-style loading container styling */
+  .loading-container {
+    box-shadow: 
+      0 0 20px var(--terminal-300),
+      0 0 40px var(--terminal-200),
+      inset 0 0 20px var(--terminal-bg-accent);
+  }
+  
+  /* Progress bar glow effect */
+  #loading-progress-bar {
+    background: linear-gradient(90deg, var(--terminal-500), var(--terminal-bright));
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Terminal header glow */
+  .terminal-header h2 {
+    text-shadow: var(--theme-glow-strong);
+  }
+  
+  /* Subtle animation for the loading container */
+  .loading-container {
+    animation: terminalPulse 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes terminalPulse {
+    0% {
+      box-shadow: 
+        0 0 20px var(--terminal-300),
+        0 0 40px var(--terminal-200),
+        inset 0 0 20px var(--terminal-bg-accent);
+    }
+    100% {
+      box-shadow: 
+        0 0 25px var(--terminal-400),
+        0 0 50px var(--terminal-300),
+        inset 0 0 25px var(--terminal-bg-accent);
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .loading-container {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+    
+    .terminal-header h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style> 

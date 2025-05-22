@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import LoadingScreen from '@components/LoadingScreenV1.astro';
 /* import Header from '@components/widgets/Header.astro'; */
 import Footer from '@components/Footer.astro';
 /* import Announcement from '@components/widgets/Announcement.astro';
@@ -26,8 +27,12 @@ const openWidth = '250px';
       class="h-screen fixed top-0 left-0 transition-width duration-300 ease-in-out"
       baseWidth={baseWidth}
       openWidth={openWidth}
+      style={`width: ${baseWidth};`}
     />
-    <main class={`w-[calc(100%-${baseWidth})] ml-auto transition-width duration-300 ease-in-out`}>
+    <main 
+      class="ml-auto transition-width duration-300 ease-in-out"
+      style={`width: calc(100% - ${baseWidth});`}
+    >
       <slot />
     </main>
   </div>
@@ -38,4 +43,6 @@ const openWidth = '250px';
     <Footer />
   </slot>
   <!-- <ThemeSwitcher /> -->
+
+  <LoadingScreen />
 </Layout>

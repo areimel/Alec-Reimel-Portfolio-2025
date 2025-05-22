@@ -15,6 +15,7 @@ interface Props {
   openWidth?: string;
   iconSize?: string;
   mobileIconSize?: string;
+  style?: string;
 }
 
 const { 
@@ -22,7 +23,8 @@ const {
   baseWidth = '200px',
   openWidth = '300px',
   iconSize = 'w-8 h-8',
-  mobileIconSize = 'w-5 h-5'
+  mobileIconSize = 'w-5 h-5',
+  style
 } = Astro.props;
 
 // Get current path for active link detection
@@ -47,7 +49,7 @@ function isActive(item: NavItem): boolean {
 }
 ---
 
-<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} data-base-width={baseWidth} data-open-width={openWidth} data-icon-size={iconSize} data-mobile-icon-size={mobileIconSize}>
+<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} data-base-width={baseWidth} data-open-width={openWidth} data-icon-size={iconSize} data-mobile-icon-size={mobileIconSize} style={style}>
   <!-- Sidebar Navigation -->
   <nav
     id="sidebar-nav"
@@ -121,8 +123,8 @@ function isActive(item: NavItem): boolean {
     const settingsBtn = document.getElementById('theme-settings-btn');
     
     // Get width values from data attributes
-    const baseWidth = sidebarContainer?.dataset.baseWidth || '200px';
-    const openWidth = sidebarContainer?.dataset.openWidth || '300px';
+    const baseWidth = sidebarContainer?.dataset.baseWidth || '100px';
+    const openWidth = sidebarContainer?.dataset.openWidth || '250px';
     const iconSize = sidebarContainer?.dataset.iconSize || 'w-8 h-8';
     const mobileIconSize = sidebarContainer?.dataset.mobileIconSize || 'w-5 h-5';
     
@@ -177,9 +179,6 @@ function isActive(item: NavItem): boolean {
         
       }, textAnimDuration);
     }
-
-    // Initialize sidebar width
-    sidebarContainer?.style.setProperty('width', baseWidth);
 
     // Setup event listeners
     openBtn?.addEventListener('click', expandSidebar);
