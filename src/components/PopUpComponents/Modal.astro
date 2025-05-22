@@ -1,0 +1,135 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id: string;
+  title?: string;
+  closeOnClickOutside?: boolean;
+  class?: string;
+  contentClass?: string;
+}
+
+const { 
+  id, 
+  title, 
+  closeOnClickOutside = true, 
+  class: className = '',
+  contentClass = ''
+} = Astro.props;
+---
+
+<div id={`${id}-container`} class="modal-container fixed inset-0 z-50 hidden">
+  <!-- Backdrop/Overlay -->
+  <div 
+    id={`${id}-backdrop`} 
+    class="modal-backdrop fixed inset-0 bg-terminal-bg-primary/70 backdrop-blur-sm transition-opacity duration-300"
+  ></div>
+  
+  <!-- Modal Content -->
+  <div 
+    id={`${id}-content`} 
+    class:list={[
+      "modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-terminal-bg-secondary border border-terminal-400 shadow-lg w-[850px] max-w-[90vw] max-h-[90vh] overflow-auto transition-all duration-300",
+      contentClass
+    ]}
+    role="dialog"
+    aria-labelledby={title ? `${id}-title` : undefined}
+    aria-modal="true"
+  >
+    {title && (
+      <div class="flex justify-between items-center p-2 bg-terminal-400">
+        <h2 id={`${id}-title`} class="text-lg font-bold text-terminal-bg-secondary font-uav-mono text-glow-strong">
+          {title}
+        </h2>
+        <button 
+          id={`${id}-close`} 
+          class="modal-close p-1 text-terminal-bg-secondary hover:text-terminal-bright transition-colors"
+          aria-label="Close"
+        >
+          <Icon name="tabler:x" class="w-8 h-8" />
+        </button>
+      </div>
+    )}
+    
+    <div class:list={["modal-body", className]}>
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ id, closeOnClickOutside }}>
+  // Setup for this specific modal instance
+  function setupModal() {
+    const modalContainer = document.getElementById(`${id}-container`);
+    const modalBackdrop = document.getElementById(`${id}-backdrop`);
+    const closeBtn = document.getElementById(`${id}-close`);
+    
+    // Function to open the modal
+    window[`open${id}Modal`] = function() {
+      modalContainer?.classList.remove('hidden');
+      // Add animation classes
+      setTimeout(() => {
+        modalContainer?.classList.add('modal-active');
+      }, 10); // Small delay for the animation to work properly
+    };
+    
+    // Function to close the modal
+    window[`close${id}Modal`] = function() {
+      modalContainer?.classList.remove('modal-active');
+      // Wait for animation to complete before hiding
+      setTimeout(() => {
+        modalContainer?.classList.add('hidden');
+      }, 300);
+    };
+    
+    // Close button event
+    closeBtn?.addEventListener('click', window[`close${id}Modal`]);
+    
+    // Close on backdrop click if enabled
+    if (closeOnClickOutside) {
+      modalBackdrop?.addEventListener('click', (e) => {
+        if (e.target === modalBackdrop) {
+          window[`close${id}Modal`]();
+        }
+      });
+    }
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modalContainer?.classList.contains('hidden')) {
+        window[`close${id}Modal`]();
+      }
+    });
+  }
+  
+  // Setup on initial load and page navigation
+  document.addEventListener('astro:page-load', setupModal);
+</script>
+
+<style>
+  /* Base modal styles */
+  .modal-container {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  
+  .modal-container.modal-active {
+    opacity: 1;
+  }
+  
+  .modal-content {
+    transform: translate(-50%, -48%) scale(0.96);
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  }
+  
+  .modal-active .modal-content {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  
+  /* Add subtle glow to modal */
+  .modal-content {
+    box-shadow: 0 0 15px rgba(var(--terminal-bright-rgb), 0.15);
+  }
+</style> 

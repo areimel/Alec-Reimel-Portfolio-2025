@@ -31,45 +31,24 @@ const themes = [
     preview: 'bg-[#8CF0FF]'
   }
 ];
-
-export interface Props {
-  isDropdown?: boolean;
-}
-
-const { isDropdown = false } = Astro.props;
 ---
 
-{isDropdown ? (
-  <div class="bg-terminal-bg-secondary p-2 rounded-lg border border-terminal-500 w-48 shadow-lg">
-    <div class="flex flex-col gap-1">
-      {themes.map(theme => (
-        <button
-          class="theme-button px-2 py-1 rounded text-xs transition-colors flex items-center gap-2"
-          data-theme={theme.id}
-        >
-          <span class={`w-3 h-3 rounded-full ${theme.preview}`}></span>
-          {theme.name}
-        </button>
-      ))}
-    </div>
+<div class="theme-switcher">
+  <h3 class="text-terminal-500 text-lg font-bold mb-3">Terminal Theme</h3>
+  
+  <div class="flex flex-col gap-2">
+    {themes.map(theme => (
+      <button
+        class="theme-button px-4 py-2 rounded font-uav-mono text-xs transition-colors flex items-center border-2 border-terminal-300 gap-2"
+        data-theme={theme.id}
+        aria-label={`Switch to ${theme.name} theme`}
+      >
+        <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
+        {theme.name}
+      </button>
+    ))}
   </div>
-) : (
-  <div class="">
-    <div class="bg-terminal-bg-secondary p-2 rounded-lg border border-terminal-500">
-      <div class="flex flex-col gap-2">
-        {themes.map(theme => (
-          <button
-            class="theme-button px-4 py-2 rounded text-xs transition-colors flex items-center gap-2"
-            data-theme={theme.id}
-          >
-            <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
-            {theme.name}
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-)}
+</div>
 
 <script>
   // This script now only handles theme switching, not initial application
@@ -109,10 +88,25 @@ const { isDropdown = false } = Astro.props;
 
 <style>
   .theme-button {
-    @apply bg-terminal-bg-primary text-terminal-700 hover:bg-terminal-bg-accent;
+    @apply bg-terminal-bg-secondary text-terminal-500 hover:bg-terminal-bg-accent hover:text-terminal-bright hover:border-terminal-bright;
+    position: relative;
+    overflow: hidden;
   }
   
   .theme-button.active {
-    @apply bg-terminal-bg-accent text-terminal-bright;
+    @apply bg-terminal-bg-accent text-terminal-bright border-terminal-bright;
+  }
+  
+  .theme-button.active::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    @apply bg-terminal-bright;
+    box-shadow: 0 0 5px var(--terminal-bright);
   }
 </style> 

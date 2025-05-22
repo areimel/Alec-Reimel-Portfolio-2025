@@ -1,0 +1,213 @@
+---
+import SidebarButton from './SidebarButton.astro';
+import ThemeOptions from './ThemeOptions.astro';
+
+interface NavItem {
+  href: string;
+  text: string;
+  match?: string[]; // Additional paths that should match this nav item
+}
+
+interface Props {
+  class?: string;
+  baseWidth?: string;
+  openWidth?: string;
+}
+
+const { 
+  class: className, 
+  baseWidth = '200px',
+  openWidth = '300px'
+} = Astro.props;
+
+// Get current path for active link detection
+const currentPath = new URL(Astro.request.url).pathname;
+
+// Navigation items array
+const navItems: NavItem[] = [
+  { href: '/', text: 'Home', match: ['/'] },
+  { href: '/projects', text: 'Projects', match: ['/projects', '/project/'] },
+  { href: '/blog', text: 'Blog', match: ['/blog', '/post/'] },
+  { href: '/styleguide', text: 'Styleguide' },
+  { href: '/contact', text: 'Contact' }
+];
+
+// Helper function to check if a nav item is active
+function isActive(item: NavItem): boolean {
+  if (item.href === currentPath) return true;
+  if (item.match) {
+    return item.match.some(path => currentPath.startsWith(path));
+  }
+  return false;
+}
+---
+
+<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} data-base-width={baseWidth} data-open-width={openWidth}>
+  <!-- Sidebar Navigation -->
+  <nav
+    id="sidebar-nav"
+    class="h-full w-full bg-terminal-bg-secondary border-r border-terminal-400 transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
+  >
+    <div class="relative flex-1">
+      <div id="sidebar-toggle-wrapper" class="mb-8 pt-6 relative flex justify-center items-center">
+        <SidebarButton 
+          id="sidebar-open"
+          icon="tabler:menu-2"
+          position=""
+          ariaLabel="Expand"
+        />
+        <SidebarButton 
+          id="sidebar-close"
+          icon="tabler:chevron-left"
+          position=""
+          ariaLabel="Collapse"
+        />
+      </div>
+
+      <div class="mb-8 pt-6 relative flex justify-between items-center">
+        <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Alec_Reimel</h2>
+      </div>
+
+      <ul class="space-y-0 font-kode divide-y divide-terminal-300">
+        {navItems.map((item) => (
+          <li>
+            <a 
+              href={item.href} 
+              class:list={[
+                "nav-link",
+                { active: isActive(item) }
+              ]}
+            >
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    
+    <!-- Settings button at the bottom -->
+    <div class="p-4 border-t border-terminal-400 mt-auto">
+      <button 
+        id="theme-settings-btn"
+        class="flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent rounded transition-colors"
+        aria-label="Theme Settings"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-adjustments-cog" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M4 10a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+          <path d="M6 4v4" />
+          <path d="M6 12v8" />
+          <path d="M10 16a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+          <path d="M12 4v10" />
+          <path d="M12 18v2" />
+          <path d="M16 7a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+          <path d="M18 4v1" />
+          <path d="M18 9v11" />
+          <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+          <path d="M19.001 15.5v1.5" />
+          <path d="M19.001 21v1.5" />
+          <path d="M22.032 17.25l-1.299 .75" />
+          <path d="M17.27 20l-1.3 .75" />
+          <path d="M15.97 17.25l1.3 .75" />
+          <path d="M20.733 20l1.3 .75" />
+        </svg>
+        <span class="ml-2">Settings</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- Include ThemeOptions modal -->
+<ThemeOptions />
+
+<script>
+  function setupSidebar() {
+    const openBtn = document.getElementById('sidebar-open');
+    const closeBtn = document.getElementById('sidebar-close');
+    const sidebarContainer = document.getElementById('sidebar-container');
+    const mainContent = document.querySelector('main');
+    const settingsBtn = document.getElementById('theme-settings-btn');
+    
+    // Get width values from data attributes
+    const baseWidth = sidebarContainer?.dataset.baseWidth || '200px';
+    const openWidth = sidebarContainer?.dataset.openWidth || '300px';
+
+    // Initially hide the close button
+    closeBtn?.classList.add('hidden');
+
+    function expandSidebar() {
+      // Show the close button and hide the open button
+      openBtn?.classList.add('hidden');
+      closeBtn?.classList.remove('hidden');
+      
+      // Add active class to sidebar
+      sidebarContainer?.classList.add('active');
+      
+      // Set the width
+      sidebarContainer?.style.setProperty('width', openWidth);
+      
+      // Adjust main content width
+      if (mainContent) {
+        mainContent.style.width = `calc(100% - ${openWidth})`;
+      }
+    }
+
+    function collapseSidebar() {
+      // Show the open button and hide the close button
+      closeBtn?.classList.add('hidden');
+      openBtn?.classList.remove('hidden');
+      
+      // Remove active class from sidebar
+      sidebarContainer?.classList.remove('active');
+      
+      // Reset the width
+      sidebarContainer?.style.setProperty('width', baseWidth);
+      
+      // Adjust main content width
+      if (mainContent) {
+        mainContent.style.width = `calc(100% - ${baseWidth})`;
+      }
+    }
+
+    // Initialize sidebar width
+    sidebarContainer?.style.setProperty('width', baseWidth);
+
+    // Setup event listeners
+    openBtn?.addEventListener('click', expandSidebar);
+    closeBtn?.addEventListener('click', collapseSidebar);
+    
+    // Setup settings button
+    settingsBtn?.addEventListener('click', () => {
+      // Check if the openThemeOptionsModal function exists (it should be defined in ThemeOptions.astro)
+      if (typeof window.openThemeOptionsModal === 'function') {
+        window.openThemeOptionsModal();
+      }
+    });
+  }
+
+  // Handle both initial load and subsequent navigation
+  document.addEventListener('astro:page-load', setupSidebar);
+</script>
+
+<style>
+  /* Navigation link styling */
+  :global(.nav-link) {
+    @apply block text-xl md:text-2xl text-terminal-500 hover:text-terminal-bright transition-all duration-200 py-3 px-4 hover:bg-terminal-bg-accent border-l-2 border-transparent hover:border-terminal-bright;
+  }
+
+  /* Add glow effect to navigation links on hover */
+  :global(.nav-link:hover) {
+    text-shadow: var(--theme-glow);
+  }
+
+  /* Active navigation link */
+  :global(.nav-link.active) {
+    @apply text-terminal-bright bg-terminal-bg-accent border-l-2 border-terminal-bright;
+    text-shadow: var(--theme-glow);
+  }
+
+  /* Active state for the sidebar */
+  :global(.sidebar-nav-container.active) {
+    @apply transition-all duration-300 ease-in-out shadow-lg;
+  }
+</style> 

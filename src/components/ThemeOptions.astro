@@ -1,0 +1,52 @@
+---
+import ThemeSwitcher from './ThemeSwitcher.astro';
+import TerminalEffectsControls from './TerminalEffectsControls.astro';
+import Modal from './PopUpComponents/Modal.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<Modal 
+  id="themeOptions" 
+  title="//Terminal_Settings" 
+  class={className}
+>
+  <div class="grid grid-cols-2 divide-x divide-terminal-400 max-h-[70vh] overflow-y-auto">
+    <!-- Theme Switcher Section -->
+    <div class="p-4">
+      <ThemeSwitcher />
+    </div>
+    
+    <!-- Terminal Effects Controls Section -->
+    <div class="p-4">
+      <TerminalEffectsControls />
+    </div>
+  </div>
+</Modal>
+
+<!-- Button to open theme options modal (to be used elsewhere) -->
+<script>
+  // Make the openThemeOptionsModal function available globally
+  document.addEventListener('astro:page-load', () => {
+    // Define the function to open the theme options modal
+    window.openThemeOptionsModal = function() {
+      const modalId = 'themeOptions';
+      const openFunctionName = `open${modalId}Modal`;
+      
+      // Access the function that was created by the Modal component
+      if (typeof window[openFunctionName] === 'function') {
+        window[openFunctionName]();
+      } else {
+        console.warn(`Modal open function ${openFunctionName} not found`);
+      }
+    };
+  });
+</script>
+
+<style>
+  /* This style is now handled by the SidebarButton component */
+</style> 
