@@ -1,0 +1,159 @@
+---
+interface Props {
+  text: string;
+  as?: string;
+  className?: string;
+  delay?: number; // Optional delay before animation starts (in ms)
+  duration?: number; // Duration for each character animation (in ms)
+  charDelay?: number; // Delay between each character animation (in ms)
+}
+
+const { 
+  text, 
+  as: Element = "span", 
+  className = "", 
+  delay = 0,
+  duration = 500, 
+  charDelay = 150 
+} = Astro.props;
+
+// Split text into words while preserving spaces
+const words = text.split(' ');
+---
+
+<Element 
+  class:list={["decoder-text", className]} 
+  data-text={text}
+  data-delay={delay}
+  data-duration={duration}
+  data-char-delay={charDelay}
+>
+  {words.map((word, wordIndex) => (
+    <>
+      <span class="decoder-word">
+        {Array.from(word).map((char, charIndex) => (
+          <span 
+            class="decoder-char" 
+            data-char={char} 
+            data-index={wordIndex > 0 
+              ? words.slice(0, wordIndex).join(' ').length + wordIndex + charIndex 
+              : charIndex}
+          >
+            {char}
+          </span>
+        ))}
+      </span>
+      {/* Add space between words, except for the last word */}
+      {wordIndex < words.length - 1 && (
+        <span class="decoder-space"> </span>
+      )}
+    </>
+  ))}
+</Element>
+
+<script>
+  // Character pool to randomize from - only letters
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  
+  // Utility to get a random character from the pool
+  const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
+  
+  // Intersection Observer to detect when element enters viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        startAnimation(entry.target as HTMLElement);
+        // Stop observing after animation starts
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2 // Start animation when 20% of element is visible
+  });
+  
+  // Setup animation for all decoder text elements
+  function setupDecoderElements() {
+    const decoderElements = document.querySelectorAll<HTMLElement>('.decoder-text');
+    
+    decoderElements.forEach((element) => {
+      // Start observing the element
+      observer.observe(element);
+    });
+  }
+  
+  // Start the animation for a specific element
+  function startAnimation(element: HTMLElement) {
+    const charElements = element.querySelectorAll<HTMLElement>('.decoder-char');
+    const text = element.dataset.text || '';
+    const duration = parseInt(element.dataset.duration || '500');
+    const charDelay = parseInt(element.dataset.charDelay || '150');
+    const initialDelay = parseInt(element.dataset.delay || '0');
+    
+    // Make the element initially transparent
+    element.style.opacity = '0';
+    
+    // Fade in entire element
+    setTimeout(() => {
+      element.style.transition = `opacity 0.3s ease`;
+      element.style.opacity = '1';
+      
+      // Start the decoder animation for each character
+      charElements.forEach((charElement, index) => {
+        const finalChar = charElement.dataset.char || '';
+        const charIndex = parseInt(charElement.dataset.index || '0');
+        
+        // Skip animation for spaces
+        if (finalChar === ' ' || charElement.classList.contains('decoder-space')) {
+          return;
+        }
+        
+        // Set initial random character
+        charElement.textContent = getRandomChar();
+        
+        // Calculate when this character should complete its animation
+        // Initial delay + 500ms for everyone to see the animation + 
+        // sequential delay based on character position
+        const completeTime = initialDelay + duration + (charIndex * charDelay);
+        
+        // Animation interval - rapidly cycle through random characters
+        const interval = setInterval(() => {
+          charElement.textContent = getRandomChar();
+        }, 50);
+        
+        // Set timeout to clear interval and set final character
+        setTimeout(() => {
+          clearInterval(interval);
+          charElement.textContent = finalChar;
+        }, completeTime);
+      });
+    }, initialDelay);
+  }
+  
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', setupDecoderElements);
+</script>
+
+<style>
+  .decoder-text {
+    display: inline-flex;
+    flex-wrap: wrap;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    /* font-family: monospace; */
+    /* @apply tracking-tight; */
+  }
+  
+  .decoder-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  
+  .decoder-char {
+    display: inline-block;
+  }
+  
+  .decoder-space {
+    display: inline-block;
+    width: 1ch;
+  }
+</style> 

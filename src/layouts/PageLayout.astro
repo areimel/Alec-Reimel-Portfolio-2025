@@ -4,7 +4,7 @@ import Layout from '@layouts/Layout.astro';
 import Footer from '@components/Footer.astro';
 /* import Announcement from '@components/widgets/Announcement.astro';
 import ThemeSwitcher from '@components/ThemeSwitcher.astro'; */
-import SidebarNav from '@components/SidebarNav.astro';
+import SidebarNav from '@components/SidebarNavV2.astro';
 
 import type { MetaData } from '~/types';
 
@@ -13,19 +13,27 @@ export interface Props {
 }
 
 const { metadata } = Astro.props;
+const baseWidth = '100px';
+const openWidth = '250px';
 ---
 
 <Layout metadata={metadata}>
 <!--   <slot name="announcement">
     <Announcement />
   </slot> -->
-  <SidebarNav/>
+  <div class="flex min-h-screen">
+    <SidebarNav 
+      class="h-screen fixed top-0 left-0 transition-width duration-300 ease-in-out"
+      baseWidth={baseWidth}
+      openWidth={openWidth}
+    />
+    <main class={`w-[calc(100%-${baseWidth})] ml-auto transition-width duration-300 ease-in-out`}>
+      <slot />
+    </main>
+  </div>
   <!-- <slot name="header">
     <Header {...headerData} isSticky showToggleTheme />
   </slot> -->
-  <main>
-    <slot />
-  </main>
   <slot name="footer">
     <Footer />
   </slot>

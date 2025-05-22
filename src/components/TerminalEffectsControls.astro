@@ -1,43 +1,61 @@
 ---
 // Component to control terminal effects visibility
+import { Icon } from 'astro-icon/components';
+
+// Define effects controls as a JSON object
+interface EffectControl {
+  id: string;
+  label: string;
+  dataEffect: string;
+  defaultChecked: boolean;
+}
+
+const effectControls: EffectControl[] = [
+  {
+    id: 'noise-effect',
+    label: 'CRT Noise',
+    dataEffect: 'noise',
+    defaultChecked: true
+  },
+  {
+    id: 'scanline-effect',
+    label: 'Scanlines',
+    dataEffect: 'scanline',
+    defaultChecked: true
+  },
+  {
+    id: 'overlay-effect',
+    label: 'CRT Overlay',
+    dataEffect: 'overlay',
+    defaultChecked: true
+  }
+];
 ---
 
-<div class="terminal-effects-controls space-y-4">
-  <h3 class="text-terminal-500 text-lg font-bold">Terminal Effects</h3>
+<div class="terminal-effects-controls">
+  <h3 class="text-terminal-500 text-lg font-bold mb-3">Terminal Effects</h3>
   
-  <div class="space-y-2">
-    <div class="flex items-center">
-      <input 
-        type="checkbox" 
-        id="noise-effect" 
-        class="effect-toggle mr-2 h-4 w-4 accent-terminal-500 bg-terminal-bg-accent"
-        data-effect="noise"
-        checked
-      />
-      <label for="noise-effect" class="text-terminal-400 cursor-pointer select-none">CRT Noise</label>
-    </div>
-    
-    <div class="flex items-center">
-      <input 
-        type="checkbox" 
-        id="scanline-effect" 
-        class="effect-toggle mr-2 h-4 w-4 accent-terminal-500 bg-terminal-bg-accent"
-        data-effect="scanline"
-        checked
-      />
-      <label for="scanline-effect" class="text-terminal-400 cursor-pointer select-none">Scanlines</label>
-    </div>
-    
-    <div class="flex items-center">
-      <input 
-        type="checkbox" 
-        id="overlay-effect" 
-        class="effect-toggle mr-2 h-4 w-4 accent-terminal-500 bg-terminal-bg-accent"
-        data-effect="overlay"
-        checked
-      />
-      <label for="overlay-effect" class="text-terminal-400 cursor-pointer select-none">CRT Overlay</label>
-    </div>
+  <div class="flex flex-col gap-2">
+    {effectControls.map(effect => (
+      <div class="flex items-center px-4 py-2 bg-terminal-bg-secondary border-2 border-terminal-300">
+        <div class="custom-checkbox-container mr-3">
+          <input 
+            type="checkbox" 
+            id={effect.id} 
+            class="effect-toggle sr-only"
+            data-effect={effect.dataEffect}
+            checked={effect.defaultChecked}
+          />
+          <label 
+            for={effect.id} 
+            class="custom-checkbox flex items-center justify-center w-4 h-4 border border-terminal-400 bg-terminal-bg-secondary rounded-sm cursor-pointer transition-colors hover:border-terminal-500"
+          >
+            <Icon name="tabler:check" class="w-3 h-3 text-terminal-500 opacity-0 transition-opacity check-icon" />
+          </label>
+        </div>
+        <label for={effect.id} class="text-terminal-500 font-uav-mono text-xs cursor-pointer select-none no-glow">{effect.label}</label>
+      </div>
+    ))}
   </div>
 </div>
 
@@ -55,7 +73,11 @@
         const isEnabled = savedState === 'true';
         const toggleInput = toggle as HTMLInputElement;
         toggleInput.checked = isEnabled;
+        updateCheckboxUI(toggleInput);
         updateEffectVisibility(effectName, isEnabled);
+      } else {
+        // Initialize UI for default checked status
+        updateCheckboxUI(toggle as HTMLInputElement);
       }
     });
     
@@ -66,6 +88,9 @@
         const effectName = target.getAttribute('data-effect');
         const isEnabled = target.checked;
         
+        // Update the checkbox UI
+        updateCheckboxUI(target);
+        
         // Update the effect visibility
         updateEffectVisibility(effectName, isEnabled);
         
@@ -73,6 +98,20 @@
         localStorage.setItem(`terminal-effect-${effectName}`, isEnabled.toString());
       });
     });
+  }
+  
+  // Update custom checkbox appearance based on checked state
+  function updateCheckboxUI(checkbox: HTMLInputElement) {
+    const checkIcon = checkbox.nextElementSibling?.querySelector('.check-icon');
+    if (checkIcon) {
+      if (checkbox.checked) {
+        checkIcon.classList.remove('opacity-0');
+        checkIcon.classList.add('opacity-100');
+      } else {
+        checkIcon.classList.remove('opacity-100');
+        checkIcon.classList.add('opacity-0');
+      }
+    }
   }
   
   function updateEffectVisibility(effectName, isEnabled) {
@@ -91,36 +130,37 @@
 </script>
 
 <style>
-  /* Custom checkbox styling */
-  input[type="checkbox"].effect-toggle {
+  /* Custom checkbox container */
+  .custom-checkbox-container {
     position: relative;
-    appearance: none;
-    background-color: var(--terminal-bg-secondary);
-    border: 1px solid var(--terminal-400);
-    padding: 8px;
-    border-radius: 2px;
     display: inline-block;
-    cursor: pointer;
   }
-
-  input[type="checkbox"].effect-toggle:checked {
+  
+  /* Custom checkbox appearance */
+  .custom-checkbox {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Checked state */
+  .effect-toggle:checked + .custom-checkbox {
     background-color: var(--terminal-bg-accent);
+    border-color: var(--terminal-bright);
+  }
+  
+  /* Focus state for accessibility */
+  .effect-toggle:focus + .custom-checkbox {
+    box-shadow: 0 0 0 2px rgba(var(--terminal-bright-rgb), 0.3);
+  }
+  
+  /* Hover state */
+  .custom-checkbox:hover {
     border-color: var(--terminal-500);
   }
-
-  input[type="checkbox"].effect-toggle:checked::after {
-    content: '';
-    position: absolute;
-    left: 3px;
-    top: 0px;
-    width: 5px;
-    height: 10px;
-    border: solid var(--terminal-500);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-
-  input[type="checkbox"].effect-toggle:hover {
-    border-color: var(--terminal-bright);
+  
+  /* Explicitly disable glow effects */
+  .no-glow {
+    text-shadow: none !important;
+    box-shadow: none !important;
+    filter: none !important;
   }
 </style> 
