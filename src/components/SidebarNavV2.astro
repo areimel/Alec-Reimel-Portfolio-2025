@@ -1,10 +1,11 @@
 ---
-import SidebarButton from './SidebarButton.astro';
 import ThemeOptions from './ThemeOptions.astro';
+import { Icon } from 'astro-icon/components';
 
 interface NavItem {
   href: string;
   text: string;
+  icon: string;
   match?: string[]; // Additional paths that should match this nav item
 }
 
@@ -12,12 +13,16 @@ interface Props {
   class?: string;
   baseWidth?: string;
   openWidth?: string;
+  iconSize?: string;
+  mobileIconSize?: string;
 }
 
 const { 
   class: className, 
   baseWidth = '200px',
-  openWidth = '300px'
+  openWidth = '300px',
+  iconSize = 'w-8 h-8',
+  mobileIconSize = 'w-5 h-5'
 } = Astro.props;
 
 // Get current path for active link detection
@@ -25,11 +30,11 @@ const currentPath = new URL(Astro.request.url).pathname;
 
 // Navigation items array
 const navItems: NavItem[] = [
-  { href: '/', text: 'Home', match: ['/'] },
-  { href: '/projects', text: 'Projects', match: ['/projects', '/project/'] },
-  { href: '/blog', text: 'Blog', match: ['/blog', '/post/'] },
-  { href: '/styleguide', text: 'Styleguide' },
-  { href: '/contact', text: 'Contact' }
+  { href: '/', text: 'Home', icon: 'tabler:home', match: ['/'] },
+  { href: '/projects', text: 'Projects', icon: 'tabler:briefcase', match: ['/projects', '/project/'] },
+  { href: '/blog', text: 'Blog', icon: 'tabler:article', match: ['/blog', '/post/'] },
+  /*{ href: '/styleguide', text: 'Styleguide', icon: 'tabler:color-swatch' }, */
+  { href: '/contact', text: 'Contact', icon: 'tabler:mail' }
 ];
 
 // Helper function to check if a nav item is active
@@ -42,30 +47,30 @@ function isActive(item: NavItem): boolean {
 }
 ---
 
-<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} data-base-width={baseWidth} data-open-width={openWidth}>
+<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} data-base-width={baseWidth} data-open-width={openWidth} data-icon-size={iconSize} data-mobile-icon-size={mobileIconSize}>
   <!-- Sidebar Navigation -->
   <nav
     id="sidebar-nav"
     class="h-full w-full bg-terminal-bg-secondary border-r border-terminal-400 transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
   >
     <div class="relative flex-1">
-      <div id="sidebar-toggle-wrapper" class="mb-8 pt-6 relative flex justify-center items-center">
-        <SidebarButton 
+      <!-- Sidebar toggle button - styled like Settings button -->
+      <div class="border-b border-terminal-400">
+        <button 
           id="sidebar-open"
-          icon="tabler:menu-2"
-          position=""
-          ariaLabel="Expand"
-        />
-        <SidebarButton 
+          class="flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent transition-colors"
+          aria-label="Expand Sidebar"
+        >
+          <Icon name="tabler:menu-2" class={iconSize} />
+        </button>
+        <button 
           id="sidebar-close"
-          icon="tabler:chevron-left"
-          position=""
-          ariaLabel="Collapse"
-        />
-      </div>
-
-      <div class="mb-8 pt-6 relative flex justify-between items-center">
-        <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Alec_Reimel</h2>
+          class="hidden flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent transition-colors"
+          aria-label="Collapse Sidebar"
+        >
+          <Icon name="tabler:chevron-left" class={iconSize} />
+          <span class="nav-text">&nbsp;Navigation</span>
+        </button>
       </div>
 
       <ul class="space-y-0 font-kode divide-y divide-terminal-300">
@@ -74,11 +79,16 @@ function isActive(item: NavItem): boolean {
             <a 
               href={item.href} 
               class:list={[
-                "nav-link",
+                "nav-link flex items-center justify-start w-full ",
                 { active: isActive(item) }
               ]}
             >
-              {item.text}
+              <div class="icon-container flex items-center justify-center p-2" style="min-width: 100px; width: 100px;">
+                <Icon name={item.icon} class={iconSize} />
+              </div>
+              <div class="text-container p-2 pl-0">
+                <span class="nav-text">&nbsp;{item.text}</span>
+              </div>
             </a>
           </li>
         ))}
@@ -86,32 +96,14 @@ function isActive(item: NavItem): boolean {
     </div>
     
     <!-- Settings button at the bottom -->
-    <div class="p-4 border-t border-terminal-400 mt-auto">
+    <div class="border-t border-terminal-400 mt-auto">
       <button 
         id="theme-settings-btn"
-        class="flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent rounded transition-colors"
+        class="flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent transition-colors"
         aria-label="Theme Settings"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-adjustments-cog" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-          <path d="M4 10a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-          <path d="M6 4v4" />
-          <path d="M6 12v8" />
-          <path d="M10 16a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-          <path d="M12 4v10" />
-          <path d="M12 18v2" />
-          <path d="M16 7a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-          <path d="M18 4v1" />
-          <path d="M18 9v11" />
-          <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-          <path d="M19.001 15.5v1.5" />
-          <path d="M19.001 21v1.5" />
-          <path d="M22.032 17.25l-1.299 .75" />
-          <path d="M17.27 20l-1.3 .75" />
-          <path d="M15.97 17.25l1.3 .75" />
-          <path d="M20.733 20l1.3 .75" />
-        </svg>
-        <span class="ml-2">Settings</span>
+        <Icon name="tabler:adjustments" class={iconSize} />
+        <span class="nav-text">&nbsp;Theme</span>
       </button>
     </div>
   </nav>
@@ -131,9 +123,12 @@ function isActive(item: NavItem): boolean {
     // Get width values from data attributes
     const baseWidth = sidebarContainer?.dataset.baseWidth || '200px';
     const openWidth = sidebarContainer?.dataset.openWidth || '300px';
-
-    // Initially hide the close button
-    closeBtn?.classList.add('hidden');
+    const iconSize = sidebarContainer?.dataset.iconSize || 'w-8 h-8';
+    const mobileIconSize = sidebarContainer?.dataset.mobileIconSize || 'w-5 h-5';
+    
+    // Animation durations (in milliseconds)
+    const sidebarAnimDuration = 300; // Should match CSS transition duration
+    const textAnimDuration = 300;    // Should match CSS transition duration for text
 
     function expandSidebar() {
       // Show the close button and hide the open button
@@ -150,23 +145,37 @@ function isActive(item: NavItem): boolean {
       if (mainContent) {
         mainContent.style.width = `calc(100% - ${openWidth})`;
       }
+      
+      // Text fade-in is handled by CSS with transition-delay
     }
 
     function collapseSidebar() {
-      // Show the open button and hide the close button
-      closeBtn?.classList.add('hidden');
-      openBtn?.classList.remove('hidden');
+      // First trigger text fade-out by adding a class
+      sidebarContainer?.classList.add('text-fading');
       
-      // Remove active class from sidebar
-      sidebarContainer?.classList.remove('active');
-      
-      // Reset the width
-      sidebarContainer?.style.setProperty('width', baseWidth);
-      
-      // Adjust main content width
-      if (mainContent) {
-        mainContent.style.width = `calc(100% - ${baseWidth})`;
-      }
+      // Wait for text to fade out, then collapse sidebar
+      setTimeout(() => {
+        // Show the open button and hide the close button
+        closeBtn?.classList.add('hidden');
+        openBtn?.classList.remove('hidden');
+        
+        // Remove active class from sidebar
+        sidebarContainer?.classList.remove('active');
+        
+        // Reset the width
+        sidebarContainer?.style.setProperty('width', baseWidth);
+        
+        // Adjust main content width
+        if (mainContent) {
+          mainContent.style.width = `calc(100% - ${baseWidth})`;
+        }
+        
+        // Remove the text-fading class after animation completes
+        setTimeout(() => {
+          sidebarContainer?.classList.remove('text-fading');
+        }, sidebarAnimDuration);
+        
+      }, textAnimDuration);
     }
 
     // Initialize sidebar width
@@ -183,6 +192,26 @@ function isActive(item: NavItem): boolean {
         window.openThemeOptionsModal();
       }
     });
+
+    // Apply mobile icon sizes based on screen width
+    function updateIconSizes() {
+      const allIcons = document.querySelectorAll('.sidebar-nav-container .astro-icon');
+      if (window.innerWidth < 768) { // Mobile breakpoint
+        allIcons.forEach(icon => {
+          // Remove desktop size classes and add mobile size classes
+          icon.className = icon.className.replace(iconSize, mobileIconSize);
+        });
+      } else {
+        allIcons.forEach(icon => {
+          // Remove mobile size classes and add desktop size classes
+          icon.className = icon.className.replace(mobileIconSize, iconSize);
+        });
+      }
+    }
+
+    // Initial call and event listener for resize
+    updateIconSizes();
+    window.addEventListener('resize', updateIconSizes);
   }
 
   // Handle both initial load and subsequent navigation
@@ -192,7 +221,7 @@ function isActive(item: NavItem): boolean {
 <style>
   /* Navigation link styling */
   :global(.nav-link) {
-    @apply block text-xl md:text-2xl text-terminal-500 hover:text-terminal-bright transition-all duration-200 py-3 px-4 hover:bg-terminal-bg-accent border-l-2 border-transparent hover:border-terminal-bright;
+    @apply text-terminal-500 hover:text-terminal-bright transition-colors hover:bg-terminal-bg-accent;
   }
 
   /* Add glow effect to navigation links on hover */
@@ -202,8 +231,25 @@ function isActive(item: NavItem): boolean {
 
   /* Active navigation link */
   :global(.nav-link.active) {
-    @apply text-terminal-bright bg-terminal-bg-accent border-l-2 border-terminal-bright;
+    @apply text-terminal-bright bg-terminal-bg-accent;
     text-shadow: var(--theme-glow);
+  }
+
+  /* Hide text when sidebar is collapsed */
+  :global(.nav-text) {
+    @apply transition-all duration-200 opacity-0 w-0 overflow-hidden;
+  }
+
+  /* Show text when sidebar is expanded - with delay */
+  :global(.sidebar-nav-container.active .nav-text) {
+    @apply opacity-100 w-auto overflow-visible;
+    transition-delay: 300ms; /* Wait for sidebar to finish expanding */
+  }
+  
+  /* When sidebar is collapsing, make text fade out immediately */
+  :global(.sidebar-nav-container.text-fading .nav-text) {
+    @apply opacity-0 w-0 overflow-hidden;
+    transition-delay: 0ms;
   }
 
   /* Active state for the sidebar */

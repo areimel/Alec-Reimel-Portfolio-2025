@@ -39,7 +39,7 @@ const themes = [
   <div class="flex flex-col gap-2">
     {themes.map(theme => (
       <button
-        class="theme-button px-4 py-2 rounded font-uav-mono text-xs transition-colors flex items-center border-2 border-terminal-300 gap-2"
+        class="theme-button px-4 py-2 font-uav-mono text-xs transition-colors flex items-center border-2 border-terminal-300 gap-2"
         data-theme={theme.id}
         aria-label={`Switch to ${theme.name} theme`}
       >
