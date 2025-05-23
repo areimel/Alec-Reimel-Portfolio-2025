@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import AnimationWrapper from "@components/AnimationComponents/AnimationWrapper.astro";
 
 const skills = [
   {
@@ -57,7 +58,15 @@ const skills = [
 <section id="skills" class="w-full p-4 md:p-8 mb-12 bg-terminal-bg-primary">
   <div class="w-full h-full max-w-screen-2xl mx-auto">
     <div class="text-center mb-12">
-      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">//Skills</h2>
+      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">
+        
+        <AnimationWrapper 
+          animation="DecoderText"
+          text="Skills"
+          trigger="in-view"
+          delay={1000}
+        />
+      </h2>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[15px]">

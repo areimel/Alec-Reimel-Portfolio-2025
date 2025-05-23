@@ -1,4 +1,6 @@
 ---
+import AnimationWrapper from "@components/AnimationComponents/AnimationWrapper.astro";
+
 const facts = [
     {
         prefix: "//01_",
@@ -46,8 +48,14 @@ const facts = [
   <div class="w-full h-full max-w-screen-2xl mx-auto">
     
     <div class="text-center mb-12">
-      <span class="text-terminal-500 font-uav-mono text-lg">Personal Facts</span>
-      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">Get to know me</h2>
+      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">
+        <AnimationWrapper 
+          animation="DecoderText"
+          text="Get To Know Me"
+          trigger="in-view"
+          delay={1000}
+        />
+      </h2>
     </div>
 
     <div class="facts-grid">
