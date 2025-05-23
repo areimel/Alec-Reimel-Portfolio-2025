@@ -1,0 +1,47 @@
+---
+import Modal from '../PopUpComponents/Modal.astro';
+import TerminalPrefix from '../TerminalComponents/TerminalPrefix.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  type: 'success' | 'error';
+  heading: string;
+  message: string;
+  buttonText: string;
+  errorMessageId?: string; // Optional ID for dynamic error message element
+}
+
+const { 
+  id, 
+  title, 
+  type, 
+  heading, 
+  message, 
+  buttonText,
+  errorMessageId 
+} = Astro.props;
+
+// Generate the close function name based on the modal ID
+const closeFunctionName = `close${id}Modal`;
+---
+
+<Modal id={id} title={title}>
+    <div class="p-6 text-center text-balance">
+        <h3 class:list={[
+            "text-xl font-uav-mono mb-2 text-glow-subtle",
+            type === 'success' ? "text-terminal-bright" : "text-red-400"
+        ]}>
+            {heading}
+        </h3>
+        <p class="text-terminal-400 font-kode mb-4" id={errorMessageId}>
+            {message}
+        </p>
+        <button 
+            onclick={`${closeFunctionName}()`}
+            class="px-4 py-2 bg-terminal-500 text-terminal-bg-primary font-uav-mono rounded hover:bg-terminal-600 transition-colors text-glow-subtle"
+        >
+            <TerminalPrefix />{buttonText}
+        </button>
+    </div>
+</Modal> 
