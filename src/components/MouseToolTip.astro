@@ -1,0 +1,187 @@
+---
+// MouseToolTip component for cursor-following tooltips
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<!-- Tooltip container that will follow the mouse -->
+<div 
+  id="mouse-tooltip" 
+  class:list={[
+    "fixed pointer-events-none z-50 bg-terminal-bg-secondary border border-terminal-400 text-terminal-bright px-2 py-1 text-sm shadow-lg opacity-0 transition-opacity duration-200 whitespace-nowrap font-kode max-w-xs",
+    className
+  ]}
+  style="top: 0; left: 0;"
+>
+  <span id="tooltip-text"></span>
+</div>
+
+<script>
+  function setupMouseTooltip() {
+    const tooltip = document.getElementById('mouse-tooltip');
+    const tooltipText = document.getElementById('tooltip-text');
+    let currentTarget: HTMLElement | null = null;
+
+    if (!tooltip || !tooltipText) return;
+
+    // Central offset configuration
+    const offset = 20; // Distance from cursor in pixels
+    const getOffsetNegative = () => -offset; // Helper function for negative offset
+
+    // Position presets using CSS transforms
+    const positionPresets: Record<string, { transformOrigin: string; transform: string }> = {
+      'left': {
+        transformOrigin: 'right center',
+        transform: `translateX(${getOffsetNegative()}px)`
+      },
+      'right': {
+        transformOrigin: 'left center', 
+        transform: `translateX(${offset}px)`
+      },
+      'above': {
+        transformOrigin: 'center bottom',
+        transform: `translateY(${getOffsetNegative()}px)`
+      },
+      'top': {
+        transformOrigin: 'center bottom',
+        transform: `translateY(${getOffsetNegative()}px)`
+      },
+      'below': {
+        transformOrigin: 'center top',
+        transform: `translateY(${offset}px)`
+      },
+      'bottom': {
+        transformOrigin: 'center top',
+        transform: `translateY(${offset}px)`
+      },
+      'upper-left': {
+        transformOrigin: 'right bottom',
+        transform: `translate(${getOffsetNegative()}px, ${getOffsetNegative()}px)`
+      },
+      'top-left': {
+        transformOrigin: 'right bottom',
+        transform: `translate(${getOffsetNegative()}px, ${getOffsetNegative()}px)`
+      },
+      'upper-right': {
+        transformOrigin: 'left bottom',
+        transform: `translate(${offset}px, ${getOffsetNegative()}px)`
+      },
+      'top-right': {
+        transformOrigin: 'left bottom',
+        transform: `translate(${offset}px, ${getOffsetNegative()}px)`
+      },
+      'lower-left': {
+        transformOrigin: 'right top',
+        transform: `translate(${getOffsetNegative()}px, ${offset}px)`
+      },
+      'bottom-left': {
+        transformOrigin: 'right top',
+        transform: `translate(${getOffsetNegative()}px, ${offset}px)`
+      },
+      'lower-right': {
+        transformOrigin: 'left top',
+        transform: `translate(${offset}px, ${offset}px)`
+      },
+      'bottom-right': {
+        transformOrigin: 'left top',
+        transform: `translate(${offset}px, ${offset}px)`
+      }
+    };
+
+    // Apply position preset to tooltip
+    function applyPositionPreset(position: string) {
+      if (!tooltip) return; // TypeScript null check
+      const preset = positionPresets[position.toLowerCase()] || positionPresets['top-right']; // Default to top-right
+      tooltip.style.transformOrigin = preset.transformOrigin;
+      tooltip.style.transform = preset.transform;
+    }
+
+    // Mouse move handler to update tooltip position
+    function handleMouseMove(e: MouseEvent) {
+      if (!currentTarget || !tooltip) return; // TypeScript null checks
+
+      // Position tooltip at cursor coordinates
+      tooltip.style.left = `${e.clientX}px`;
+      tooltip.style.top = `${e.clientY}px`;
+    }
+
+    // Mouse enter handler for elements with data-tooltip-text
+    function handleMouseEnter(e: Event) {
+      const target = e.target as HTMLElement;
+      const tooltipContent = target.getAttribute('data-tooltip-text');
+      
+      if (!tooltipContent || !tooltip || !tooltipText) return; // TypeScript null checks
+
+      currentTarget = target;
+      tooltipText.textContent = tooltipContent;
+      
+      // Apply position preset based on data-tooltip-position
+      const position = target.getAttribute('data-tooltip-position') || 'top-right';
+      applyPositionPreset(position);
+      
+      // Show tooltip
+      tooltip.classList.remove('opacity-0');
+      tooltip.classList.add('opacity-100');
+      
+      // Add mouse move listener
+      document.addEventListener('mousemove', handleMouseMove);
+    }
+
+    // Mouse leave handler
+    function handleMouseLeave(e: Event) {
+      const target = e.target as HTMLElement;
+      
+      if (!target.hasAttribute('data-tooltip-text') || !tooltip) return; // TypeScript null check
+
+      currentTarget = null;
+      
+      // Hide tooltip
+      tooltip.classList.remove('opacity-100');
+      tooltip.classList.add('opacity-0');
+      
+      // Remove mouse move listener
+      document.removeEventListener('mousemove', handleMouseMove);
+    }
+
+    // Add event listeners to all elements with data-tooltip-text
+    function attachTooltipListeners() {
+      const tooltipElements = document.querySelectorAll('[data-tooltip-text]');
+      
+      tooltipElements.forEach(element => {
+        element.addEventListener('mouseenter', handleMouseEnter);
+        element.addEventListener('mouseleave', handleMouseLeave);
+      });
+    }
+
+    // Initial setup
+    attachTooltipListeners();
+
+    // Re-attach listeners when new content is loaded (for SPAs)
+    const observer = new MutationObserver(() => {
+      attachTooltipListeners();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  // Setup on page load and navigation
+  document.addEventListener('astro:page-load', setupMouseTooltip);
+</script>
+
+<style>
+  /* Add subtle glow effect to tooltip */
+  #mouse-tooltip {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), var(--theme-glow-subtle);
+  }
+
+  /* Ensure tooltip text is readable */
+  #tooltip-text {
+    @apply text-terminal-bright;
+  }
+</style> 

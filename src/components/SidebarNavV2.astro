@@ -1,5 +1,6 @@
 ---
 import ThemeOptions from './ThemeOptions.astro';
+import MouseToolTip from './MouseToolTip.astro';
 import { Icon } from 'astro-icon/components';
 
 interface NavItem {
@@ -39,11 +40,18 @@ const navItems: NavItem[] = [
   { href: '/contact', text: 'Contact', icon: 'tabler:mail' }
 ];
 
-// Helper function to check if a nav item is active
-function isActive(item: NavItem): boolean {
+// Helper function to check if a nav item is current
+function isCurrent(item: NavItem): boolean {
   if (item.href === currentPath) return true;
   if (item.match) {
-    return item.match.some(path => currentPath.startsWith(path));
+    return item.match.some(path => {
+      // Special handling for home page - only match exact path
+      if (path === '/') {
+        return currentPath === '/';
+      }
+      // For other paths, use startsWith logic
+      return currentPath.startsWith(path);
+    });
   }
   return false;
 }
@@ -60,30 +68,36 @@ function isActive(item: NavItem): boolean {
       <div class="border-b border-terminal-400">
         <button 
           id="sidebar-open"
-          class="flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent transition-colors"
-          aria-label="Expand Sidebar"
+          class="flex items-center justify-center w-full h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
+          aria-label="Open Nav"
+          data-tooltip-text="Open Nav"
+          data-tooltip-position="right"
         >
           <Icon name="tabler:menu-2" class={iconSize} />
         </button>
         <button 
           id="sidebar-close"
-          class="hidden flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent transition-colors"
-          aria-label="Collapse Sidebar"
+          class="hidden flex items-center justify-center w-full h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
+          aria-label="Close Nav"
+          data-tooltip-text="Close Nav"
+          data-tooltip-position="right"
         >
           <Icon name="tabler:chevron-left" class={iconSize} />
-          <span class="nav-text">&nbsp;Navigation</span>
+          <span class="nav-text">&nbsp;Nav</span>
         </button>
       </div>
 
-      <ul class="space-y-0 font-kode divide-y divide-terminal-300">
+      <ul class="space-y-0 font-kode divide-y divide-terminal-400 border-b border-terminal-400">
         {navItems.map((item) => (
           <li>
             <a 
               href={item.href} 
               class:list={[
                 "nav-link flex items-center justify-start w-full ",
-                { active: isActive(item) }
+                { current: isCurrent(item) }
               ]}
+              data-tooltip-text={item.text}
+              data-tooltip-position="right"
             >
               <div class="icon-container flex items-center justify-center p-2" style="min-width: 100px; width: 100px;">
                 <Icon name={item.icon} class={iconSize} />
@@ -101,8 +115,10 @@ function isActive(item: NavItem): boolean {
     <div class="border-t border-terminal-400 mt-auto">
       <button 
         id="theme-settings-btn"
-        class="flex items-center justify-center w-full p-2 text-terminal-500 hover:text-terminal-bright hover:bg-terminal-bg-accent transition-colors"
+        class="flex items-center justify-center w-full h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
         aria-label="Theme Settings"
+        data-tooltip-text="Theme Settings"
+        data-tooltip-position="upper-right"
       >
         <Icon name="tabler:adjustments" class={iconSize} />
         <span class="nav-text">&nbsp;Theme</span>
@@ -110,6 +126,9 @@ function isActive(item: NavItem): boolean {
     </div>
   </nav>
 </div>
+
+<!-- Include MouseToolTip component -->
+<MouseToolTip />
 
 <!-- Include ThemeOptions modal -->
 <ThemeOptions />
@@ -220,7 +239,7 @@ function isActive(item: NavItem): boolean {
 <style>
   /* Navigation link styling */
   :global(.nav-link) {
-    @apply text-terminal-500 hover:text-terminal-bright transition-colors hover:bg-terminal-bg-accent;
+    @apply text-terminal-500 hover:text-terminal-bg-primary transition-colors hover:bg-terminal-500 h-[100px];
   }
 
   /* Add glow effect to navigation links on hover */
@@ -228,10 +247,9 @@ function isActive(item: NavItem): boolean {
     text-shadow: var(--theme-glow);
   }
 
-  /* Active navigation link */
-  :global(.nav-link.active) {
-    @apply text-terminal-bright bg-terminal-bg-accent;
-    text-shadow: var(--theme-glow);
+  /* Current navigation link */
+  :global(.nav-link.current) {
+    @apply text-terminal-bg-primary bg-terminal-500;
   }
 
   /* Hide text when sidebar is collapsed */
