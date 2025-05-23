@@ -13,7 +13,8 @@ import Metadata from '~/components/common/Metadata.astro';
 // import Analytics from '~/components/common/Analytics.astro';
 import BasicScripts from '~/components/common/BasicScripts.astro';
 import TerminalOverlay from '~/components/TerminalComponents/TerminalOverlay.astro';
-// import LoadingScreen from '~/components/TerminalComponents/LoadingScreen.astro';
+import LoadingScreen from '~/components/LoadingScreenV1.astro';
+
 // Comment the line below to disable View Transitions
 import { ClientRouter } from 'astro:transitions';
 
@@ -46,7 +47,7 @@ const defaultTheme = 'theme-green';
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight font-sans">
-    <!-- <LoadingScreen /> -->
+    <LoadingScreen />
     <TerminalOverlay />
     <slot />
 
