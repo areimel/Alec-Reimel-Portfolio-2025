@@ -29,76 +29,119 @@
 </div>
 
 <script>
-  const loadingScreen = document.getElementById('loading-screen');
-  const progressBar = document.getElementById('loading-progress-bar');
-  const loadingStatus = document.getElementById('loading-status');
-  const loadingPercentage = document.getElementById('loading-percentage');
+  // Flag to track if this is the initial page load
+  let isInitialLoad = true;
   
-  // Loading status messages
-  const statusMessages = [
-    'Starting up...',
-    'Loading terminal interface...',
-    'Initializing components...',
-    'Connecting to systems...',
-    'Finalizing setup...',
-    'Ready!'
-  ];
-  
-  // Function to update progress bar and status
-  const updateProgress = (progress) => {
-    if (progressBar) {
-      progressBar.style.width = `${progress}%`;
-      
-      // Add glow effect when progress increases
-      if (progress > 0) {
-        progressBar.style.boxShadow = `0 0 10px var(--terminal-500), 0 0 20px var(--terminal-300)`;
-      }
-    }
-    
-    if (loadingPercentage) {
-      loadingPercentage.textContent = `${Math.round(progress)}%`;
-    }
-    
-    // Update status message based on progress
-    if (loadingStatus) {
-      const messageIndex = Math.min(Math.floor(progress / 20), statusMessages.length - 1);
-      loadingStatus.textContent = statusMessages[messageIndex];
-    }
+  // Check if we're in a view transition context
+  function isViewTransition() {
+    // Check if the page has the view transition data attribute
+    return document.documentElement.hasAttribute('data-astro-transition') || 
+           // Or if startViewTransition exists and we're not on the initial load
+           (typeof document.startViewTransition !== 'undefined' && !isInitialLoad);
   }
   
-  // Initial progress
-  let progress = 0;
-  
-  // Simulate progress until page is fully loaded
-  const progressInterval = setInterval(() => {
-    // Increment progress, but slow down as it approaches 90%
-    const increment = progress < 70 ? 15 : 5;
-    progress = Math.min(progress + increment, 90);
-    updateProgress(progress);
-  }, 200);
-  
-  // When page is fully loaded
-  window.addEventListener('load', () => {
-    clearInterval(progressInterval);
-    updateProgress(100);
+  function initializeLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    const progressBar = document.getElementById('loading-progress-bar');
+    const loadingStatus = document.getElementById('loading-status');
+    const loadingPercentage = document.getElementById('loading-percentage');
     
-    // Wait for the progress bar to reach 100% before hiding
-    setTimeout(() => {
+    // If this is a view transition, hide the loading screen immediately
+    if (isViewTransition()) {
       if (loadingScreen) {
-        loadingScreen.style.opacity = '0';
-        
-        // Remove from DOM after fade out
-        setTimeout(() => {
-          if (loadingScreen) {
-            loadingScreen.style.display = 'none';
-            
-            // Dispatch custom event to notify that loading screen is complete
-            document.dispatchEvent(new CustomEvent('loadingScreenComplete'));
-          }
-        }, 500);
+        loadingScreen.style.display = 'none';
       }
-    }, 300);
+      return;
+    }
+    
+    // Loading status messages
+    const statusMessages = [
+      'Starting up...',
+      'Loading terminal interface...',
+      'Initializing components...',
+      'Connecting to systems...',
+      'Finalizing setup...',
+      'Ready!'
+    ];
+    
+    // Function to update progress bar and status
+    const updateProgress = (progress) => {
+      if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        
+        // Add glow effect when progress increases
+        if (progress > 0) {
+          progressBar.style.boxShadow = `0 0 10px var(--terminal-500), 0 0 20px var(--terminal-300)`;
+        }
+      }
+      
+      if (loadingPercentage) {
+        loadingPercentage.textContent = `${Math.round(progress)}%`;
+      }
+      
+      // Update status message based on progress
+      if (loadingStatus) {
+        const messageIndex = Math.min(Math.floor(progress / 20), statusMessages.length - 1);
+        loadingStatus.textContent = statusMessages[messageIndex];
+      }
+    }
+    
+    // Initial progress
+    let progress = 0;
+    
+    // Simulate progress until page is fully loaded
+    const progressInterval = setInterval(() => {
+      // Increment progress, but slow down as it approaches 90%
+      const increment = progress < 70 ? 15 : 5;
+      progress = Math.min(progress + increment, 90);
+      updateProgress(progress);
+    }, 200);
+    
+    // When page is fully loaded
+    window.addEventListener('load', () => {
+      clearInterval(progressInterval);
+      updateProgress(100);
+      
+      // Wait for the progress bar to reach 100% before hiding
+      setTimeout(() => {
+        if (loadingScreen) {
+          loadingScreen.style.opacity = '0';
+          
+          // Remove from DOM after fade out
+          setTimeout(() => {
+            if (loadingScreen) {
+              loadingScreen.style.display = 'none';
+              
+              // Dispatch custom event to notify that loading screen is complete
+              document.dispatchEvent(new CustomEvent('loadingScreenComplete'));
+            }
+          }, 500);
+        }
+      }, 300);
+    });
+  }
+  
+  // Handle both initial load and view transitions
+  document.addEventListener('astro:page-load', () => {
+    // On subsequent navigations, mark as no longer initial load
+    if (isInitialLoad) {
+      isInitialLoad = false;
+    } else {
+      // This is a view transition navigation, ensure loading screen is hidden
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+      }
+    }
   });
+  
+  // Initialize on first load
+  // Use DOMContentLoaded instead of immediate execution to ensure elements exist
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeLoadingScreen);
+  } else {
+    initializeLoadingScreen();
+  }
 </script>
 
 <style>

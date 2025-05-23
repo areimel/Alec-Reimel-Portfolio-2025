@@ -2,7 +2,7 @@
   
   import TerminalPrefix from "@components/TerminalComponents/TerminalPrefix.astro";
   import ContactFormSmall from "@components/Forms/ContactFormSmall.astro";
-  import DecoderText from "@components/AnimationComponents/DecoderText.astro";
+  import AnimationWrapper from "@components/AnimationComponents/AnimationWrapper.astro";
 
 ---
 
@@ -15,18 +15,22 @@
         <h1 class="text-4xl md:text-5xl font-bold mb-4 text-terminal-bright font-uav-mono text-glow-strong">
           <span>
             <TerminalPrefix />
-            <DecoderText 
+            <AnimationWrapper 
+              animation="DecoderText"
               text="Alec Reimel"
+              trigger="in-view"
               delay={1000}
             />
           </span>
         </h1>
-        <p class="text-xl md:text-2xl text-terminal-400 mb-8">
-          <DecoderText 
-              text="Coder // Designer // Hacker"
-              delay={750}
-            />
-        </p>
+        <div class="text-xl md:text-2xl text-terminal-400 mb-8">
+          <AnimationWrapper 
+            animation="DecoderText"
+            text="Coder // Designer // Hacker"
+            trigger="in-view"
+            delay={750}
+          />
+        </div>
         <p class="text-xl md:text-xl text-terminal-400 font-kode">
           10 years of industry experience, lifelong cyberpunk.
           <br/><br/>
