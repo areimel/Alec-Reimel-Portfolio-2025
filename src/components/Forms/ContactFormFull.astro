@@ -1,6 +1,7 @@
 ---
 import TerminalPrefix from '../TerminalComponents/TerminalPrefix.astro';
 import FormMessage from './FormMessage.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <form id="contact-form-full" class="w-full space-y-4">
@@ -8,64 +9,69 @@ import FormMessage from './FormMessage.astro';
     <!-- Replace with your Access Key -->
     <input type="hidden" name="access_key" value="75f8b211-81aa-45c2-9c7b-c11f447d30a0">
 
-    <!-- Name Input -->
-    <div class="form-group">
-        <label for="name" class="block text-terminal-400 font-kode text-sm mb-1">Name</label>
-        <input 
-            type="text" 
-            id="name" 
-            name="name" 
-            required
-            placeholder="Your name"
-            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
-        >
+    <!-- Name and Email Input Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Name Input -->
+        <div class="form-group">
+            <label for="name" class="block text-terminal-400 font-kode text-sm mb-1">Name (required)</label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                required
+                placeholder="Your name"
+                class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+            >
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+            <label for="email" class="block text-terminal-400 font-kode text-sm mb-1">Email (required)</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required
+                placeholder="your@email.com"
+                class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+            >
+        </div>
     </div>
 
-    <!-- Email Input -->
-    <div class="form-group">
-        <label for="email" class="block text-terminal-400 font-kode text-sm mb-1">Email</label>
-        <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            required
-            placeholder="your@email.com"
-            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
-        >
+    <!-- Phone and Subject Input Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Phone Input -->
+        <div class="form-group">
+            <label for="phone" class="block text-terminal-400 font-kode text-sm mb-1">Phone (optional)</label>
+            <input 
+                type="tel" 
+                id="phone" 
+                name="phone"
+                placeholder="+1 (234) 567-8900"
+                class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+            >
+        </div>
+
+        <!-- Subject Input -->
+        <div class="form-group">
+            <label for="subject" class="block text-terminal-400 font-kode text-sm mb-1">Subject (optional)</label>
+            <select 
+                id="subject" 
+                name="subject" 
+                class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
+            >
+                <option value="">Select a subject...</option>
+                <option value="general">General Inquiry</option>
+                <option value="support">Technical Support</option>
+                <option value="business">Business Opportunity</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
     </div>
 
-    <!-- Phone Input -->
+    <!-- Message Input (Full Width) -->
     <div class="form-group">
-        <label for="phone" class="block text-terminal-400 font-kode text-sm mb-1">Phone (optional)</label>
-        <input 
-            type="tel" 
-            id="phone" 
-            name="phone"
-            placeholder="+1 (234) 567-8900"
-            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
-        >
-    </div>
-
-    <!-- Subject Input -->
-    <div class="form-group">
-        <label for="subject" class="block text-terminal-400 font-kode text-sm mb-1">Subject</label>
-        <select 
-            id="subject" 
-            name="subject" 
-            required
-            class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
-        >
-            <option value="">Select a subject...</option>
-            <option value="general">General Inquiry</option>
-            <option value="support">Technical Support</option>
-            <option value="business">Business Opportunity</option>
-            <option value="other">Other</option>
-        </select>
-    </div>
-
-    <!-- Message Input -->
-    <div class="form-group">
-        <label for="message" class="block text-terminal-400 font-kode text-sm mb-1">Message</label>
+        <label for="message" class="block text-terminal-400 font-kode text-sm mb-1">Message (required)</label>
         <textarea 
             id="message" 
             name="message" 
@@ -76,45 +82,57 @@ import FormMessage from './FormMessage.astro';
         ></textarea>
     </div>
 
-    <!-- Preferred Contact Method -->
-    <div class="form-group">
-        <label class="block text-terminal-400 font-kode text-sm mb-2">Preferred Contact Method</label>
-        <div class="space-y-2">
-            <label class="flex items-center">
+    <!-- Preferred Contact Method and Privacy Policy Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <!-- Preferred Contact Method -->
+        <div class="form-group">
+            <label class="block text-terminal-400 font-kode text-sm mb-2">Preferred Contact Method</label>
+            <div class="space-y-2">
+                <label class="flex items-center cursor-pointer">
+                    <input 
+                        type="radio" 
+                        name="contact_method" 
+                        value="email" 
+                        checked
+                        class="contact-radio sr-only"
+                    >
+                    <div class="custom-radio flex items-center justify-center w-4 h-4 border border-terminal-300 bg-terminal-bg-primary rounded-full mr-2 transition-all hover:border-terminal-500">
+                        <div class="radio-dot w-2 h-2 bg-terminal-500 rounded-full opacity-0 transition-opacity"></div>
+                    </div>
+                    <span class="text-terminal-400 font-kode text-sm no-glow">Email</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                    <input 
+                        type="radio" 
+                        name="contact_method" 
+                        value="phone"
+                        class="contact-radio sr-only"
+                    >
+                    <div class="custom-radio flex items-center justify-center w-4 h-4 border border-terminal-300 bg-terminal-bg-primary rounded-full mr-2 transition-all hover:border-terminal-500">
+                        <div class="radio-dot w-2 h-2 bg-terminal-500 rounded-full opacity-0 transition-opacity"></div>
+                    </div>
+                    <span class="text-terminal-400 font-kode text-sm no-glow">Phone</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Privacy Policy Agreement -->
+        <div class="form-group flex items-end">
+            <label class="flex items-start cursor-pointer">
                 <input 
-                    type="radio" 
-                    name="contact_method" 
-                    value="email" 
-                    checked
-                    class="mr-2 bg-terminal-bg-primary border-terminal-300 text-terminal-500"
+                    type="checkbox" 
+                    name="privacy_agreement" 
+                    required
+                    class="privacy-checkbox sr-only"
                 >
-                <span class="text-terminal-400 font-kode text-sm">Email</span>
-            </label>
-            <label class="flex items-center">
-                <input 
-                    type="radio" 
-                    name="contact_method" 
-                    value="phone"
-                    class="mr-2 bg-terminal-bg-primary border-terminal-300 text-terminal-500"
-                >
-                <span class="text-terminal-400 font-kode text-sm">Phone</span>
+                <div class="custom-checkbox flex items-center justify-center w-4 h-4 border border-terminal-300 bg-terminal-bg-primary mt-1 mr-2 transition-all hover:border-terminal-500">
+                    <Icon name="tabler:check" class="w-3 h-3 text-terminal-500 opacity-0 transition-opacity check-icon" />
+                </div>
+                <span class="text-terminal-300 font-kode text-sm no-glow">
+                    I agree to the collection and processing of my personal information as described in the Privacy Policy.
+                </span>
             </label>
         </div>
-    </div>
-
-    <!-- Privacy Policy Agreement -->
-    <div class="form-group">
-        <label class="flex items-start">
-            <input 
-                type="checkbox" 
-                name="privacy_agreement" 
-                required
-                class="mt-1 mr-2 bg-terminal-bg-primary border-terminal-300 text-terminal-500"
-            >
-            <span class="text-terminal-300 font-kode text-sm">
-                I agree to the collection and processing of my personal information as described in the Privacy Policy.
-            </span>
-        </label>
     </div>
 
     <!-- Honeypot Spam Protection -->
@@ -124,15 +142,15 @@ import FormMessage from './FormMessage.astro';
     <button 
         type="submit"
         id="submit-btn-full"
-        class="w-full px-4 py-2.5 bg-terminal-500 text-terminal-bg-primary font-uav-mono rounded hover:bg-terminal-600 transition-colors text-glow-subtle text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        class="w-full px-4 py-2.5 bg-terminal-500 text-terminal-bg-primary font-uav-mono hover:bg-terminal-600 transition-colors text-glow-subtle text-sm disabled:opacity-50 disabled:cursor-not-allowed"
     >
         <TerminalPrefix />SUBMIT_MESSAGE
     </button>
 
     <!-- Response Message -->
-    <div class="text-center mt-4">
+    <!-- <div class="text-center mt-4">
         <p class="text-sm text-terminal-400 font-kode">Our team typically responds within 24 business hours.</p>
-    </div>
+    </div> -->
 </form>
 
 <!-- Thank You Modal -->
@@ -162,6 +180,70 @@ import FormMessage from './FormMessage.astro';
         interface Window {
             openthankYouFullModal: () => void;
             openerrorFullModal: () => void;
+        }
+    }
+
+    // Setup custom form controls
+    function setupCustomFormControls() {
+        // Handle custom checkboxes
+        const checkboxes = document.querySelectorAll('.privacy-checkbox');
+        checkboxes.forEach(checkbox => {
+            const checkboxInput = checkbox as HTMLInputElement;
+            
+            // Initialize UI based on current state
+            updateCheckboxUI(checkboxInput);
+            
+            // Add change event listener
+            checkboxInput.addEventListener('change', () => {
+                updateCheckboxUI(checkboxInput);
+            });
+        });
+        
+        // Handle custom radio buttons
+        const radioButtons = document.querySelectorAll('.contact-radio');
+        radioButtons.forEach(radio => {
+            const radioInput = radio as HTMLInputElement;
+            
+            // Initialize UI based on current state
+            updateRadioUI(radioInput);
+            
+            // Add change event listener
+            radioInput.addEventListener('change', () => {
+                // Update all radio buttons in the same group
+                const groupName = radioInput.name;
+                const allRadiosInGroup = document.querySelectorAll(`input[name="${groupName}"]`);
+                allRadiosInGroup.forEach(groupRadio => {
+                    updateRadioUI(groupRadio as HTMLInputElement);
+                });
+            });
+        });
+    }
+    
+    // Update custom checkbox appearance based on checked state
+    function updateCheckboxUI(checkbox: HTMLInputElement) {
+        const checkIcon = checkbox.parentElement?.querySelector('.check-icon');
+        if (checkIcon) {
+            if (checkbox.checked) {
+                checkIcon.classList.remove('opacity-0');
+                checkIcon.classList.add('opacity-100');
+            } else {
+                checkIcon.classList.remove('opacity-100');
+                checkIcon.classList.add('opacity-0');
+            }
+        }
+    }
+    
+    // Update custom radio button appearance based on checked state
+    function updateRadioUI(radio: HTMLInputElement) {
+        const radioDot = radio.parentElement?.querySelector('.radio-dot');
+        if (radioDot) {
+            if (radio.checked) {
+                radioDot.classList.remove('opacity-0');
+                radioDot.classList.add('opacity-100');
+            } else {
+                radioDot.classList.remove('opacity-100');
+                radioDot.classList.add('opacity-0');
+            }
         }
     }
 
@@ -202,6 +284,8 @@ import FormMessage from './FormMessage.astro';
                 if (response.status === 200) {
                     // Success - show thank you modal and reset form
                     form.reset();
+                    // Update custom form controls after reset
+                    setupCustomFormControls();
                     window.openthankYouFullModal();
                 } else {
                     // Error from Web3Forms API
@@ -223,7 +307,10 @@ import FormMessage from './FormMessage.astro';
     }
     
     // Setup on page load and navigation
-    document.addEventListener('astro:page-load', setupContactFormFull);
+    document.addEventListener('astro:page-load', () => {
+        setupCustomFormControls();
+        setupContactFormFull();
+    });
 </script>
 
 <style>
@@ -236,13 +323,40 @@ import FormMessage from './FormMessage.astro';
         box-shadow: 0 0 8px rgba(var(--color-terminal-500-rgb), 0.5);
     }
 
-    /* Custom radio and checkbox styling */
-    input[type="radio"], input[type="checkbox"] {
-        @apply appearance-none w-4 h-4 border border-terminal-300 bg-terminal-bg-primary rounded-full checked:bg-terminal-500 checked:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500 transition-all;
+    /* Custom checkbox and radio button styling */
+    .custom-checkbox,
+    .custom-radio {
+        transition: all 0.2s ease-in-out;
     }
-
-    input[type="checkbox"] {
-        @apply rounded;
+    
+    /* Checked state for checkboxes */
+    .privacy-checkbox:checked + .custom-checkbox {
+        background-color: var(--terminal-bg-accent);
+        border-color: var(--terminal-bright);
+    }
+    
+    /* Checked state for radio buttons */
+    .contact-radio:checked + .custom-radio {
+        border-color: var(--terminal-500);
+    }
+    
+    /* Focus state for accessibility */
+    .privacy-checkbox:focus + .custom-checkbox,
+    .contact-radio:focus + .custom-radio {
+        box-shadow: 0 0 0 2px rgba(var(--terminal-500-rgb), 0.3);
+    }
+    
+    /* Hover state */
+    .custom-checkbox:hover,
+    .custom-radio:hover {
+        border-color: var(--terminal-500);
+    }
+    
+    /* Explicitly disable glow effects */
+    .no-glow {
+        text-shadow: none !important;
+        box-shadow: none !important;
+        filter: none !important;
     }
     
     /* Loading animation for submit button */

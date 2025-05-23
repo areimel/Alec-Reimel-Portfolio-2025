@@ -2,7 +2,6 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import ContactFormFull from '~/components/Forms/ContactFormFull.astro';
-import Features2 from '~/components/widgets/Features2.astro';
 
 const metadata = {
   title: 'Contact',
@@ -17,60 +16,37 @@ const metadata = {
   <!-- Contact Form Section -->
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
     <div class="py-12">
-      <div class="text-center max-w-3xl mx-auto mb-8">
-        <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4">Drop us a message today!</h2>
-        <p class="text-terminal-400 font-kode">For quicker answers, explore our FAQs section below. You may find the solution you're looking for right there!</p>
-      </div>
-      <div class="max-w-3xl mx-auto">
-        <div class="rounded-lg backdrop-blur border border-terminal-300/20 bg-terminal-bg-secondary shadow p-4 sm:p-6 lg:p-8">
+      
+      <!-- Grid Layout: Text | Form -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start border border-terminal-400 bg-terminal-bg-secondary shadow p-4 sm:p-6 lg:p-8 divide-x divide-terminal-400">
+        
+        <!-- Text Content Column -->
+        <div class="space-y-6 md:pr-0 lg:pr-8">
+          <div>
+            <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4 text-center text-balance">Drop us a message today!</h2>
+            <p class="text-terminal-400 font-kode text-lg">For quicker answers, explore our FAQs section below. You may find the solution you're looking for right there!</p>
+          </div>
+          
+          <!-- Additional text content can go here -->
+          <div class="space-y-4">
+            <p class="text-terminal-400 font-kode text-lg">
+              We're here to help and answer any questions you might have. We look forward to hearing from you!
+            </p>
+          </div>
+        </div>
+        
+        <!-- Form Column -->
+        <div class="md:pl-0 lg:pl-8">
+          <div>
+            <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4 text-center text-balance">Contact Me</h2>
+          </div>
           <ContactFormFull />
         </div>
+        
       </div>
+
     </div>
   </div>
 
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="We are here to help!"
-    classes={{
-      container: 'max-w-6xl mx-auto',
-      items: 'gap-6',
-      item: 'bg-terminal-bg-secondary border border-terminal-300/20 rounded-lg p-6',
-      title: 'text-terminal-500 font-kode',
-      description: 'text-terminal-400 font-kode',
-      icon: 'text-terminal-500'
-    }}
-    items={[
-      {
-        title: 'General support',
-        description: `Chat with us for inquiries related to account management, website navigation, payment issues, accessing purchased templates or general questions about the website's functionality.`,
-      },
-      {
-        title: 'Contact sales',
-        description:
-          'Chat with us for questions about purchases, customization options, licensing for commercial use, inquiries about specific template, etc.',
-      },
-      {
-        title: 'Technical support',
-        description:
-          'Chat with us when facing issues like template installation, problems editing difficulties, compatibility issues with software or download errors, or other technical challenges related to using the templates.',
-      },
-      {
-        title: 'Phone',
-        description: '+1 (234) 567-890',
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Email',
-        description: 'contact@support.com',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Location',
-        description: '1234 Lorem Ipsum St, 12345, Miami, EEUU',
-        icon: 'tabler:map-pin',
-      },
-    ]}
-  />
+  
 </Layout>
