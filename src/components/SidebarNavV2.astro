@@ -65,8 +65,9 @@ function isCurrent(item: NavItem): boolean {
                 { current: isCurrent(item) }
               ]}
             >
-              <div class="icon-container flex items-center justify-center p-2">
-                <Icon name={item.icon} class="w-5 h-5 md:w-8 md:h-8" />
+              <div class="icon-container flex flex-col items-center justify-center p-2">
+                <Icon name={item.icon} class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
+                <span class="text-[6px] md:text-[10px] font-uav-mono">{item.text}</span>
               </div>
             </a>
           </li>
@@ -78,10 +79,11 @@ function isCurrent(item: NavItem): boolean {
     <div class="border-t border-terminal-400 mt-auto">
       <button 
         id="theme-settings-btn"
-        class="flex items-center justify-center w-full h-[50px] md:h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
+        class="flex flex-col items-center justify-center w-full h-[50px] md:h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
         aria-label="Theme Settings"
       >
-        <Icon name="tabler:adjustments" class="w-8 h-8 md:w-8 md:h-8" />
+        <Icon name="tabler:adjustments" class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
+        <span class="text-[6px] md:text-[10px] font-uav-mono">Theme</span>
       </button>
     </div>
   </nav>
