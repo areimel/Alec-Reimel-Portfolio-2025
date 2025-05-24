@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import ContactFormFull from '~/components/Forms/ContactFormFull.astro';
+import { Icon } from 'astro-icon/components';
 
 const metadata = {
   title: 'Contact',
@@ -23,16 +24,16 @@ const metadata = {
         <!-- Text Content Column -->
         <div class="space-y-6 md:pr-0 lg:pr-8">
           <div>
-            <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4 text-center text-balance">Drop us a message today!</h2>
-            <p class="text-terminal-400 font-kode text-lg">For quicker answers, explore our FAQs section below. You may find the solution you're looking for right there!</p>
-          </div>
-          
-          <!-- Additional text content can go here -->
-          <div class="space-y-4">
+<!--             <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4 text-center text-balance"></h2> -->
             <p class="text-terminal-400 font-kode text-lg">
-              We're here to help and answer any questions you might have. We look forward to hearing from you!
+              Have a project in mind? Send me a message.<br/><br/>
+              I try to get back to emails within 48 hours.
             </p>
           </div>
+          <a href="mailto:alecreimel@gmail.com" class="text-terminal-400 font-kode text-lg flex items-center gap-2">
+            <Icon name="mdi:email" class="w-6 h-6" />
+            alecreimel@gmail.com
+          </a>
         </div>
         
         <!-- Form Column -->
