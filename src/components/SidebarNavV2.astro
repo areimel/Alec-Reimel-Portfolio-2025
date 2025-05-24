@@ -1,6 +1,5 @@
 ---
 import ThemeOptions from './ThemeOptions.astro';
-import MouseToolTip from './MouseToolTip.astro';
 import { Icon } from 'astro-icon/components';
 
 interface NavItem {
@@ -12,19 +11,11 @@ interface NavItem {
 
 interface Props {
   class?: string;
-  baseWidth?: string;
-  openWidth?: string;
-  iconSize?: string;
-  mobileIconSize?: string;
   style?: string;
 }
 
 const { 
   class: className, 
-  baseWidth = '200px',
-  openWidth = '300px',
-  iconSize = 'w-8 h-8',
-  mobileIconSize = 'w-5 h-5',
   style
 } = Astro.props;
 
@@ -57,53 +48,26 @@ function isCurrent(item: NavItem): boolean {
 }
 ---
 
-<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} data-base-width={baseWidth} data-open-width={openWidth} data-icon-size={iconSize} data-mobile-icon-size={mobileIconSize} style={style}>
+<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} style={style}>
   <!-- Sidebar Navigation -->
   <nav
     id="sidebar-nav"
     class="h-full w-full bg-terminal-bg-secondary border-r border-terminal-400 transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
   >
     <div class="relative flex-1">
-      <!-- Sidebar toggle button - styled like Settings button -->
-      <div class="border-b border-terminal-400">
-        <button 
-          id="sidebar-open"
-          class="flex items-center justify-center w-full h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
-          aria-label="Open Nav"
-          data-tooltip-text="Open Nav"
-          data-tooltip-position="right"
-        >
-          <Icon name="tabler:menu-2" class={iconSize} />
-        </button>
-        <button 
-          id="sidebar-close"
-          class="hidden flex items-center justify-center w-full h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
-          aria-label="Close Nav"
-          data-tooltip-text="Close Nav"
-          data-tooltip-position="right"
-        >
-          <Icon name="tabler:chevron-left" class={iconSize} />
-          <span class="nav-text">&nbsp;Nav</span>
-        </button>
-      </div>
-
       <ul class="space-y-0 font-kode divide-y divide-terminal-400 border-b border-terminal-400">
         {navItems.map((item) => (
           <li>
             <a 
               href={item.href} 
               class:list={[
-                "nav-link flex items-center justify-start w-full ",
+                "nav-link flex items-center justify-center w-full",
                 { current: isCurrent(item) }
               ]}
-              data-tooltip-text={item.text}
-              data-tooltip-position="right"
             >
-              <div class="icon-container flex items-center justify-center p-2" style="min-width: 100px; width: 100px;">
-                <Icon name={item.icon} class={iconSize} />
-              </div>
-              <div class="text-container p-2 pl-0">
-                <span class="nav-text">&nbsp;{item.text}</span>
+              <div class="icon-container flex flex-col items-center justify-center p-2">
+                <Icon name={item.icon} class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
+                <span class="text-[6px] md:text-[10px] font-uav-mono">{item.text}</span>
               </div>
             </a>
           </li>
@@ -115,93 +79,22 @@ function isCurrent(item: NavItem): boolean {
     <div class="border-t border-terminal-400 mt-auto">
       <button 
         id="theme-settings-btn"
-        class="flex items-center justify-center w-full h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
+        class="flex flex-col items-center justify-center w-full h-[50px] md:h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
         aria-label="Theme Settings"
-        data-tooltip-text="Theme Settings"
-        data-tooltip-position="upper-right"
       >
-        <Icon name="tabler:adjustments" class={iconSize} />
-        <span class="nav-text">&nbsp;Theme</span>
+        <Icon name="tabler:adjustments" class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
+        <span class="text-[6px] md:text-[10px] font-uav-mono">Theme</span>
       </button>
     </div>
   </nav>
 </div>
-
-<!-- Include MouseToolTip component -->
-<MouseToolTip />
 
 <!-- Include ThemeOptions modal -->
 <ThemeOptions />
 
 <script>
   function setupSidebar() {
-    const openBtn = document.getElementById('sidebar-open');
-    const closeBtn = document.getElementById('sidebar-close');
-    const sidebarContainer = document.getElementById('sidebar-container');
-    const mainContent = document.querySelector('main');
     const settingsBtn = document.getElementById('theme-settings-btn');
-    
-    // Get width values from data attributes
-    const baseWidth = sidebarContainer?.dataset.baseWidth || '100px';
-    const openWidth = sidebarContainer?.dataset.openWidth || '250px';
-    const iconSize = sidebarContainer?.dataset.iconSize || 'w-8 h-8';
-    const mobileIconSize = sidebarContainer?.dataset.mobileIconSize || 'w-5 h-5';
-    
-    // Animation durations (in milliseconds)
-    const sidebarAnimDuration = 300; // Should match CSS transition duration
-    const textAnimDuration = 300;    // Should match CSS transition duration for text
-
-    function expandSidebar() {
-      // Show the close button and hide the open button
-      openBtn?.classList.add('hidden');
-      closeBtn?.classList.remove('hidden');
-      
-      // Add active class to sidebar
-      sidebarContainer?.classList.add('active');
-      
-      // Set the width
-      sidebarContainer?.style.setProperty('width', openWidth);
-      
-      // Adjust main content width
-      if (mainContent) {
-        mainContent.style.width = `calc(100% - ${openWidth})`;
-      }
-      
-      // Text fade-in is handled by CSS with transition-delay
-    }
-
-    function collapseSidebar() {
-      // First trigger text fade-out by adding a class
-      sidebarContainer?.classList.add('text-fading');
-      
-      // Wait for text to fade out, then collapse sidebar
-      setTimeout(() => {
-        // Show the open button and hide the close button
-        closeBtn?.classList.add('hidden');
-        openBtn?.classList.remove('hidden');
-        
-        // Remove active class from sidebar
-        sidebarContainer?.classList.remove('active');
-        
-        // Reset the width
-        sidebarContainer?.style.setProperty('width', baseWidth);
-        
-        // Adjust main content width
-        if (mainContent) {
-          mainContent.style.width = `calc(100% - ${baseWidth})`;
-        }
-        
-        // Remove the text-fading class after animation completes
-        setTimeout(() => {
-          sidebarContainer?.classList.remove('text-fading');
-        }, sidebarAnimDuration);
-        
-      }, textAnimDuration);
-    }
-
-    // Setup event listeners
-    openBtn?.addEventListener('click', expandSidebar);
-    closeBtn?.addEventListener('click', collapseSidebar);
     
     // Setup settings button
     settingsBtn?.addEventListener('click', () => {
@@ -210,26 +103,6 @@ function isCurrent(item: NavItem): boolean {
         window.openThemeOptionsModal();
       }
     });
-
-    // Apply mobile icon sizes based on screen width
-    function updateIconSizes() {
-      const allIcons = document.querySelectorAll('.sidebar-nav-container .astro-icon');
-      if (window.innerWidth < 768) { // Mobile breakpoint
-        allIcons.forEach(icon => {
-          // Remove desktop size classes and add mobile size classes
-          icon.className = icon.className.replace(iconSize, mobileIconSize);
-        });
-      } else {
-        allIcons.forEach(icon => {
-          // Remove mobile size classes and add desktop size classes
-          icon.className = icon.className.replace(mobileIconSize, iconSize);
-        });
-      }
-    }
-
-    // Initial call and event listener for resize
-    updateIconSizes();
-    window.addEventListener('resize', updateIconSizes);
   }
 
   // Handle both initial load and subsequent navigation
@@ -237,9 +110,10 @@ function isCurrent(item: NavItem): boolean {
 </script>
 
 <style>
+  
   /* Navigation link styling */
   :global(.nav-link) {
-    @apply text-terminal-500 hover:text-terminal-bg-primary transition-colors hover:bg-terminal-500 h-[100px];
+    @apply text-terminal-500 hover:text-terminal-bg-primary transition-colors hover:bg-terminal-500 h-[50px] md:h-[100px];
   }
 
   /* Add glow effect to navigation links on hover */
@@ -250,27 +124,5 @@ function isCurrent(item: NavItem): boolean {
   /* Current navigation link */
   :global(.nav-link.current) {
     @apply text-terminal-bg-primary bg-terminal-500;
-  }
-
-  /* Hide text when sidebar is collapsed */
-  :global(.nav-text) {
-    @apply transition-all duration-200 opacity-0 w-0 overflow-hidden;
-  }
-
-  /* Show text when sidebar is expanded - with delay */
-  :global(.sidebar-nav-container.active .nav-text) {
-    @apply opacity-100 w-auto overflow-visible;
-    transition-delay: 300ms; /* Wait for sidebar to finish expanding */
-  }
-  
-  /* When sidebar is collapsing, make text fade out immediately */
-  :global(.sidebar-nav-container.text-fading .nav-text) {
-    @apply opacity-0 w-0 overflow-hidden;
-    transition-delay: 0ms;
-  }
-
-  /* Active state for the sidebar */
-  :global(.sidebar-nav-container.active) {
-    @apply transition-all duration-300 ease-in-out shadow-lg;
   }
 </style> 

@@ -13,8 +13,6 @@ export interface Props {
 }
 
 const { metadata } = Astro.props;
-const baseWidth = '100px';
-const openWidth = '250px';
 ---
 
 <Layout metadata={metadata}>
@@ -23,14 +21,11 @@ const openWidth = '250px';
   </slot> -->
   <div class="flex min-h-screen">
     <SidebarNav 
-      class="h-screen fixed top-0 left-0 transition-width duration-300 ease-in-out"
-      baseWidth={baseWidth}
-      openWidth={openWidth}
-      style={`width: ${baseWidth};`}
+      class="h-screen fixed top-0 left-0 w-[50px] md:w-[100px]"
     />
     <main 
-      class="ml-auto transition-width duration-300 ease-in-out"
-      style={`width: calc(100% - ${baseWidth});`}
+      id="main-content"
+      class="ml-[50px] md:ml-[100px] w-[calc(100%-50px)] md:w-[calc(100%-100px)]"
     >
       <slot />
     </main>
