@@ -2,7 +2,7 @@
 publishDate: 2024-04-04T00:00:00Z
 title: AI-Assisted Web Development using Cursor
 excerpt: Discover how Cursor IDE, powered by advanced AI models, is revolutionizing web development by offering intelligent code completion, refactoring, and pair programming capabilities.
-image: https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+image: /images/blog/photo-1633356122544-f134324a6cee.webp
 tags:
   - web-development
   - AI
@@ -26,7 +26,7 @@ At the heart of Cursor's capabilities are several powerful AI models:
 - Custom-trained models for context-aware code completion
 - Specialized models for documentation generation and code explanation
 
-![Target](https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+![Target](/images/blog/photo-1542831371-29b0f74f9713.webp)
 
 ### Intelligent Code Generation
 
@@ -55,7 +55,7 @@ Cursor acts as an intelligent pair programmer that:
 3. Helps debug complex issues
 4. Explains code behavior and potential improvements
 
-![Target](https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+![Target](/images/blog/photo-1461749280684-dccba630e2f6.webp)
 
 ## Practical Applications
 
@@ -98,7 +98,7 @@ To begin using Cursor for your web development:
 3. Set up project-specific configurations
 4. Learn the key AI commands and shortcuts
 
-![Target](https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+![Target](/images/blog/photo-1555066931-4365d14bab8c.webp)
 
 ## The Future of AI-Assisted Development
 

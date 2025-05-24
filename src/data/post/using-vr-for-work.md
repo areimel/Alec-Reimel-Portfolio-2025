@@ -2,7 +2,7 @@
 publishDate: 2024-03-11T00:00:00Z
 title: Using a VR Headset as a Work Computer
 excerpt: Discover how virtual reality is revolutionizing remote work by transforming any space into your ideal office environment, complete with infinite monitors and immersive workspaces.
-image: https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+image: /images/blog/photo-1622979135225-d2ba269cf1ac.webp
 tags:
   - VR
   - productivity
@@ -24,7 +24,7 @@ One of the most compelling use cases for VR workstations is mobile productivity.
 - Secondary monitors for reference materials and communication tools
 - A serene virtual environment that helps you focus despite your surroundings
 
-![Target](https://images.unsplash.com/photo-1626379953822-baec19c3accd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+![Target](/images/blog/photo-1626379953822-baec19c3accd.webp)
 
 ### Infinite Monitor Real Estate
 
@@ -44,7 +44,7 @@ One of the most underappreciated aspects of VR workspaces is the ability to choo
 - A serene beach setting with gentle waves
 - A minimalist void for maximum focus
 
-![Target](http://images.unsplash.com/photo-1633521184087-cba52bd78fd1?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+![Target](/images/blog/photo-1633521184087-cba52bd78fd1.webp)
 
 ### Real-world Applications
 
@@ -73,7 +73,7 @@ If you're interested in trying VR for work, here's what you'll need:
 3. A comfortable controller or keyboard setup
 4. Good internet connectivity for remote desktop streaming
 
-![Target](https://plus.unsplash.com/premium_photo-1718198498787-1894d06be7c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+![Target](/image/blog/premium_photo-1718198498787-1894d06be7c4.webp)
 
 ## The Future of Work
 
