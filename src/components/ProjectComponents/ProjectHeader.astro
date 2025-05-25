@@ -1,7 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
-import Image from '~/components/common/Image.astro';
 
 
 interface Props {
@@ -69,14 +68,10 @@ const {
       
       <!-- Cell 2: Project image -->
       <div class="div2 project-cell flex justify-center items-center p-0 overflow-hidden">
-        <Image
+        <img
           src={image}
-          class="w-full h-auto object-cover "
-          widths={[400, 900]}
-          sizes="(max-width: 900px) 400px, 900px"
+          class="w-full h-auto object-cover"
           alt={title || ''}
-          width={900}
-          height={506}
           loading="eager"
           decoding="async"
         />

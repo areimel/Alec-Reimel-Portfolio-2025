@@ -1,4 +1,3 @@
-import { isUnpicCompatible, unpicOptimizer, astroAsseetsOptimizer } from './images-optimization';
 import type { ImageMetadata } from 'astro';
 import type { OpenGraph } from '@astrolib/seo';
 
@@ -58,9 +57,8 @@ export const adaptOpenGraphImages = async (
   }
 
   const images = openGraph.images;
-  const defaultWidth = 1200;
-  const defaultHeight = 626;
 
+  // Simple image processing without optimization
   const adaptedImages = await Promise.all(
     images.map(async (image) => {
       if (image?.url) {
@@ -71,33 +69,15 @@ export const adaptOpenGraphImages = async (
           };
         }
 
-        let _image;
+        // Just use the image as-is without any optimization
+        const imageUrl = typeof resolvedImage === 'string' 
+          ? resolvedImage 
+          : resolvedImage?.src || '';
 
-        if (
-          typeof resolvedImage === 'string' &&
-          (resolvedImage.startsWith('http://') || resolvedImage.startsWith('https://')) &&
-          isUnpicCompatible(resolvedImage)
-        ) {
-          _image = (await unpicOptimizer(resolvedImage, [defaultWidth], defaultWidth, defaultHeight, 'jpg'))[0];
-        } else if (resolvedImage) {
-          const dimensions =
-            typeof resolvedImage !== 'string' && resolvedImage?.width <= defaultWidth
-              ? [resolvedImage?.width, resolvedImage?.height]
-              : [defaultWidth, defaultHeight];
-          _image = (
-            await astroAsseetsOptimizer(resolvedImage, [dimensions[0]], dimensions[0], dimensions[1], 'jpg')
-          )[0];
-        }
-
-        if (typeof _image === 'object') {
-          return {
-            url: 'src' in _image && typeof _image.src === 'string' ? String(new URL(_image.src, astroSite)) : '',
-            width: 'width' in _image && typeof _image.width === 'number' ? _image.width : undefined,
-            height: 'height' in _image && typeof _image.height === 'number' ? _image.height : undefined,
-          };
-        }
         return {
-          url: '',
+          url: imageUrl.startsWith('/') ? String(new URL(imageUrl, astroSite)) : imageUrl,
+          width: typeof resolvedImage !== 'string' ? resolvedImage?.width : undefined,
+          height: typeof resolvedImage !== 'string' ? resolvedImage?.height : undefined,
         };
       }
 
