@@ -51,6 +51,10 @@ if (!AnimationComponent) {
 </div>
 
 <script>
+  // Global observer instances to manage cleanup
+  let globalObservers: IntersectionObserver[] = [];
+  let loadingScreenListeners: Array<{element: HTMLElement, listener: EventListener}> = [];
+  
   // Setup all animation wrappers
   function setupAnimationWrappers() {
     const wrappers = document.querySelectorAll<HTMLElement>('.animation-wrapper');
@@ -63,6 +67,9 @@ if (!AnimationComponent) {
       if (mobileDisabled && window.innerWidth < 768) {
         return;
       }
+      
+      // Reset animation state for view transitions
+      resetAnimationState(wrapper);
       
       // Setup based on trigger type
       switch (trigger) {
@@ -82,63 +89,171 @@ if (!AnimationComponent) {
     });
   }
   
+  // Reset animation state to initial hidden state
+  function resetAnimationState(wrapper: HTMLElement) {
+    const animationElement = wrapper.querySelector('.decoder-text') as HTMLElement;
+    if (animationElement) {
+      // Reset opacity and clear any existing animations
+      animationElement.style.opacity = '0';
+      animationElement.style.transition = '';
+      
+      // Reset character elements back to original characters
+      const charElements = animationElement.querySelectorAll<HTMLElement>('.decoder-char');
+      charElements.forEach(charElement => {
+        const originalChar = charElement.dataset.char || '';
+        charElement.textContent = originalChar;
+      });
+      
+      // Mark as not animated
+      wrapper.removeAttribute('data-animated');
+    }
+  }
+  
   // Setup IntersectionObserver for in-view triggers
   function setupInViewTrigger(wrapper: HTMLElement) {
+    // Skip if already animated (unless it's a new page load)
+    if (wrapper.hasAttribute('data-animated')) {
+      return;
+    }
+    
+    // Check if element is already in view (past bottom 5% of viewport)
+    function checkElementInView(element: HTMLElement): boolean {
+      const rect = element.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const triggerPoint = viewportHeight * 0.95; // Bottom 5% of viewport
+      
+      // Element is in view if its top is above the trigger point
+      return rect.top <= triggerPoint;
+    }
+    
+    // Function to trigger animation
+    function triggerAnimation() {
+      const animationElement = wrapper.querySelector('.decoder-text');
+      if (animationElement && !wrapper.hasAttribute('data-animated')) {
+        // Mark as animated to prevent re-triggering
+        wrapper.setAttribute('data-animated', 'true');
+        
+        // Trigger the animation by dispatching a custom event
+        const event = new CustomEvent('trigger-animation');
+        animationElement.dispatchEvent(event);
+        
+        // Disconnect observer since we only need to trigger once per page load
+        observer.disconnect();
+      }
+    }
+    
+    // Check immediately if element is already in view
+    if (checkElementInView(wrapper)) {
+      // Use small delay to ensure DOM is ready
+      setTimeout(triggerAnimation, 50);
+      return;
+    }
+    
+    // Set up observer for elements not currently in view
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Find the animation element inside the wrapper
-          const animationElement = wrapper.querySelector('.decoder-text'); 
-          if (animationElement) {
-            // Trigger the animation by dispatching a custom event
-            const event = new CustomEvent('trigger-animation');
-            animationElement.dispatchEvent(event);
-          }
-          
-          // Unobserve after triggering to prevent repeated animations
-          observer.unobserve(wrapper);
+        // Use our custom check instead of relying on isIntersecting
+        if (checkElementInView(entry.target as HTMLElement)) {
+          triggerAnimation();
         }
       });
-    }, { threshold: 0.2 }); // Trigger when 20% of element is visible
+    }, { 
+      // Use threshold of 0 and rely on our custom viewport check
+      threshold: 0,
+      // Add some margin to catch elements before they're fully visible
+      rootMargin: '50px 0px 0px 0px'
+    });
     
     observer.observe(wrapper);
+    globalObservers.push(observer);
   }
   
   // Trigger when loading screen ends
   function triggerOnLoadingScreenEnd(wrapper: HTMLElement) {
-    document.addEventListener('loading-screen-end', () => {
+    // Clean up existing listener if it exists
+    const existingListener = loadingScreenListeners.find(l => l.element === wrapper);
+    if (existingListener) {
+      document.removeEventListener('loading-screen-end', existingListener.listener as EventListener);
+      document.removeEventListener('loadingScreenComplete', existingListener.listener as EventListener);
+    }
+    
+    const listener = () => {
       const animationElement = wrapper.querySelector('.decoder-text');
-      if (animationElement) {
+      if (animationElement && !wrapper.hasAttribute('data-animated')) {
+        wrapper.setAttribute('data-animated', 'true');
         const event = new CustomEvent('trigger-animation');
         animationElement.dispatchEvent(event);
       }
-    });
+    };
+    
+    // Listen to both event names for compatibility
+    document.addEventListener('loading-screen-end', listener);
+    document.addEventListener('loadingScreenComplete', listener);
+    loadingScreenListeners.push({ element: wrapper, listener });
   }
   
-  // Setup hover trigger
+  // Setup hover trigger (can be re-triggered)
   function setupHoverTrigger(wrapper: HTMLElement) {
+    const existingListener = wrapper.getAttribute('data-hover-setup');
+    if (existingListener) return; // Already setup
+    
+    wrapper.setAttribute('data-hover-setup', 'true');
     wrapper.addEventListener('mouseenter', () => {
       const animationElement = wrapper.querySelector('.decoder-text');
       if (animationElement) {
+        // Allow hover animations to re-trigger
+        resetAnimationState(wrapper);
         const event = new CustomEvent('trigger-animation');
         animationElement.dispatchEvent(event);
       }
     });
   }
   
-  // Setup click trigger
+  // Setup click trigger (can be re-triggered)  
   function setupClickTrigger(wrapper: HTMLElement) {
+    const existingListener = wrapper.getAttribute('data-click-setup');
+    if (existingListener) return; // Already setup
+    
+    wrapper.setAttribute('data-click-setup', 'true');
     wrapper.addEventListener('click', () => {
       const animationElement = wrapper.querySelector('.decoder-text');
       if (animationElement) {
+        // Allow click animations to re-trigger
+        resetAnimationState(wrapper);
         const event = new CustomEvent('trigger-animation');
         animationElement.dispatchEvent(event);
       }
     });
   }
   
-  // Initialize when DOM is ready
-  document.addEventListener('DOMContentLoaded', setupAnimationWrappers);
+  // Cleanup function for view transitions
+  function cleanupAnimations() {
+    // Disconnect all observers
+    globalObservers.forEach(observer => observer.disconnect());
+    globalObservers = [];
+    
+    // Clear loading screen listeners
+    loadingScreenListeners.forEach(({ listener }) => {
+      document.removeEventListener('loading-screen-end', listener as EventListener);
+      document.removeEventListener('loadingScreenComplete', listener as EventListener);
+    });
+    loadingScreenListeners = [];
+  }
+  
+  // Initialize animations
+  function initializeAnimations() {
+    // Small delay to ensure DOM is fully ready
+    setTimeout(() => {
+      setupAnimationWrappers();
+    }, 10);
+  }
+  
+  // Setup for initial page load and view transitions
+  document.addEventListener('DOMContentLoaded', initializeAnimations);
+  
+  // Handle view transitions
+  document.addEventListener('astro:before-swap', cleanupAnimations);
+  document.addEventListener('astro:after-swap', initializeAnimations);
 </script>
 
 <style>

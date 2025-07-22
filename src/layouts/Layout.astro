@@ -32,7 +32,11 @@ const defaultTheme = 'theme-green';
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class={`2xl:text-[20px] ${defaultTheme}`}>
+<html 
+  lang={language} 
+  dir={textDirection} 
+  class={`2xl:text-[20px] ${defaultTheme}`} 
+>
   <head>
     <CommonMeta />
     <Favicons />
@@ -44,6 +48,65 @@ const defaultTheme = 'theme-green';
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />
+    
+    <!-- View Transition Styles -->
+    <style>
+      /* Smooth view transitions with terminal theme compatibility */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 0.3s;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        animation-fill-mode: both;
+      }
+      
+      /* Prevent flash during transitions */
+      ::view-transition-old(root) {
+        animation-name: fade-out;
+      }
+      
+      ::view-transition-new(root) {
+        animation-name: fade-in;
+      }
+      
+      @keyframes fade-out {
+        from { opacity: 1; }
+        to { opacity: 0.8; }
+      }
+      
+      @keyframes fade-in {
+        from { opacity: 0.8; }
+        to { opacity: 1; }
+      }
+      
+      /* Loading state during transitions */
+      html[data-astro-transition] {
+        overflow-x: hidden;
+      }
+      
+      html[data-astro-transition] body {
+        transition: opacity 0.15s ease-in-out;
+      }
+      
+      /* Reduce motion for accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation: none;
+          animation-duration: 0.01s;
+        }
+      }
+      
+      /* Terminal-specific transition optimizations */
+      .theme-green ::view-transition-old(root),
+      .theme-amber ::view-transition-old(root) {
+        filter: brightness(0.95);
+      }
+      
+      .theme-green ::view-transition-new(root),
+      .theme-amber ::view-transition-new(root) {
+        filter: brightness(1.05);
+      }
+    </style>
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight font-sans">
@@ -52,5 +115,71 @@ const defaultTheme = 'theme-green';
     <slot />
 
     <BasicScripts />
+    
+    <!-- Enhanced View Transition Coordination -->
+    <script>
+      // Track transition state for better coordination
+      let isTransitioning = false;
+      
+      // Prepare for view transition
+      document.addEventListener('astro:before-preparation', (e) => {
+        isTransitioning = true;
+        
+        // Add transitioning class for styling
+        document.documentElement.setAttribute('data-astro-transition', 'preparing');
+        
+        // Preserve current theme state
+        const currentTheme = Array.from(document.documentElement.classList)
+          .find(cls => cls.startsWith('theme-'));
+        if (currentTheme) {
+          sessionStorage.setItem('preservedTheme', currentTheme);
+        }
+      });
+      
+      // Apply preserved theme before swap to prevent flash
+      document.addEventListener('astro:before-swap', (e) => {
+        const preservedTheme = sessionStorage.getItem('preservedTheme');
+        if (preservedTheme) {
+          // Remove existing theme classes
+          document.documentElement.classList.remove(
+            'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
+          );
+          // Apply preserved theme immediately
+          document.documentElement.classList.add(preservedTheme);
+        }
+        
+        document.documentElement.setAttribute('data-astro-transition', 'swapping');
+      });
+      
+      // Clean up after transition
+      document.addEventListener('astro:after-swap', () => {
+        document.documentElement.setAttribute('data-astro-transition', 'complete');
+        
+        // Clean up preserved theme from storage
+        sessionStorage.removeItem('preservedTheme');
+      });
+      
+      // Finalize transition
+      document.addEventListener('astro:page-load', () => {
+        isTransitioning = false;
+        document.documentElement.removeAttribute('data-astro-transition');
+        
+        // Ensure animations can run properly after transition
+        requestAnimationFrame(() => {
+          document.dispatchEvent(new CustomEvent('page-transition-complete'));
+        });
+      });
+      
+      // Handle transition failures gracefully
+      document.addEventListener('astro:before-preparation', (e) => {
+        // Add fallback timeout to prevent stuck states
+        setTimeout(() => {
+          if (isTransitioning && document.documentElement.hasAttribute('data-astro-transition')) {
+            document.documentElement.removeAttribute('data-astro-transition');
+            isTransitioning = false;
+          }
+        }, 2000);
+      });
+    </script>
   </body>
 </html>

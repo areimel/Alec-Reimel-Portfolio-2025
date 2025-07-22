@@ -29,43 +29,94 @@
 </div>
 
 <script>
-  // Flag to track if this is the initial page load
-  let isInitialLoad = true;
-  
-  // Check if we're in a view transition context
-  function isViewTransition() {
-    // Check if the page has the view transition data attribute
-    return document.documentElement.hasAttribute('data-astro-transition') || 
-           // Or if startViewTransition exists and we're not on the initial load
-           (typeof document.startViewTransition !== 'undefined' && !isInitialLoad);
-  }
-  
-  function initializeLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
-    const progressBar = document.getElementById('loading-progress-bar');
-    const loadingStatus = document.getElementById('loading-status');
-    const loadingPercentage = document.getElementById('loading-percentage');
+  // Resource loading tracking system
+  class ResourceLoader {
+    isInitialLoad: boolean;
+    totalResources: number;
+    loadedResources: number;
+    resourceProgress: Map<string, boolean>;
+    criticalResources: Array<{url: string, type: string, weight: number}>;
+    totalWeight: number;
     
-    // If this is a view transition, hide the loading screen immediately
-    if (isViewTransition()) {
-      if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-      }
-      return;
+    constructor() {
+      this.isInitialLoad = true;
+      this.totalResources = 0;
+      this.loadedResources = 0;
+      this.resourceProgress = new Map();
+      
+      // Critical resources to track
+      this.criticalResources = [
+        // High priority fonts
+        { url: '/fonts/KodeMono-Regular.ttf', type: 'font', weight: 25 },
+        { url: '/fonts/UAV-OSD-Mono.ttf', type: 'font', weight: 25 },
+        { url: '/fonts/ShareTechMono-Regular.ttf', type: 'font', weight: 20 },
+        
+        // Secondary fonts
+        { url: '/fonts/VT323-Regular.ttf', type: 'font', weight: 15 },
+        { url: '/fonts/Windows-Command-Prompt.woff2', type: 'font', weight: 10 },
+        
+        // Critical images
+        { url: '/images/terminal-static-animated.gif', type: 'image', weight: 5 }
+      ];
+      
+      this.totalWeight = this.criticalResources.reduce((sum, resource) => sum + resource.weight, 0);
     }
     
-    // Loading status messages
-    const statusMessages = [
-      'Starting up...',
-      'Loading terminal interface...',
-      'Initializing components...',
-      'Connecting to systems...',
-      'Finalizing setup...',
-      'Ready!'
-    ];
+    // Check if we're in a view transition context
+    isViewTransition() {
+      return document.documentElement.hasAttribute('data-astro-transition') || 
+             (typeof document.startViewTransition !== 'undefined' && !this.isInitialLoad);
+    }
     
-    // Function to update progress bar and status
-    const updateProgress = (progress) => {
+    // Track font loading using FontFace API
+    async trackFontLoading(resource) {
+      try {
+        const fontFace = new FontFace(
+          resource.url.includes('KodeMono') ? 'KodeMono' :
+          resource.url.includes('UAV-OSD') ? 'UAVOSDMono' :
+          resource.url.includes('ShareTech') ? 'ShareTechMono' :
+          resource.url.includes('VT323') ? 'VT323' : 'WindowsCommandPrompt',
+          `url(${resource.url})`
+        );
+        
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        this.onResourceLoaded(resource);
+      } catch (error) {
+        console.warn(`Font loading failed: ${resource.url}`, error);
+        this.onResourceLoaded(resource); // Still mark as loaded to prevent blocking
+      }
+    }
+    
+    // Track image loading
+    trackImageLoading(resource) {
+      const img = new Image();
+      img.onload = () => this.onResourceLoaded(resource);
+      img.onerror = () => this.onResourceLoaded(resource); // Mark as loaded even on error
+      img.src = resource.url;
+    }
+    
+    // Handle resource loaded
+    onResourceLoaded(resource) {
+      if (!this.resourceProgress.has(resource.url)) {
+        this.resourceProgress.set(resource.url, true);
+        this.loadedResources += resource.weight;
+        this.updateProgress();
+      }
+    }
+    
+    // Update progress based on actual resource loading
+    updateProgress() {
+      const progress = Math.min((this.loadedResources / this.totalWeight) * 85, 85); // Cap at 85% until DOM is ready
+      this.setProgress(progress);
+    }
+    
+    // Set progress on UI
+    setProgress(progress) {
+      const progressBar = document.getElementById('loading-progress-bar');
+      const loadingStatus = document.getElementById('loading-status');
+      const loadingPercentage = document.getElementById('loading-percentage');
+      
       if (progressBar) {
         progressBar.style.width = `${progress}%`;
         
@@ -81,29 +132,38 @@
       
       // Update status message based on progress
       if (loadingStatus) {
+        const statusMessages = [
+          'Loading terminal fonts...',      // 0-20%
+          'Initializing interface...',      // 20-40%
+          'Loading terminal graphics...',   // 40-60%
+          'Connecting to systems...',       // 60-80%
+          'Finalizing setup...',           // 80-95%
+          'Ready!'                         // 95-100%
+        ];
+        
         const messageIndex = Math.min(Math.floor(progress / 20), statusMessages.length - 1);
         loadingStatus.textContent = statusMessages[messageIndex];
       }
     }
     
-    // Initial progress
-    let progress = 0;
+    // Start loading all critical resources
+    startResourceLoading() {
+      this.criticalResources.forEach(resource => {
+        if (resource.type === 'font') {
+          this.trackFontLoading(resource);
+        } else if (resource.type === 'image') {
+          this.trackImageLoading(resource);
+        }
+      });
+    }
     
-    // Simulate progress until page is fully loaded
-    const progressInterval = setInterval(() => {
-      // Increment progress, but slow down as it approaches 90%
-      const increment = progress < 70 ? 15 : 5;
-      progress = Math.min(progress + increment, 90);
-      updateProgress(progress);
-    }, 200);
-    
-    // When page is fully loaded
-    window.addEventListener('load', () => {
-      clearInterval(progressInterval);
-      updateProgress(100);
+    // Complete the loading process
+    completeLoading() {
+      this.setProgress(100);
       
-      // Wait for the progress bar to reach 100% before hiding
+      // Wait before hiding
       setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
         if (loadingScreen) {
           loadingScreen.style.opacity = '0';
           
@@ -112,22 +172,63 @@
             if (loadingScreen) {
               loadingScreen.style.display = 'none';
               
-              // Dispatch custom event to notify that loading screen is complete
+              // Dispatch custom events for compatibility
               document.dispatchEvent(new CustomEvent('loadingScreenComplete'));
+              document.dispatchEvent(new CustomEvent('loading-screen-end'));
             }
           }, 500);
         }
       }, 300);
+    }
+  }
+  
+  // Initialize the resource loader
+  const resourceLoader = new ResourceLoader();
+  
+  function initializeLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    
+    // If this is a view transition, hide the loading screen immediately
+    if (resourceLoader.isViewTransition()) {
+      if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+      }
+      return;
+    }
+    
+    // Start tracking critical resources
+    resourceLoader.startResourceLoading();
+    
+    // Also add a fallback timer in case some resources fail to load
+    const fallbackTimer = setTimeout(() => {
+      console.warn('Loading screen fallback timer triggered');
+      resourceLoader.completeLoading();
+    }, 5000); // 5 second maximum loading time
+    
+    // When page is fully loaded, complete the process
+    window.addEventListener('load', () => {
+      clearTimeout(fallbackTimer);
+      
+      // Give a moment for any remaining async operations
+      setTimeout(() => {
+        resourceLoader.completeLoading();
+      }, 200);
+    });
+    
+    // Also listen for DOMContentLoaded to update progress
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add 15% more progress when DOM is ready
+      const currentProgress = (resourceLoader.loadedResources / resourceLoader.totalWeight) * 85;
+      resourceLoader.setProgress(Math.min(currentProgress + 15, 100));
     });
   }
   
-  // Handle both initial load and view transitions
+  // Handle view transitions
   document.addEventListener('astro:page-load', () => {
-    // On subsequent navigations, mark as no longer initial load
-    if (isInitialLoad) {
-      isInitialLoad = false;
+    if (resourceLoader.isInitialLoad) {
+      resourceLoader.isInitialLoad = false;
     } else {
-      // This is a view transition navigation, ensure loading screen is hidden
+      // This is a view transition, ensure loading screen is hidden
       const loadingScreen = document.getElementById('loading-screen');
       if (loadingScreen) {
         loadingScreen.style.display = 'none';
@@ -135,8 +236,7 @@
     }
   });
   
-  // Initialize on first load
-  // Use DOMContentLoaded instead of immediate execution to ensure elements exist
+  // Initialize based on document state
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLoadingScreen);
   } else {

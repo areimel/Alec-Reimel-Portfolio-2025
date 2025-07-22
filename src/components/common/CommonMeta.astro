@@ -6,3 +6,27 @@ import { getAsset } from '~/utils/permalinks';
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <link rel="sitemap" href={getAsset('/sitemap-index.xml')} />
+
+<!-- Critical Resource Preloading for Better Performance -->
+
+<!-- High Priority Font Preloading -->
+<link rel="preload" href="/fonts/KodeMono-Regular.ttf" as="font" type="font/ttf" crossorigin fetchpriority="high" />
+<link rel="preload" href="/fonts/UAV-OSD-Mono.ttf" as="font" type="font/ttf" crossorigin fetchpriority="high" />
+<link rel="preload" href="/fonts/ShareTechMono-Regular.ttf" as="font" type="font/ttf" crossorigin />
+
+<!-- Secondary Font Preloading (lower priority) -->
+<link rel="preload" href="/fonts/VT323-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/fonts/Windows-Command-Prompt.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- Critical Images -->
+<link rel="preload" href="/images/terminal-static-animated.gif" as="image" fetchpriority="high" />
+
+<!-- DNS Prefetch for External Resources -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+<link rel="dns-prefetch" href="//fonts.gstatic.com" />
+
+<!-- Critical CSS and JS Preloading Hints -->
+<link rel="preload" href="/src/assets/styles/tailwind.css" as="style" />
+
+<!-- Module Preload for Critical JavaScript -->
+<link rel="modulepreload" href="/src/components/AnimationComponents/DecoderText.astro" />

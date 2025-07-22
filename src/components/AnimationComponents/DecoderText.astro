@@ -58,32 +58,57 @@ const words = text.split(' ');
   // Utility to get a random character from the pool
   const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
   
-  // Setup animation for all decoder text elements
-  function setupDecoderElements() {
-    const decoderElements = document.querySelectorAll<HTMLElement>('.decoder-text');
-    
-    decoderElements.forEach((element) => {
-      // Listen for custom trigger event from AnimationWrapper
-      element.addEventListener('trigger-animation', () => {
-        startAnimation(element);
-      });
-    });
+  // Store active animations per element to prevent interruption
+  const elementAnimations = new Map<HTMLElement, {
+    intervals: Set<number>,
+    timeouts: Set<ReturnType<typeof setTimeout>>,
+    isRunning: boolean,
+    hasAnimated: boolean,
+    observer?: IntersectionObserver
+  }>();
+  
+  // Global observer list for cleanup
+  let globalObservers: IntersectionObserver[] = [];
+  
+  // Check if element should trigger (bottom 5% of viewport)
+  function checkElementInView(element: HTMLElement): boolean {
+    const rect = element.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const triggerPoint = viewportHeight * 0.95; // Bottom 5% of viewport
+    return rect.top <= triggerPoint;
   }
   
   // Start the animation for a specific element
   function startAnimation(element: HTMLElement) {
+    const animationData = elementAnimations.get(element);
+    if (!animationData || animationData.isRunning || animationData.hasAnimated) {
+      return; // Don't start if already running or already animated
+    }
+    
     const charElements = element.querySelectorAll<HTMLElement>('.decoder-char');
     const duration = parseInt(element.dataset.duration || '500');
     const charDelay = parseInt(element.dataset.charDelay || '150');
     const initialDelay = parseInt(element.dataset.delay || '0');
     
+    // Mark as running and animated
+    animationData.isRunning = true;
+    animationData.hasAnimated = true;
+    
+    // Disconnect the observer since we only want to trigger once
+    if (animationData.observer) {
+      animationData.observer.disconnect();
+    }
+    
     // Make the element initially transparent
     element.style.opacity = '0';
     
     // Fade in entire element
-    setTimeout(() => {
+    const fadeTimeout = setTimeout(() => {
       element.style.transition = `opacity 0.3s ease`;
       element.style.opacity = '1';
+      
+      let completedChars = 0;
+      const totalChars = charElements.length;
       
       // Start the decoder animation for each character
       charElements.forEach((charElement) => {
@@ -92,6 +117,7 @@ const words = text.split(' ');
         
         // Skip animation for spaces
         if (finalChar === ' ' || charElement.classList.contains('decoder-space')) {
+          completedChars++;
           return;
         }
         
@@ -99,26 +125,131 @@ const words = text.split(' ');
         charElement.textContent = getRandomChar();
         
         // Calculate when this character should complete its animation
-        // Initial delay + 500ms for everyone to see the animation + 
-        // sequential delay based on character position
         const completeTime = initialDelay + duration + (charIndex * charDelay);
         
         // Animation interval - rapidly cycle through random characters
         const interval = setInterval(() => {
           charElement.textContent = getRandomChar();
         }, 50);
+        animationData.intervals.add(interval as unknown as number);
         
         // Set timeout to clear interval and set final character
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
           clearInterval(interval);
+          animationData.intervals.delete(interval as unknown as number);
           charElement.textContent = finalChar;
+          animationData.timeouts.delete(timeout);
+          
+          completedChars++;
+          // Mark animation as complete when all characters are done
+          if (completedChars >= totalChars) {
+            animationData.isRunning = false;
+          }
         }, completeTime);
+        animationData.timeouts.add(timeout);
       });
+      
+      animationData.timeouts.delete(fadeTimeout);
     }, initialDelay);
+    
+    animationData.timeouts.add(fadeTimeout);
   }
   
-  // Initialize when DOM is ready
-  document.addEventListener('DOMContentLoaded', setupDecoderElements);
+  // Setup reveal animation for a decoder element
+  function setupRevealAnimation(element: HTMLElement) {
+    // Initialize animation data
+    const animationData = {
+      intervals: new Set<number>(),
+      timeouts: new Set<ReturnType<typeof setTimeout>>(),
+      isRunning: false,
+      hasAnimated: false,
+      observer: undefined as IntersectionObserver | undefined
+    };
+    
+    elementAnimations.set(element, animationData);
+    
+    // Check if element is already in view
+    if (checkElementInView(element)) {
+      // Trigger immediately with small delay
+      setTimeout(() => startAnimation(element), 50);
+      return;
+    }
+    
+    // Set up intersection observer for elements not in view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (checkElementInView(entry.target as HTMLElement)) {
+          startAnimation(entry.target as HTMLElement);
+        }
+      });
+    }, {
+      threshold: 0,
+      rootMargin: '50px 0px 0px 0px'
+    });
+    
+    animationData.observer = observer;
+    observer.observe(element);
+    globalObservers.push(observer);
+  }
+  
+  // Setup all decoder text elements
+  function setupDecoderElements() {
+    const decoderElements = document.querySelectorAll<HTMLElement>('.decoder-text');
+    
+    decoderElements.forEach((element) => {
+      // Only setup if not already tracked
+      if (!elementAnimations.has(element)) {
+        setupRevealAnimation(element);
+      }
+    });
+  }
+  
+  // Cleanup function - NEVER interrupt running animations
+  function cleanupDecoderAnimations() {
+    // Disconnect all observers
+    globalObservers.forEach(observer => observer.disconnect());
+    globalObservers = [];
+    
+    // Only clean up elements that are not currently running animations
+    elementAnimations.forEach((animationData, element) => {
+      if (!animationData.isRunning) {
+        animationData.intervals.forEach(interval => clearInterval(interval));
+        animationData.timeouts.forEach(timeout => clearTimeout(timeout));
+        animationData.intervals.clear();
+        animationData.timeouts.clear();
+        
+        if (animationData.observer) {
+          animationData.observer.disconnect();
+        }
+      }
+    });
+    
+    // Remove elements that are no longer in the DOM and not running
+    const elementsToRemove: HTMLElement[] = [];
+    elementAnimations.forEach((animationData, element) => {
+      if (!document.contains(element) && !animationData.isRunning) {
+        elementsToRemove.push(element);
+      }
+    });
+    
+    elementsToRemove.forEach(element => {
+      elementAnimations.delete(element);
+    });
+  }
+  
+  // Initialize decoder elements with delay
+  function initializeDecoders() {
+    setTimeout(() => {
+      setupDecoderElements();
+    }, 50);
+  }
+  
+  // Setup for initial page load and view transitions
+  document.addEventListener('DOMContentLoaded', initializeDecoders);
+  
+  // Handle view transitions - preserve running animations
+  document.addEventListener('astro:before-swap', cleanupDecoderAnimations);
+  document.addEventListener('astro:after-swap', initializeDecoders);
 </script>
 
 <style>
