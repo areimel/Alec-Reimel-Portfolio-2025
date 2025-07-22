@@ -11,6 +11,9 @@ import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
 import Metadata from '~/components/common/Metadata.astro';
 // import SiteVerification from '~/components/common/SiteVerification.astro';
 // import Analytics from '~/components/common/Analytics.astro';
+
+import GoogleTagManagerHead from '~/components/common/GoogleTagManagerHead.astro';
+import GoogleTagManagerBody from '~/components/common/GoogleTagManagerBody.astro';
 import BasicScripts from '~/components/common/BasicScripts.astro';
 import TerminalOverlay from '~/components/TerminalComponents/TerminalOverlay.astro';
 import LoadingScreen from '~/components/LoadingScreenV1.astro';
@@ -38,6 +41,7 @@ const defaultTheme = 'theme-green';
   class={`2xl:text-[20px] ${defaultTheme}`} 
 >
   <head>
+    <GoogleTagManagerHead />
     <CommonMeta />
     <Favicons />
     <CustomStyles />
@@ -110,8 +114,10 @@ const defaultTheme = 'theme-green';
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight font-sans">
+    <GoogleTagManagerBody />
     <LoadingScreen />
     <TerminalOverlay />
+    
     <slot />
 
     <BasicScripts />
