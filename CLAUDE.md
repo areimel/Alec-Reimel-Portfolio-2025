@@ -51,9 +51,7 @@ src/
 ```
 
 ### Theme System
-The project uses a dual-theme system with CSS custom properties:
-- **Dark Mode**: Green phosphor CRT aesthetic (`terminal-*` color classes)
-- **Light Mode**: Amber CRT aesthetic (`terminal-bg-*` color classes)
+The project uses a multi-theme system allowing the user to switch between multiple color palettes.
 - Custom fonts: Terminal/retro fonts including VT323, Share Tech Mono, Windows Command Prompt font
 
 ### Content Management
