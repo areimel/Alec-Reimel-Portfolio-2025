@@ -1,0 +1,78 @@
+---
+publishDate: 2024-07-28T00:00:00Z
+title: Bio-Link
+excerpt: A simple LinkTree or LinkInBio clone. Built with Astro and intended for developers to easily and quickly set up a simple link-centric, mobile-first landing page.
+image: /images/projects/bio-link/bio-link-mobile.jpg
+tags:
+  - astro
+  - tailwindcss
+  - web-development
+  - link-in-bio
+  - portfolio
+  - open-source
+  - utility
+projectUrl: https://github.com/areimel/Bio-Link # Placeholder GitHub repo
+repoUrl: https://github.com/areimel/Bio-Link # Placeholder GitHub repo
+technologies:
+  - "Astro: Website framework & architecture"
+  - "Tailwind CSS: UI Styling"
+  - "Markdown/MDX: Content management"
+---
+
+
+import Logo from '~/components/Logo.astro';
+import { YouTube, Tweet, Vimeo } from 'astro-embed';
+import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
+
+
+<TextAndImage
+  headline="Quick & Easy Link-Centric Pages"
+  bodyText="Bio-Link is an open-source, mobile-first Astro project designed to serve as a LinkTree or LinkInBio clone. It provides developers with a straightforward way to create a clean, fast, and customizable landing page focused solely on presenting a curated list of important links, perfect for social media profiles or personal portfolios."
+  imageSrc="/images/projects/bio-link/bio-link-social-media.jpg"
+  imageAlt="Person holding smartphone showing Instagram feed, representing social media link management and bio-link functionality"
+  flexDirection="text-first"
+/>
+
+
+<TextAndImage
+  headline="Built for Developers with Astro & Tailwind"
+  bodyText="Leveraging Astro's performance-oriented architecture and Tailwind CSS for rapid styling, Bio-Link is ideal for developers seeking a lightweight solution. Its minimal JavaScript footprint ensures lightning-fast load times, and the use of Markdown/MDX for content makes it incredibly easy to manage links and text."
+  imageSrc="/images/projects/bio-link/bio-link-coding.jpg"
+  imageAlt="Developer workspace with computer displaying code, representing web development with Astro and Tailwind CSS"
+  flexDirection="image-first"
+/>
+
+
+<TextAndImage
+  headline="Highly Customizable & Extendable"
+  bodyText={`While simple, Bio-Link is built with customization in mind. Developers can easily tweak colors, fonts, and layouts using Tailwind CSS, and extend its functionality with Astro components. It serves as an excellent starting point for those looking to quickly deploy a personal link page or learn more about Astro development.`}
+  imageSrc="/images/projects/bio-link/bio-link-customization.jpg"
+  imageAlt="Design tools and creative workspace showing customization capabilities and UI design flexibility"
+  flexDirection="text-first"
+/>
+
+
+<TextAndImage
+  headline="A Practical Open-Source Utility"
+  bodyText='As an open-source "party favor" project, Bio-Link exemplifies creating practical and freely available tools. It showcases efficiency in web development and offers a ready-to-use solution for a common need, while also serving as a tangible example of modern web development practices with Astro.'
+  imageSrc="/images/projects/bio-link/bio-link-open-source.jpg"
+  imageAlt="Collaborative workspace representing open-source development and community-driven software projects"
+  flexDirection="image-first"
+/>
+
+
+<ProjectStats
+    title="Minimal & Fast"
+    content="Designed for optimal performance with minimal overhead, ensuring quick loading times and a smooth user experience on any device, especially mobile."
+/>
+
+<ProjectStats
+    title="Developer-Friendly"
+    content="Easy to set up, customize, and maintain for developers familiar with modern web technologies like Astro and Tailwind CSS."
+/>
+
+<ProjectStats
+    title="Versatile Use Cases"
+    content="Perfect for personal branding, showcasing projects, social media profiles, or any scenario requiring a focused collection of links."
+/>

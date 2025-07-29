@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:docs.astro.build)",
-      "Bash(npx astro check:*)"
+      "Bash(npx astro check:*)",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(dir \"C:\\Users\\Alec\\Dev\\freelancer\\Alec-Reimel-Portfolio\\public\\images\\arda-scanner-*.jpg\" /l)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }
