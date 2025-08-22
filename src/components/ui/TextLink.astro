@@ -1,0 +1,49 @@
+---
+interface Props {
+  href?: string;
+  modalId?: string;
+  class?: string;
+  target?: string;
+  [key: string]: any;
+}
+
+const { 
+  href, 
+  modalId, 
+  class: className = '',
+  target,
+  ...rest 
+} = Astro.props;
+
+// Ensure only one navigation method is provided
+if (href && modalId) {
+  throw new Error('TextLink: Cannot provide both href and modalId props');
+}
+
+if (!href && !modalId) {
+  throw new Error('TextLink: Must provide either href or modalId prop');
+}
+
+const baseClasses = 'inline text-terminal-400 hover:text-terminal-bright transition-colors border-b border-dotted border-terminal-400 hover:border-terminal-bright cursor-pointer font-kode';
+const combinedClasses = [baseClasses, className].filter(Boolean).join(' ');
+---
+
+{href ? (
+  <a 
+    href={href}
+    target={target}
+    class={combinedClasses}
+    {...rest}
+  >
+    <slot />
+  </a>
+) : modalId ? (
+  <button 
+    onclick={`window.open${modalId}Modal()`}
+    class={combinedClasses}
+    style="text-align: inherit; background: none; border-top: none; border-left: none; border-right: none; padding: 0;"
+    {...rest}
+  >
+    <slot />
+  </button>
+) : null}

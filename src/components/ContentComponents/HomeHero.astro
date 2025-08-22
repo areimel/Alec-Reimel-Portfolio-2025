@@ -4,6 +4,8 @@
   import ContactFormModal from "@components/PopUpComponents/ContactFormModal.astro";
   import DecoderText from "@components/AnimationComponents/DecoderText.astro";
   import ArdaLogo from "@components/SvgComponents/ArdaLogo.astro";
+  import ButtonLink from "@components/ui/ButtonLink.astro";
+  import TextLink from "@components/ui/TextLink.astro";
 
 ---
 
@@ -33,7 +35,7 @@
       
       <!-- Cell 2 -->
       <div class="div2 bento-cell">
-        <h2>Skill</h2>
+        <h2>Skills</h2>
         <ul class="list-disc list-outside pl-4">
           <li><strong>Primary Skillset</strong>: Frontend Web Development</li>
           <li><strong>Marketing Skills</strong>: UI/UX, Accessibility, SEO, User Tracking, Behavioral Analytics</li>
@@ -60,7 +62,7 @@
           <div class="w-full h-auto max-w-[300px] mx-auto mb-8">
             <ArdaLogo />
           </div>
-          <a href="https://arda.agency" class="w-full bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle text-center">//Learn_More</a>
+          <ButtonLink href="https://arda.agency" class="w-full text-center">//Learn_More</ButtonLink>
         </div>
       </div>
       
@@ -68,18 +70,18 @@
       <div class="div5 bento-cell">
         <h2>Latest Projects</h2>
         <p class="text-terminal-400 font-kode mb-4">Check out my latest, coolest projects</p>
-        <ul class="list-disc list-outside pl-4 space-y-6">
+        <ul class="list-disc list-outside pl-4 space-y-2">
           <li>
-            <a href="/projects/company-ai-prompts" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">AI Prompt Library Template</a>
+            <TextLink href="/projects/company-ai-prompts">AI Prompt Library Template</TextLink>
           </li>
           <li>
-            <a href="/projects/arda-analytics" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">ARDA-Analytics</a>
+            <TextLink href="/projects/arda-analytics">ARDA-Analytics</TextLink>
           </li>
           <li>
-            <a href="/projects/arda-site-scanner" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">ARDA Site Scanner</a>
+            <TextLink href="/projects/arda-site-scanner">ARDA Site Scanner</TextLink>
           </li>
           <li>
-            <a href="/projects/bio-link" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">Bio-Link Template</a>
+            <TextLink href="/projects/bio-link">Bio-Link Template</TextLink>
           </li>
         </ul>
       </div>
@@ -88,12 +90,9 @@
        <div class="div6 bento-cell">
          <h2 class="">Contact</h2>
          <p class="text-terminal-400 font-kode mb-4">Ready to start a project or have questions? Drop me a line.</p>
-         <button 
-           onclick="window.opencontactModal()"
-           class="w-full bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle"
-         >
+         <ButtonLink modalId="contact" class="w-full text-center">
           //Contact_Me
-         </button>
+         </ButtonLink>
        </div>
        
        <!-- Cell 7 -->
