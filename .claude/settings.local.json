@@ -11,7 +11,8 @@
       "Bash(mv:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm run check:*)",
-      "WebFetch(domain:www.npmjs.com)"
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(dir:*)"
     ],
     "deny": []
   }
