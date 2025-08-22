@@ -1,8 +1,9 @@
 ---
   
   import TerminalPrefix from "@components/TerminalComponents/TerminalPrefix.astro";
-  import ContactFormSmall from "@components/Forms/ContactFormSmall.astro";
+  import ContactFormModal from "@components/PopUpComponents/ContactFormModal.astro";
   import DecoderText from "@components/AnimationComponents/DecoderText.astro";
+  import ArdaLogo from "@components/SvgComponents/ArdaLogo.astro";
 
 ---
 
@@ -32,7 +33,7 @@
       
       <!-- Cell 2 -->
       <div class="div2 bento-cell">
-        <h2>//Skillsets</h2>
+        <h2>Skill</h2>
         <ul class="list-disc list-outside pl-4">
           <li><strong>Primary Skillset</strong>: Frontend Web Development</li>
           <li><strong>Marketing Skills</strong>: UI/UX, Accessibility, SEO, User Tracking, Behavioral Analytics</li>
@@ -42,113 +43,151 @@
       
       <!-- Cell 3 -->
       <div class="div3 bento-cell">
-        <h2>//Tech_Stack</h2>
+        <h2>Tech Stack</h2>
         <ul class="list-disc list-outside pl-4">
           <li><strong>Standard</strong>: HTML/CSS/Javascript</li>
           <li><strong>Frameworks</strong>: Node.js, React, Next.js, Astro</li>
           <li><strong>Libraries</strong>: Tailwind CSS, Shadcn-UI</li>
           <li><strong>OS</strong>: Windows, Linux, Android, hacked virtual Mac</li>
-          <li><strong>Hosting & Data</strong>: Github, Netlify, Supabase</li>
+          <li><strong>Hosting & Data</strong>: Github, Netlify, Vercel, Supabase, Firebase</li>
         </ul>
       </div>
       
       <!-- Cell 4 -->
       <div class="div4 bento-cell">
-        <h2>//Now_Playing</h2>
-        <p class="text-terminal-400 font-kode">Listen to my coding playlist</p>
-        <br/><br/>
-        <div class="flex justify-center items-center">
-          <span class="bg-terminal-400 text-terminal-bg-secondary px-4 py-2">[Coming Soon]</span>
+        <h2 class="">Freelance</h2>
+        <div class="flex flex-col items-center justify-center mt-12">
+          <div class="w-full h-auto max-w-[300px] mx-auto mb-8">
+            <ArdaLogo />
+          </div>
+          <a href="https://arda.agency" class="w-full bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle text-center">//Learn_More</a>
         </div>
       </div>
       
       <!-- Cell 5 -->
       <div class="div5 bento-cell">
-        <h2>//Latest_Projects</h2>
+        <h2>Latest Projects</h2>
         <p class="text-terminal-400 font-kode mb-4">Check out my latest, coolest projects</p>
         <ul class="list-disc list-outside pl-4 space-y-6">
           <li>
-            <a href="/projects/company-ai-prompts" class="bg-terminal-400 hover:bg-terminal-500 transition-colors text-terminal-bg-secondary px-4 py-2 font-kode font-bold">Company AI Prompt Directory</a>
+            <a href="/projects/company-ai-prompts" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">AI Prompt Library Template</a>
           </li>
           <li>
-            <a href="/projects/arda-analytics" class="bg-terminal-400 hover:bg-terminal-500 transition-colors text-terminal-bg-secondary px-4 py-2 font-kode font-bold">ARDA-Analytics</a>
+            <a href="/projects/arda-analytics" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">ARDA-Analytics</a>
           </li>
           <li>
-            <a href="/projects/arda-site-scanner" class="bg-terminal-400 hover:bg-terminal-500 transition-colors text-terminal-bg-secondary px-4 py-2 font-kode font-bold">ARDA Site Scanner</a>
+            <a href="/projects/arda-site-scanner" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">ARDA Site Scanner</a>
           </li>
           <li>
-            <a href="/projects/bio-link" class="bg-terminal-400 hover:bg-terminal-500 transition-colors text-terminal-bg-secondary px-4 py-2 font-kode font-bold">Bio-Link Template</a>
+            <a href="/projects/bio-link" class="bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle">Bio-Link Template</a>
           </li>
         </ul>
       </div>
       
-      <!-- Cell 6 -->
-      <div class="div6 bento-cell">
-        <h2 class="">//Contact</h2>
-        <ContactFormSmall /> 
-      </div>
+             <!-- Cell 6 -->
+       <div class="div6 bento-cell">
+         <h2 class="">Contact</h2>
+         <p class="text-terminal-400 font-kode mb-4">Ready to start a project or have questions? Drop me a line.</p>
+         <button 
+           onclick="window.opencontactModal()"
+           class="w-full bg-terminal-500 hover:bg-terminal-600 transition-colors text-terminal-bg-primary px-4 py-2 font-uav-mono font-bold text-glow-subtle"
+         >
+          //Contact_Me
+         </button>
+       </div>
+       
+       <!-- Cell 7 -->
+       <div class="div7 bento-cell">
+         <h2>New Section</h2>
+         <p class="text-terminal-400 font-kode mb-4">This is the new section added to the grid.</p>
+         <div class="text-sm text-terminal-400">
+           <p>Additional content can go here...</p>
+         </div>
+       </div>
 
     </div>
   </div>
 </section>
 
+<!-- Contact Form Modal -->
+<ContactFormModal />
+
 <style>
   .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(7, 1fr);
-    gap: 0px;
-    height: 100%;
-    width: 100%;
+     display: grid;
+     grid-template-columns: repeat(8, 1fr);
+     grid-template-rows: auto;
+     grid-template-areas: 
+       "div1 div1 div1 div1 div1 div1 div2 div2"
+       "div1 div1 div1 div1 div1 div1 div3 div3"
+       "div4 div4 div5 div5 div6 div6 div7 div7"
+       "div4 div4 div5 div5 div6 div6 div7 div7"
+       "div4 div4 div5 div5 div6 div6 div7 div7";
+     gap: 0px;
+     height: 100%;
+     width: 100%;
   }
   
   .div1 {
-    grid-column: span 3 / span 3;
-    grid-row: span 4 / span 4;
+    grid-area: div1;
   }
   
   .div2 {
-    grid-column: span 2 / span 2;
-    grid-row: span 2 / span 2;
+    grid-area: div2;
   }
   
   .div3 {
-    grid-column: span 2 / span 2;
-    grid-row: span 2 / span 2;
-    grid-column-start: 4;
+    grid-area: div3;
   }
   
   .div4 {
-    grid-row: span 3 / span 3;
-    grid-row-start: 5;
+    grid-area: div4;
   }
   
   .div5 {
-    grid-column: span 2 / span 2;
-    grid-row: span 3 / span 3;
-    grid-column-start: 2;
-    grid-row-start: 5;
+    grid-area: div5;
   }
   
-  .div6 {
-    grid-column: span 2 / span 2;
-    grid-row: span 3 / span 3;
-    grid-column-start: 4;
-    grid-row-start: 5;
-  }
+     .div6 {
+     grid-area: div6;
+   }
+   
+   .div7 {
+     grid-area: div7;
+   }
   
-  /* Responsive adjustments for smaller screens */
-  @media (max-width: 768px) {
-    .bento-grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto;
-    }
-    
-    .div1, .div2, .div3, .div4, .div5, .div6 {
-      grid-column: 1;
-      grid-row: auto;
-    }
-  }
+     /* Tablet responsive adjustments */
+   @media (max-width: 1024px) and (min-width: 769px) {
+     .bento-grid {
+       grid-template-columns: repeat(6, 1fr);
+       grid-template-rows: repeat(8, 1fr);
+       grid-template-areas: 
+         "div1 div1 div1 div1 div2 div2"
+         "div1 div1 div1 div1 div2 div2"
+         "div1 div1 div1 div1 div3 div3"
+         "div1 div1 div1 div1 div3 div3"
+         "div4 div4 div5 div5 div6 div6"
+         "div4 div4 div5 div5 div6 div6"
+         "div4 div4 div5 div5 div6 div6"
+         "div7 div7 div7 div7 div7 div7";
+     }
+   }
+   
+   /* Mobile responsive adjustments */
+   @media (max-width: 768px) {
+     .bento-grid {
+       grid-template-columns: 1fr;
+       grid-template-rows: repeat(7, auto);
+       grid-template-areas: 
+         "div1"
+         "div2"
+         "div3"
+         "div4"
+         "div5"
+         "div6"
+         "div7";
+     }
+   }
 
   .bento-cell{
     @apply bg-terminal-bg-secondary p-6 shadow-md flex flex-col justify-start border border-terminal-300;

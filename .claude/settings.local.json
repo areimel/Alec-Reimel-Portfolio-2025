@@ -8,7 +8,9 @@
       "Bash(ls:*)",
       "Bash(find:*)",
       "Bash(mkdir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm run check:*)"
     ],
     "deny": []
   }
