@@ -4,6 +4,8 @@
   import ContactFormModal from "@components/PopUpComponents/ContactFormModal.astro";
   import DecoderText from "@components/AnimationComponents/DecoderText.astro";
   import ArdaLogo from "@components/SvgComponents/ArdaLogo.astro";
+  import NameLogo from "@components/SvgComponents/NameLogo.astro";
+  import NameLogoV2 from "@components/SvgComponents/NameLogoV2.astro";
   import ButtonLink from "@components/ui/ButtonLink.astro";
   import TextLink from "@components/ui/TextLink.astro";
 
@@ -15,12 +17,10 @@
       
       <!-- Cell 1: Main hero section -->
       <div class="div1 bento-cell">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-terminal-bright font-uav-mono text-glow-strong">
-          <span>
-            <!-- <TerminalPrefix /> -->
-            Alec Reimel
-          </span>
-        </h1>
+        <!-- <h1 class="text-4xl md:text-5xl font-bold mb-4 text-terminal-bright font-uav-mono text-glow-strong">
+          Alec Reimel
+        </h1> -->
+        <NameLogo />
         <div class="text-xl md:text-2xl text-terminal-400 mb-8">
           Coder // Designer // Hacker
         </div>
@@ -62,7 +62,11 @@
           <div class="w-full h-auto max-w-[300px] mx-auto mb-8">
             <ArdaLogo />
           </div>
-          <ButtonLink href="https://arda.agency" class="w-full text-center">//Learn_More</ButtonLink>
+          <ButtonLink 
+            href="https://advancedresearch.dev" 
+            target="_blank" 
+            class="w-full text-center"
+          >//Learn_More</ButtonLink>
         </div>
       </div>
       
