@@ -57,11 +57,10 @@ const { prefix, title, content } = Astro.props;
 
   .facts-text {
     @apply text-terminal-400 font-kode text-xl;
-    
-    ::marker{
-      content: "> ";
-      @apply text-terminal-700;
-    }
+  }
+  .facts-text::marker{
+    content: "> ";
+    @apply text-terminal-700;
   }
 
 

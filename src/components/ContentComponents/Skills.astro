@@ -43,7 +43,7 @@ const skills = [
     title: 'Custom Projects',
     description: `
     I love a challenge, and I love to build truly unique and creative projects that go beyond the definition of just "website".
-      <ul class="mt-4 space-y-1 pl-6">
+      <ul class="mt-4 space-y-1 pl-6 list-disc">
         <li>Touchscreen Kiosks for trade shows</li>
         <li>Virtual Reality Experiences</li>  
         <li>Twitter-controlled Christmas Lights</li>
@@ -83,11 +83,9 @@ const skills = [
 </section>
 
 <style is:global>
-  #skills{
-    ::marker{
+  #skills::marker{
     content: "> ";
     @apply text-terminal-700;
-  }
   }
 </style>
 

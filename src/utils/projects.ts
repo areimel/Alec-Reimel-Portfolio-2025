@@ -134,7 +134,7 @@ export const isRelatedProjectsEnabled = false;
 export const isProjectsListRouteEnabled = true;
 export const isProjectPostRouteEnabled = true;
 export const isProjectCategoryRouteEnabled = true;
-export const isProjectTagRouteEnabled = true;
+export const isProjectTagRouteEnabled = false;
 
 export const projectsListRobots = { index: true, follow: true };
 export const projectPostRobots = { index: true, follow: true };
