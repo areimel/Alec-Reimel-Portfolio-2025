@@ -20,7 +20,11 @@
     "check:prettier": "prettier --check .",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint --fix .",
-    "fix:prettier": "prettier -w ."
+    "fix:prettier": "prettier -w .",
+    "optimize:preview": "node scripts/optimize-images.js preview",
+    "optimize:images": "node scripts/optimize-images.js all",
+    "optimize:og": "node scripts/optimize-images.js og",
+    "optimize:file": "node scripts/optimize-images.js file"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
