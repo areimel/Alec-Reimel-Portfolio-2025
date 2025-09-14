@@ -64,7 +64,7 @@ async function optimizeOpenGraphImage(inputPath, outputPath = null) {
     await sharp(inputPath)
       .resize(CONFIG.opengraph.width, CONFIG.opengraph.height, {
         fit: 'cover',
-        position: 'center'
+        position: 'left top'
       })
       .png({
         quality: CONFIG.opengraph.quality,
