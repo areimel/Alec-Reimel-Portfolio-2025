@@ -9,6 +9,15 @@ import HomeHero from '~/components/ContentComponents/HomeHero.astro';
 const metadata = {
   title: 'Alec Reimel | Developer Portfolio',
   ignoreTitleTemplate: true,
+  openGraph: {
+    images: [
+      {
+        url: '/preview.png',
+        width: 1200,
+        height: 628
+      }
+    ]
+  }
 };
 ---
 
