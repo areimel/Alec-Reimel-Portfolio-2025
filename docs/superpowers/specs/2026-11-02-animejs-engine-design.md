@@ -55,10 +55,10 @@ Alec also wants the headroom spent on more glitch, and fewer components and line
 
 Docs confirm WAAPI can run off the main thread for `opacity` and `transform`, while `animate()` runs in JS.
 
-| Tier | API | Use for |
-| --- | --- | --- |
+| Tier       | API                                                                | Use for                                                           |
+| ---------- | ------------------------------------------------------------------ | ----------------------------------------------------------------- |
 | Compositor | `waapi.animate` from `animejs/waapi`, with CSS-string easings only | Scanline, cursor blink, reveals, modals, glow pulses, boot motion |
-| JS engine | `createTimer` / `animate` with a low `frameRate` | Noise position steps, text decoding, glitch scheduling |
+| JS engine  | `createTimer` / `animate` with a low `frameRate`                   | Noise position steps, text decoding, glitch scheduling            |
 
 Docs note that JS easings prevent WAAPI acceleration everywhere, and that `linear()` and power eases like `out(3)` prevent it in Safari. Use `cubic-bezier()` strings or named CSS easings. Use subpath imports to keep the bundle small.
 

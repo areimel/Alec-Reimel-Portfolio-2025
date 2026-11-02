@@ -38,29 +38,31 @@ Each line has a test in the owning task.
 
 ## File Structure
 
-| File | Responsibility |
-| --- | --- |
-| `src/animation/core.ts` | `motionAllowed`, `fxTier`, `onPage`, effect names |
-| `src/animation/keyframes.ts` | Pure data only (no DOM, no `animejs`), plus `flashesPerSecond`, so Node tests can import it |
-| `src/animation/overlay.ts` | Scanline and noise |
-| `src/animation/boot.ts` | Loader progress and CRT sequence |
-| `src/animation/ui.ts` | Reveals, modal in/out, cursor, submit pulse |
-| `src/animation/decode.ts` | Scramble, heading selection, triggers |
-| `src/animation/glitch.ts` | Reactive and ambient glitches |
-| `src/animation/governor.ts` | Long-frame tracking and tier steps |
-| `src/animation/index.ts` | Entry point; sets `window.__fxReady = true` |
-| `src/components/common/FxBootstrap.astro` | Inline `<head>` script: motion flag, tier, failsafe |
-| `scripts/perf-measure.mjs` | Repeatable before/after measurement |
+| File                                      | Responsibility                                                                              |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `src/animation/core.ts`                   | `motionAllowed`, `fxTier`, `onPage`, effect names                                           |
+| `src/animation/keyframes.ts`              | Pure data only (no DOM, no `animejs`), plus `flashesPerSecond`, so Node tests can import it |
+| `src/animation/overlay.ts`                | Scanline and noise                                                                          |
+| `src/animation/boot.ts`                   | Loader progress and CRT sequence                                                            |
+| `src/animation/ui.ts`                     | Reveals, modal in/out, cursor, submit pulse                                                 |
+| `src/animation/decode.ts`                 | Scramble, heading selection, triggers                                                       |
+| `src/animation/glitch.ts`                 | Reactive and ambient glitches                                                               |
+| `src/animation/governor.ts`               | Long-frame tracking and tier steps                                                          |
+| `src/animation/index.ts`                  | Entry point; sets `window.__fxReady = true`                                                 |
+| `src/components/common/FxBootstrap.astro` | Inline `<head>` script: motion flag, tier, failsafe                                         |
+| `scripts/perf-measure.mjs`                | Repeatable before/after measurement                                                         |
 
 ---
 
 ### Task 1: Baseline measurement (Sonnet)
 
 **Files:**
+
 - Create: `scripts/perf-measure.mjs`, `docs/superpowers/perf/baseline.json`
 - Modify: `package.json` (add `"perf": "node scripts/perf-measure.mjs"`)
 
 **Interfaces:**
+
 - Produces: `pnpm run perf --out <path>` writes JSON, consumed by Task 11. Sets `localStorage['fx-tier-lock'] = '0'` through `addInitScript`, which is harmless before Task 10 and locks the full tier after it.
 
 - [ ] **Step 1: Run the existing suite on the untouched branch**
@@ -96,6 +98,7 @@ Expected: JSON has all 12 combinations with nonzero `frameCount`. Note in the fi
 ### Task 2: Delete unused animated components (Haiku)
 
 **Files:**
+
 - Delete from `src/components/`: `TerminalComponents/LoadingScreen.astro`, `NavComponents/SidebarNav.astro`, `Forms/ContactFormSmall.astro`, `MouseToolTip.astro`, `SidebarButton.astro`, `SidebarOptions.astro`, `ExtraMenu.astro`, `widgets/Hero2.astro`, `widgets/Footer.astro`
 - Do **not** delete `ui/Timeline.astro`, which `widgets/Steps.astro` uses.
 
@@ -120,11 +123,13 @@ Expected: PASS, and the build reports no missing imports.
 ### Task 3: Engine core and failsafe (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/core.ts`, `src/animation/keyframes.ts`, `src/animation/index.ts`, `src/components/common/FxBootstrap.astro`
 - Modify: `src/layouts/Layout.astro`, `package.json`
 - Test: `tests/engine.spec.ts`
 
 **Interfaces:**
+
 - Produces, from `core.ts`:
   - `motionAllowed(): boolean`
   - `fxTier(): 0 | 1 | 2 | 3`, read from `documentElement.dataset.fxTier` (default 0)
@@ -192,12 +197,14 @@ Expected: PASS.
 ### Task 4: Overlay (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/overlay.ts`, `public/images/terminal-noise.png`
 - Modify: `src/components/TerminalComponents/TerminalOverlay.astro`, `src/components/TerminalEffectsControls.astro`, `src/components/LoadingScreenV1.astro` (remove GIF from resource list), `src/components/common/CommonMeta.astro` (remove GIF preload, line 22), `src/layouts/Layout.astro` (`transition:persist` on the overlay)
 - Delete: `public/images/terminal-static-animated.gif`
 - Test: `tests/overlay.spec.ts`, `tests/effects.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `motionAllowed`, `fxTier`, `onFxTierChange`.
 - Produces: `startOverlay(): void`. It's idempotent and keyed on the element, so a persisted overlay keeps running instead of restarting. Call it from `index.ts` on `astro:page-load`, not through `onPage`, because the overlay outlives page swaps.
 - Produces: document event `terminal-effect-change` with `detail: { effect: 'noise' | 'scanline' | 'overlay'; enabled: boolean }`, dispatched by `TerminalEffectsControls`. The `.hidden` class behavior stays, since existing tests assert it.
@@ -247,11 +254,13 @@ Screenshot old (a `main` build) and new at desktop and 390px, in all five themes
 ### Task 5: Boot sequence and cheap glow (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/boot.ts`
 - Modify: `src/components/LoadingScreenV1.astro` (script moves out, leaving markup and styles), `src/animation/keyframes.ts`, `src/animation/index.ts`
 - Test: `tests/boot.spec.ts`, `tests/limits.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `motionAllowed`.
 - Produces: `startBoot(): void`, and document event `loading-screen-end`. Remove the duplicate `loadingScreenComplete` dispatch, and remove its listener in `DecoderText.astro`.
 - Produces, from `keyframes.ts`: `BOOT_FLICKER = { opacity: [0, 0.6, 0.2, 0.9, 0.5, 1], duration: 1200 }`.
@@ -298,11 +307,13 @@ Expected: PASS.
 ### Task 6: Modals, cursor, submit pulse (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/ui.ts`
 - Modify: `src/components/PopUpComponents/Modal.astro`, `src/components/PopUpComponents/ContactFormModal.astro`, `src/components/Forms/ContactFormFull.astro`, `src/components/TerminalComponents/TerminalPrefix.astro`, `src/animation/index.ts`
 - Test: `tests/ui.spec.ts`
 
 **Interfaces:**
+
 - Produces, from `ui.ts`:
   - `modalIn(container: HTMLElement, content: HTMLElement): void`
   - `modalOut(container: HTMLElement, content: HTMLElement, done: () => void): void`
@@ -346,11 +357,13 @@ Expected: PASS.
 The design said `data-reveal`. This plan uses a `.reveal` **class**, because these strings pass through `class:list`, twMerge, and props where an attribute can't go.
 
 **Files:**
+
 - Modify: `src/animation/ui.ts`, `src/components/CustomStyles.astro` (hiding rule), `src/components/common/BasicScripts.astro` (delete the `Observer` script block only), `tailwind.config.js` (remove the `intersect` variant, the `fade` animation, and `fadeInUp`)
 - Modify the class strings in: `blog/GridItem`, `blog/ListItem`, `blog/RelatedPosts`, `blog/SinglePost`, `ui/ItemGrid`, `ui/ItemGrid2`, `ui/Timeline`, `ui/WidgetWrapper`, `widgets/Hero`, `widgets/HeroText`, `widgets/Pricing`, `widgets/Stats`, `widgets/Testimonials`
 - Test: `tests/ui.spec.ts`, plus a tall block and hash target added to `src/pages/review-fixtures/[fixture].astro`
 
 **Interfaces:**
+
 - Produces, from `ui.ts`: `startReveals(ctx: PageContext): void`.
 
 Values:
@@ -394,11 +407,13 @@ Expected: PASS.
 ### Task 8: Heading decode (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/decode.ts`
 - Modify: `src/components/AnimationComponents/DecoderText.astro` (markup and data attributes only, with the script moved out), `src/pages/review-fixtures/[fixture].astro`, `tests/animations.spec.ts`, `src/animation/index.ts`
 - Delete: `src/components/AnimationComponents/AnimationWrapper.astro`
 
 **Interfaces:**
+
 - Consumes: `onPage`, `motionAllowed`, `fxTier`, `loading-screen-end`.
 - Produces: `startDecode(ctx: PageContext): void`, and `decodeElement(el: HTMLElement, opts: { duration: number; charDelay: number }): { cancel(): void }`, used by both auto headings and `DecoderText` triggers.
 
@@ -449,11 +464,13 @@ Expected: PASS on all four projects, including the WebKit emoji case.
 ### Task 9: Reactive and ambient glitches (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/glitch.ts`
 - Modify: `src/animation/keyframes.ts`, `src/animation/index.ts`
 - Test: `tests/glitch.spec.ts`, `tests/limits.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `motionAllowed`, `fxTier`, `onFxTierChange`, `onPage`, document event `modal-opened`.
 - Produces: `startGlitches(): void`, called once, with delegated listeners on `document`; `glitch(el: Element): boolean`, returning false when rate limited; and `GLITCH_BURSTS` from `keyframes.ts`, each `{ opacity: number[]; translate?: string[]; clipPath?: string[]; duration: number }` with `duration` from 150 to 250.
 
@@ -502,11 +519,13 @@ Expected: PASS.
 ### Task 10: Governor (Sonnet)
 
 **Files:**
+
 - Create: `src/animation/governor.ts`
 - Modify: `src/components/CustomStyles.astro`, `src/animation/index.ts`
 - Test: `tests/governor.spec.ts`
 
 **Interfaces:**
+
 - Consumes: document event `loading-screen-end`.
 - Produces: `startGovernor(): void`. It writes `data-fx-tier` and `sessionStorage['fx-tier']`, and dispatches `fx-tier-change` with `detail: { tier }`. `localStorage['fx-tier-lock']` (`'0'` to `'3'`) sets that tier and disables measuring; Task 1's script and tests use this.
 
@@ -556,6 +575,7 @@ Expected: `data-fx-tier` stays unset or `0`. Raise the threshold if it doesn't, 
 ### Task 11: Cleanup, docs, final comparison (Haiku, with final perf judgment by the coordinator)
 
 **Files:**
+
 - Modify: `CLAUDE.md`, `AGENTS.md`, `src/components/ContentComponents/Skills.astro` (remove the unused `box-shadow` transition and empty hover rule), and any leftovers
 - Create: `docs/superpowers/perf/final.json`, `docs/superpowers/perf/comparison.md`
 - Test: `tests/boot.spec.ts`
