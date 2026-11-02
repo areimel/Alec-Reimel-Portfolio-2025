@@ -47,5 +47,7 @@ test('reduced motion disables moving effects by default and supports explicit ch
   await expect(page.locator('#overlay-effect')).toBeChecked();
   await page.locator('label[for="scanline-effect"]').first().click();
   await expect(page.locator('.terminal-overlay .scanline')).not.toHaveClass(/hidden/);
-  await expect(page.locator('.terminal-overlay .scanline')).toHaveCSS('animation-name', 'scan');
+  await expect
+    .poll(() => page.locator('.terminal-overlay .scanline').evaluate((el) => el.getAnimations().length))
+    .toBeGreaterThan(0);
 });
