@@ -32,6 +32,8 @@
       document.documentElement.classList.remove('motion-ok');
       const loader = document.getElementById('loading-screen');
       if (loader) loader.style.display = 'none';
+      // boot.ts never ran, so release anything waiting on the loader (once: the failsafe runs once).
+      document.dispatchEvent(new CustomEvent('loading-screen-end'));
     }, 6000);
   })();
 </script>

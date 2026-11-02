@@ -4,13 +4,13 @@ import { BOOT_FLICKER } from './keyframes';
 
 const BOOTED_KEY = 'fx-booted';
 const FALLBACK_MS = 5000;
-const POST_LOAD_MS = 100;
+const POST_LOAD_MS = 200;
 const BEAM_COLLAPSE_MS = 250;
 const BEAM_CLOSE_MS = 150;
 const FADE_MS = 300;
 const SHORT_FADE_MS = 300;
 // Hard stop for a hidden or throttled tab: the sequence never gets to outlive its own length by much.
-const SEQUENCE_GUARD_MS = BEAM_COLLAPSE_MS + BEAM_CLOSE_MS + FADE_MS + 400;
+const SEQUENCE_GUARD_MS = BEAM_COLLAPSE_MS + BEAM_CLOSE_MS + FADE_MS + 150;
 
 const RESOURCES = [
   { url: '/fonts/KodeMono-Regular.ttf', family: 'KodeMono', weight: 25 },
