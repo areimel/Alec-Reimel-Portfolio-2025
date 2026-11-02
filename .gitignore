@@ -22,3 +22,6 @@ pnpm-debug.log*
 pnpm-lock.yaml
 
 .astro
+# browser test output
+playwright-report/
+test-results/
