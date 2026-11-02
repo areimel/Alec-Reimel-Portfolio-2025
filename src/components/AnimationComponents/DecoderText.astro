@@ -148,7 +148,6 @@ const words = text.split(' ').map((word) => {
         if (!loadingScreen || getComputedStyle(loadingScreen).display === 'none') start();
         else {
           document.addEventListener('loading-screen-end', start, { signal: controller.signal });
-          document.addEventListener('loadingScreenComplete', start, { signal: controller.signal });
         }
       } else {
         const observer = new IntersectionObserver(

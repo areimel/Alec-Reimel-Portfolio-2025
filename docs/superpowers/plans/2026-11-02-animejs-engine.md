@@ -263,7 +263,7 @@ Screenshot old (a `main` build) and new at desktop and 390px, in all five themes
 
 - Consumes: `motionAllowed`.
 - Produces: `startBoot(): void`, and document event `loading-screen-end`. Remove the duplicate `loadingScreenComplete` dispatch, and remove its listener in `DecoderText.astro`.
-- Produces, from `keyframes.ts`: `BOOT_FLICKER = { opacity: [0, 0.6, 0.2, 0.9, 0.5, 1], duration: 1200 }`.
+- Produces, from `keyframes.ts`: `BOOT_FLICKER = { opacity: [0, 0.6, 0.2, 0.9, 1], duration: 1200 }`.
 
 Values:
 

@@ -1,5 +1,5 @@
 import { test, expect } from './fixtures';
-import { flashesPerSecond } from '../src/animation/keyframes';
+import { flashesPerSecond, BOOT_FLICKER } from '../src/animation/keyframes';
 
 test.describe('flashesPerSecond', () => {
   test('counts 0, 1 and 2 reversals', () => {
@@ -29,5 +29,9 @@ test.describe('flashesPerSecond', () => {
     expect(flashesPerSecond([], 1000)).toBe(0);
     expect(flashesPerSecond([1], 1000)).toBe(0);
     expect(flashesPerSecond([0, 1], 1000)).toBe(0);
+  });
+
+  test('boot flicker stays within 3 flashes per second', () => {
+    expect(flashesPerSecond(BOOT_FLICKER.opacity, BOOT_FLICKER.duration)).toBeLessThanOrEqual(3);
   });
 });

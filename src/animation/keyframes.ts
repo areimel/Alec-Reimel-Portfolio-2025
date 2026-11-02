@@ -32,3 +32,6 @@ export function flashesPerSecond(opacities: number[], durationMs: number): numbe
   }
   return max;
 }
+
+/** CRT power-on flicker for the loader. At most 2 reversals in any 1000ms window (limit: 3). */
+export const BOOT_FLICKER = { opacity: [0, 0.6, 0.2, 0.9, 1], duration: 1200 };
