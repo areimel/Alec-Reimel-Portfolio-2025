@@ -2,23 +2,33 @@
 // No props needed for this component
 ---
 
-<div id="loading-screen" class="fixed inset-0 bg-terminal-bg-primary z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
+<noscript
+  ><style>
+    #loading-screen {
+      display: none !important;
+    }
+  </style></noscript
+>
+<div
+  id="loading-screen"
+  class="fixed inset-0 bg-terminal-bg-primary z-[100] flex flex-col items-center justify-center transition-opacity duration-500"
+>
   <!-- Terminal-style loading container -->
-  <div class="loading-container bg-terminal-bg-secondary border border-terminal-500 p-8 rounded-lg shadow-lg max-w-md w-full mx-4">
+  <div
+    class="loading-container bg-terminal-bg-secondary border border-terminal-500 p-8 rounded-lg shadow-lg max-w-md w-full mx-4"
+  >
     <!-- Terminal header -->
     <div class="terminal-header text-center mb-6">
-      <h2 class="text-2xl font-bold text-terminal-bright font-mono text-glow-strong">
-        //LOADING
-      </h2>
+      <h2 class="text-2xl font-bold text-terminal-bright font-mono text-glow-strong">//LOADING</h2>
       <p class="text-terminal-400 font-mono mt-2">Initializing terminal interface...</p>
     </div>
-    
+
     <!-- Progress bar container -->
     <div class="progress-container">
       <div class="w-full h-3 bg-terminal-bg-primary border border-terminal-300 rounded-sm overflow-hidden mb-3">
         <div id="loading-progress-bar" class="h-full bg-terminal-500 w-0 transition-all duration-300 shadow-lg"></div>
       </div>
-      
+
       <!-- Progress text -->
       <div class="flex justify-between items-center text-sm">
         <span id="loading-status" class="text-terminal-400 font-mono">Starting up...</span>
@@ -35,50 +45,57 @@
     totalResources: number;
     loadedResources: number;
     resourceProgress: Map<string, boolean>;
-    criticalResources: Array<{url: string, type: string, weight: number}>;
+    criticalResources: Array<{ url: string; type: string; weight: number }>;
     totalWeight: number;
-    
+
     constructor() {
       this.isInitialLoad = true;
       this.totalResources = 0;
       this.loadedResources = 0;
       this.resourceProgress = new Map();
-      
+
       // Critical resources to track
       this.criticalResources = [
         // High priority fonts
         { url: '/fonts/KodeMono-Regular.ttf', type: 'font', weight: 25 },
         { url: '/fonts/UAV-OSD-Mono.ttf', type: 'font', weight: 25 },
         { url: '/fonts/ShareTechMono-Regular.ttf', type: 'font', weight: 20 },
-        
+
         // Secondary fonts
         { url: '/fonts/VT323-Regular.ttf', type: 'font', weight: 15 },
         { url: '/fonts/Windows-Command-Prompt.woff2', type: 'font', weight: 10 },
-        
+
         // Critical images
-        { url: '/images/terminal-static-animated.gif', type: 'image', weight: 5 }
+        { url: '/images/terminal-static-animated.gif', type: 'image', weight: 5 },
       ];
-      
+
       this.totalWeight = this.criticalResources.reduce((sum, resource) => sum + resource.weight, 0);
     }
-    
+
     // Check if we're in a view transition context
     isViewTransition() {
-      return document.documentElement.hasAttribute('data-astro-transition') || 
-             (typeof document.startViewTransition !== 'undefined' && !this.isInitialLoad);
+      return (
+        document.documentElement.hasAttribute('data-astro-transition') ||
+        (typeof document.startViewTransition !== 'undefined' && !this.isInitialLoad)
+      );
     }
-    
+
     // Track font loading using FontFace API
     async trackFontLoading(resource) {
       try {
         const fontFace = new FontFace(
-          resource.url.includes('KodeMono') ? 'KodeMono' :
-          resource.url.includes('UAV-OSD') ? 'UAVOSDMono' :
-          resource.url.includes('ShareTech') ? 'ShareTechMono' :
-          resource.url.includes('VT323') ? 'VT323' : 'WindowsCommandPrompt',
+          resource.url.includes('KodeMono')
+            ? 'KodeMono'
+            : resource.url.includes('UAV-OSD')
+              ? 'UAVOSDMono'
+              : resource.url.includes('ShareTech')
+                ? 'ShareTechMono'
+                : resource.url.includes('VT323')
+                  ? 'VT323'
+                  : 'WindowsCommandPrompt',
           `url(${resource.url})`
         );
-        
+
         await fontFace.load();
         document.fonts.add(fontFace);
         this.onResourceLoaded(resource);
@@ -87,7 +104,7 @@
         this.onResourceLoaded(resource); // Still mark as loaded to prevent blocking
       }
     }
-    
+
     // Track image loading
     trackImageLoading(resource) {
       const img = new Image();
@@ -95,7 +112,7 @@
       img.onerror = () => this.onResourceLoaded(resource); // Mark as loaded even on error
       img.src = resource.url;
     }
-    
+
     // Handle resource loaded
     onResourceLoaded(resource) {
       if (!this.resourceProgress.has(resource.url)) {
@@ -104,51 +121,51 @@
         this.updateProgress();
       }
     }
-    
+
     // Update progress based on actual resource loading
     updateProgress() {
       const progress = Math.min((this.loadedResources / this.totalWeight) * 85, 85); // Cap at 85% until DOM is ready
       this.setProgress(progress);
     }
-    
+
     // Set progress on UI
     setProgress(progress) {
       const progressBar = document.getElementById('loading-progress-bar');
       const loadingStatus = document.getElementById('loading-status');
       const loadingPercentage = document.getElementById('loading-percentage');
-      
+
       if (progressBar) {
         progressBar.style.width = `${progress}%`;
-        
+
         // Add glow effect when progress increases
         if (progress > 0) {
           progressBar.style.boxShadow = `0 0 10px var(--terminal-500), 0 0 20px var(--terminal-300)`;
         }
       }
-      
+
       if (loadingPercentage) {
         loadingPercentage.textContent = `${Math.round(progress)}%`;
       }
-      
+
       // Update status message based on progress
       if (loadingStatus) {
         const statusMessages = [
-          'Loading terminal fonts...',      // 0-20%
-          'Initializing interface...',      // 20-40%
-          'Loading terminal graphics...',   // 40-60%
-          'Connecting to systems...',       // 60-80%
-          'Finalizing setup...',           // 80-95%
-          'Ready!'                         // 95-100%
+          'Loading terminal fonts...', // 0-20%
+          'Initializing interface...', // 20-40%
+          'Loading terminal graphics...', // 40-60%
+          'Connecting to systems...', // 60-80%
+          'Finalizing setup...', // 80-95%
+          'Ready!', // 95-100%
         ];
-        
+
         const messageIndex = Math.min(Math.floor(progress / 20), statusMessages.length - 1);
         loadingStatus.textContent = statusMessages[messageIndex];
       }
     }
-    
+
     // Start loading all critical resources
     startResourceLoading() {
-      this.criticalResources.forEach(resource => {
+      this.criticalResources.forEach((resource) => {
         if (resource.type === 'font') {
           this.trackFontLoading(resource);
         } else if (resource.type === 'image') {
@@ -156,22 +173,22 @@
         }
       });
     }
-    
+
     // Complete the loading process
     completeLoading() {
       this.setProgress(100);
-      
+
       // Wait before hiding
       setTimeout(() => {
         const loadingScreen = document.getElementById('loading-screen');
         if (loadingScreen) {
           loadingScreen.style.opacity = '0';
-          
+
           // Remove from DOM after fade out
           setTimeout(() => {
             if (loadingScreen) {
               loadingScreen.style.display = 'none';
-              
+
               // Dispatch custom events for compatibility
               document.dispatchEvent(new CustomEvent('loadingScreenComplete'));
               document.dispatchEvent(new CustomEvent('loading-screen-end'));
@@ -181,13 +198,13 @@
       }, 300);
     }
   }
-  
+
   // Initialize the resource loader
   const resourceLoader = new ResourceLoader();
-  
+
   function initializeLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
-    
+
     // If this is a view transition, hide the loading screen immediately
     if (resourceLoader.isViewTransition()) {
       if (loadingScreen) {
@@ -195,26 +212,26 @@
       }
       return;
     }
-    
+
     // Start tracking critical resources
     resourceLoader.startResourceLoading();
-    
+
     // Also add a fallback timer in case some resources fail to load
     const fallbackTimer = setTimeout(() => {
       console.warn('Loading screen fallback timer triggered');
       resourceLoader.completeLoading();
     }, 5000); // 5 second maximum loading time
-    
+
     // When page is fully loaded, complete the process
     window.addEventListener('load', () => {
       clearTimeout(fallbackTimer);
-      
+
       // Give a moment for any remaining async operations
       setTimeout(() => {
         resourceLoader.completeLoading();
       }, 200);
     });
-    
+
     // Also listen for DOMContentLoaded to update progress
     document.addEventListener('DOMContentLoaded', () => {
       // Add 15% more progress when DOM is ready
@@ -222,7 +239,7 @@
       resourceLoader.setProgress(Math.min(currentProgress + 15, 100));
     });
   }
-  
+
   // Handle view transitions
   document.addEventListener('astro:page-load', () => {
     if (resourceLoader.isInitialLoad) {
@@ -235,7 +252,7 @@
       }
     }
   });
-  
+
   // Initialize based on document state
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLoadingScreen);
@@ -247,52 +264,61 @@
 <style>
   /* Terminal-style loading container styling */
   .loading-container {
-    box-shadow: 
+    box-shadow:
       0 0 20px var(--terminal-300),
       0 0 40px var(--terminal-200),
       inset 0 0 20px var(--terminal-bg-accent);
   }
-  
+
   /* Progress bar glow effect */
   #loading-progress-bar {
     background: linear-gradient(90deg, var(--terminal-500), var(--terminal-bright));
-    transition: width 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      width 0.3s ease,
+      box-shadow 0.3s ease;
   }
-  
+
   /* Terminal header glow */
   .terminal-header h2 {
     text-shadow: var(--theme-glow-strong);
   }
-  
+
   /* Subtle animation for the loading container */
   .loading-container {
     animation: terminalPulse 2s ease-in-out infinite alternate;
   }
-  
+
   @keyframes terminalPulse {
     0% {
-      box-shadow: 
+      box-shadow:
         0 0 20px var(--terminal-300),
         0 0 40px var(--terminal-200),
         inset 0 0 20px var(--terminal-bg-accent);
     }
     100% {
-      box-shadow: 
+      box-shadow:
         0 0 25px var(--terminal-400),
         0 0 50px var(--terminal-300),
         inset 0 0 25px var(--terminal-bg-accent);
     }
   }
-  
+
+  @media (prefers-reduced-motion: reduce) {
+    .loading-container {
+      animation: none;
+    }
+  }
+
   /* Responsive adjustments */
   @media (max-width: 640px) {
     .loading-container {
       margin: 1rem;
       padding: 1.5rem;
     }
-    
+
     .terminal-header h2 {
       font-size: 1.5rem;
     }
   }
-</style> 
+</style>
+
