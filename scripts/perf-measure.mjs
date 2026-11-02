@@ -8,6 +8,7 @@ import { chromium } from '@playwright/test';
 const PORT = 4399;
 const ORIGIN = `http://127.0.0.1:${PORT}`;
 const MODES = { idle: 30_000, scroll: 15_000 };
+const VIEWPORT = { width: 1280, height: 720 };
 const THROTTLES = [1, 4];
 const METRICS = ['TaskDuration', 'ScriptDuration', 'LayoutDuration', 'RecalcStyleDuration'];
 
@@ -69,8 +70,8 @@ async function metricsSnapshot(cdp) {
   return Object.fromEntries(metrics.map((m) => [m.name, m.value]));
 }
 
-async function measureOnce(browser, route, mode, throttle, withBytes) {
-  const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+async function measureOnce(browser, route, mode, throttle) {
+  const context = await browser.newContext({ viewport: VIEWPORT });
   await context.addInitScript(() => {
     try {
       localStorage.setItem('fx-tier-lock', '0');
@@ -90,6 +91,7 @@ async function measureOnce(browser, route, mode, throttle, withBytes) {
     const el = document.getElementById('loading-screen');
     return !el || getComputedStyle(el).display === 'none';
   });
+  // Total bytes transferred up to the moment #loading-screen is hidden.
   const loadBytes = transferredBytes;
 
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: throttle });
@@ -98,10 +100,8 @@ async function measureOnce(browser, route, mode, throttle, withBytes) {
     const tick = (t) => {
       const p = window.__perf;
       if (p.stop) return;
-      if (p.frames > 0 || p.last) {
-        if (t - p.last > 50) p.long++;
-        p.frames++;
-      }
+      if (t - p.last > 50) p.long++;
+      p.frames++;
       p.last = t;
       requestAnimationFrame(tick);
     };
@@ -123,12 +123,13 @@ async function measureOnce(browser, route, mode, throttle, withBytes) {
   else await scrollLoop(page, MODES.scroll);
 
   const after = await metricsSnapshot(cdp);
-  await cdp.send('Tracing.end');
-  await tracingDone;
+  // Close the rAF window right after the metrics window so both cover the same interval.
   const perf = await page.evaluate(() => {
     window.__perf.stop = true;
     return window.__perf;
   });
+  await cdp.send('Tracing.end');
+  await tracingDone;
   await context.close();
 
   const result = {
@@ -137,7 +138,7 @@ async function measureOnce(browser, route, mode, throttle, withBytes) {
     paintEvents: paints,
   };
   for (const m of METRICS) result[m] = after[m] - before[m];
-  if (withBytes) result.transferredBytes = loadBytes;
+  result.transferredBytes = loadBytes;
   return result;
 }
 
@@ -151,6 +152,7 @@ const server = await startServer();
 let exitCode = 0;
 try {
   const browser = await chromium.launch();
+  const chromiumVersion = browser.version();
   const routes = ['/', '/contact', `/projects/${firstProjectSlug()}`];
   const results = {};
   for (const route of routes) {
@@ -158,7 +160,7 @@ try {
       for (const throttle of THROTTLES) {
         const key = `${route}|${mode}|${throttle}x`;
         const samples = [];
-        for (let r = 0; r < runs; r++) samples.push(await measureOnce(browser, route, mode, throttle, true));
+        for (let r = 0; r < runs; r++) samples.push(await measureOnce(browser, route, mode, throttle));
         results[key] = { runs, ...medianOf(samples) };
         console.log(key, JSON.stringify(results[key]));
       }
@@ -174,6 +176,15 @@ try {
       scrollMs: MODES.scroll,
       note: 'Headless Chromium uses software compositing, so absolute paint/frame numbers are not representative of GPU-composited browsers; compare before/after only.',
       longFrameThresholdMs: 50,
+      gitSha: execSync('git rev-parse HEAD').toString().trim(),
+      chromiumVersion,
+      viewport: VIEWPORT,
+      cpuThrottleRates: THROTTLES,
+      durationFields:
+        'TaskDuration, ScriptDuration, LayoutDuration and RecalcStyleDuration are cumulative seconds over the measured window (Performance.getMetrics delta).',
+      transferredBytes:
+        'Total encoded bytes transferred up to the moment #loading-screen is hidden on the first route load.',
+      build: 'REVIEW_TEST_FIXTURES=1 astro build --outDir .test-dist',
     },
     results,
   };
