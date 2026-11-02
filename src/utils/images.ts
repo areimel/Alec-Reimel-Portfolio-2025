@@ -70,9 +70,7 @@ export const adaptOpenGraphImages = async (
         }
 
         // Just use the image as-is without any optimization
-        const imageUrl = typeof resolvedImage === 'string' 
-          ? resolvedImage 
-          : resolvedImage?.src || '';
+        const imageUrl = typeof resolvedImage === 'string' ? resolvedImage : resolvedImage?.src || '';
 
         return {
           url: imageUrl.startsWith('/') ? String(new URL(imageUrl, astroSite)) : imageUrl,

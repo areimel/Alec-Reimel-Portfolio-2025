@@ -10,7 +10,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={["sidebar-options-container", className]}>
+<div class:list={['sidebar-options-container', className]}>
   <!-- Options Toggle Button -->
   <SidebarButton
     id="options-toggle"
@@ -18,7 +18,7 @@ const { class: className } = Astro.props;
     position="fixed top-20 left-4 z-50"
     ariaLabel="Theme Options"
   />
-  
+
   <!-- Options Sidebar -->
   <nav
     id="options-sidebar"
@@ -27,12 +27,7 @@ const { class: className } = Astro.props;
     <div class="p-6">
       <div class="mb-8 pt-16 relative flex justify-between items-center">
         <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Options</h2>
-        <SidebarButton
-          id="options-close"
-          icon="tabler:x"
-          position="absolute -top-2 -left-2"
-          ariaLabel="Close"
-        />
+        <SidebarButton id="options-close" icon="tabler:x" position="absolute -top-2 -left-2" ariaLabel="Close" />
       </div>
 
       <div class="space-y-8 overflow-y-auto max-h-[calc(100vh-120px)]">
@@ -43,13 +38,12 @@ const { class: className } = Astro.props;
             <ThemeSwitcher />
           </div>
         </div>
-        
+
         <!-- Terminal Effects Controls Section -->
         <div class="pt-2 border-t border-terminal-300/20">
           <TerminalEffectsControls />
         </div>
       </div>
-
     </div>
   </nav>
 
@@ -71,7 +65,7 @@ const { class: className } = Astro.props;
 
     function toggleSidebar() {
       isOpen = !isOpen;
-      
+
       if (isOpen) {
         sidebar?.classList.remove('-translate-x-full');
         overlay?.classList.remove('opacity-0', 'pointer-events-none');
@@ -101,4 +95,4 @@ const { class: className } = Astro.props;
 
 <style>
   /* This style is now handled by the SidebarButton component */
-</style> 
+</style>

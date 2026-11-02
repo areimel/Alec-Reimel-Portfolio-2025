@@ -61,7 +61,11 @@ const {
                   {typeof callToAction === 'string' ? (
                     <Fragment set:html={callToAction} />
                   ) : (
-                    <Button variant="primary" {...callToAction} class="bg-terminal-500 text-terminal-bg-primary hover:bg-terminal-600 font-kode" />
+                    <Button
+                      variant="primary"
+                      {...callToAction}
+                      class="bg-terminal-500 text-terminal-bg-primary hover:bg-terminal-600 font-kode"
+                    />
                   )}
                 </div>
               )
@@ -72,7 +76,10 @@ const {
                   {typeof callToAction2 === 'string' ? (
                     <Fragment set:html={callToAction2} />
                   ) : (
-                    <Button {...callToAction2} class="border border-terminal-500 text-terminal-500 hover:bg-terminal-500/10 font-kode" />
+                    <Button
+                      {...callToAction2}
+                      class="border border-terminal-500 text-terminal-500 hover:bg-terminal-500/10 font-kode"
+                    />
                   )}
                 </div>
               )

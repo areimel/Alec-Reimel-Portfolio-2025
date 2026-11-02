@@ -88,4 +88,4 @@ As VR technology continues to advance, we're seeing improvements in:
 
 Virtual reality workstations represent a paradigm shift in how we think about workspace design and mobile productivity. While the technology is still evolving, the benefits are already clear for many use cases. Whether you're a digital nomad looking to maximize productivity on the go, or simply someone who wants the perfect work environment regardless of physical constraints, VR workstations offer a compelling glimpse into the future of work.
 
-The ability to create your ideal workspace anywhere, complete with infinite screen real estate and customizable environments, makes VR an increasingly attractive option for modern professionals. As the technology continues to mature, we may find that physical monitors become as obsolete as CRT displays are today. 
+The ability to create your ideal workspace anywhere, complete with infinite screen real estate and customizable environments, makes VR an increasingly attractive option for modern professionals. As the technology continues to mature, we may find that physical monitors become as obsolete as CRT displays are today.

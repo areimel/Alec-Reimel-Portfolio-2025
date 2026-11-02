@@ -7,6 +7,7 @@ The design aesthetic I'm going for with this project is "80s lo-fi computer term
 A major feature I would like help with is setting up a modified light/dark mode. The two most common color schemes for old school computer monitors are green and amber - I would like the light and dark mode settings to toggle between these two color schemes. The amber theme should be the light setting, and the green theme should be the dark setting. I have an existing green color scheme, but I'd like you help with refining it, and then I want to research amber terminal color schemes and come up with at least 3 options to choose from.
 
 Tech Stack:
+
 - Astro framework
 - Astrowind site template
 - Tailwind CSS
@@ -15,6 +16,7 @@ Tech Stack:
   - I'm working on a Windows PC and I'm using Powershell.
 
 Tasks I need help with:
+
 - Rewriting the README file.
 - Setting up terminal color scheme in Tailwind CSS for better consistency.
 - Setting up separate green and amber color schemes that work like light and dark mode.

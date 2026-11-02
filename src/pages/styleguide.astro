@@ -19,7 +19,6 @@ const fontGroups = {
     { name: 'UAV OSD Sans', class: 'font-uav-sans' },
     { name: 'Computerfont', class: 'font-computer' },
   ],
-  
 };
 
 const sampleText = `ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -32,49 +31,49 @@ The quick brown fox jumps over the lazy dog`;
 <Layout>
   <main class="px-8 py-12 max-w-6xl mx-auto">
     <h1 class="text-4xl font-bold mb-8 text-terminal-500">Terminal Theme Styleguide</h1>
-    
+
     <ColorPalette />
 
     <!-- Typography Section -->
     <section class="mb-12">
       <h2 class="text-2xl font-bold mb-6 text-terminal-500">Typography</h2>
-      
-      {Object.entries(fontGroups).map(([groupName, fonts]) => (
-        <div class="mb-8">
-          <h3 class="text-xl font-semibold mb-4 text-terminal-400">{groupName}</h3>
-          <div class="space-y-6">
-            {fonts.map(({ name, class: fontClass }) => (
-              <div class="p-4 rounded border border-terminal-300/20">
-                <div class="flex items-center justify-between mb-2">
-                  <h4 class="text-terminal-500">{name}</h4>
-                  <button 
-                    class="copy-button text-sm text-terminal-300 hover:text-terminal-500"
-                    data-class-name={fontClass}
-                  >
-                    Copy class
-                  </button>
+
+      {
+        Object.entries(fontGroups).map(([groupName, fonts]) => (
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-terminal-400">{groupName}</h3>
+            <div class="space-y-6">
+              {fonts.map(({ name, class: fontClass }) => (
+                <div class="p-4 rounded border border-terminal-300/20">
+                  <div class="flex items-center justify-between mb-2">
+                    <h4 class="text-terminal-500">{name}</h4>
+                    <button
+                      class="copy-button text-sm text-terminal-300 hover:text-terminal-500"
+                      data-class-name={fontClass}
+                    >
+                      Copy class
+                    </button>
+                  </div>
+                  <p class={`text-2xl text-terminal-500 ${fontClass} whitespace-pre-line`}>{sampleText}</p>
+                  <p class="text-terminal-300 text-sm mt-2">{fontClass}</p>
                 </div>
-                <p class={`text-2xl text-terminal-500 ${fontClass} whitespace-pre-line`}>
-                  {sampleText}
-                </p>
-                <p class="text-terminal-300 text-sm mt-2">{fontClass}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
 
       <!-- Font Size Examples -->
       <div class="mt-12">
         <h3 class="text-xl font-semibold mb-4 text-terminal-400">Font Sizes</h3>
         <div class="space-y-4">
-          {['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'].map((size) => (
-            <div>
-              <p class={`text-${size} text-terminal-500 font-share-tech`}>
-                The quick brown fox (text-{size})
-              </p>
-            </div>
-          ))}
+          {
+            ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'].map((size) => (
+              <div>
+                <p class={`text-${size} text-terminal-500 font-share-tech`}>The quick brown fox (text-{size})</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -82,17 +81,21 @@ The quick brown fox jumps over the lazy dog`;
     <!-- Component Examples -->
     <section class="mb-12">
       <h2 class="text-2xl font-bold mb-6 text-terminal-500">Component Examples</h2>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Button Examples -->
         <div class="space-y-4">
           <h3 class="text-xl font-semibold mb-4 text-terminal-400">Buttons</h3>
-          
-          <button class="px-4 py-2 bg-terminal-500 text-terminal-bg-primary rounded hover:bg-terminal-600 transition-colors">
+
+          <button
+            class="px-4 py-2 bg-terminal-500 text-terminal-bg-primary rounded hover:bg-terminal-600 transition-colors"
+          >
             Primary Button
           </button>
-          
-          <button class="px-4 py-2 border border-terminal-500 text-terminal-500 rounded hover:bg-terminal-500/10 transition-colors">
+
+          <button
+            class="px-4 py-2 border border-terminal-500 text-terminal-500 rounded hover:bg-terminal-500/10 transition-colors"
+          >
             Secondary Button
           </button>
         </div>
@@ -107,27 +110,21 @@ The quick brown fox jumps over the lazy dog`;
 
     <section class="mb-12">
       <h2 class="text-2xl font-bold mb-6 text-terminal-500">Text Glow Effects</h2>
-      
+
       <div class="space-y-6">
         <div class="p-4 rounded border border-terminal-300/20">
           <h4 class="text-terminal-500 mb-2">Default Glow</h4>
-          <p class="text-2xl text-terminal-500">
-            This text has the default terminal glow effect
-          </p>
+          <p class="text-2xl text-terminal-500">This text has the default terminal glow effect</p>
         </div>
 
         <div class="p-4 rounded border border-terminal-300/20">
           <h4 class="text-terminal-500 mb-2">Strong Glow</h4>
-          <p class="text-2xl text-terminal-500 text-glow-strong">
-            This text has an enhanced glow effect
-          </p>
+          <p class="text-2xl text-terminal-500 text-glow-strong">This text has an enhanced glow effect</p>
         </div>
 
         <div class="p-4 rounded border border-terminal-300/20">
           <h4 class="text-terminal-500 mb-2">Subtle Glow</h4>
-          <p class="text-2xl text-terminal-500 text-glow-subtle">
-            This text has a more subtle glow effect
-          </p>
+          <p class="text-2xl text-terminal-500 text-glow-subtle">This text has a more subtle glow effect</p>
         </div>
 
         <div class="p-4 rounded border border-terminal-300/20">
@@ -145,19 +142,20 @@ The quick brown fox jumps over the lazy dog`;
 
     <section class="mb-12">
       <h2 class="text-2xl font-bold mb-6 text-terminal-500">Text Highlight Effect</h2>
-      
+
       <div class="space-y-6">
         <div class="p-4 rounded border border-terminal-300/20">
           <h4 class="text-terminal-500 mb-2">Highlight Text</h4>
           <p class="text-terminal-500">
-            This paragraph contains <span class="highlight-text">highlighted text</span> that uses the new highlight-text class.
+            This paragraph contains <span class="highlight-text">highlighted text</span> that uses the new highlight-text
+            class.
           </p>
         </div>
 
         <div class="p-4 rounded border border-terminal-300/20">
           <h4 class="text-terminal-500 mb-2">Highlight Text in Context</h4>
           <p class="text-terminal-500">
-            The <span class="highlight-text">highlight-text</span> class can be used to emphasize important terms, 
+            The <span class="highlight-text">highlight-text</span> class can be used to emphasize important terms,
             <span class="highlight-text">code snippets</span>, or other elements that need to stand out in your text.
           </p>
         </div>
@@ -165,11 +163,11 @@ The quick brown fox jumps over the lazy dog`;
         <div class="p-4 rounded border border-terminal-300/20">
           <h4 class="text-terminal-500 mb-2">Multiple Line Highlights</h4>
           <p class="text-terminal-500">
-            You can also use it for <span class="highlight-text">multiple words across lines</span> in your content to create 
+            You can also use it for <span class="highlight-text">multiple words across lines</span> in your content to create
             visual interest and draw attention to key points in your documentation or website.
           </p>
         </div>
       </div>
     </section>
   </main>
-</Layout> 
+</Layout>

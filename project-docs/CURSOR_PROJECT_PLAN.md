@@ -1,10 +1,13 @@
 # Portfolio Website Project Plan
 
 ## Project Overview
+
 This is a developer portfolio website rebuild focusing on an "80s lo-fi computer terminal" aesthetic. The site aims to showcase both technical prowess and artistic vision through a unique retro-futuristic design language.
 
 ## Design Vision
+
 ### Core Aesthetic
+
 - Primary Theme: "80s lo-fi computer terminal"
 - Design Philosophy: Retro-brutalist with cyberpunk influences
 - Key Visual Elements:
@@ -14,6 +17,7 @@ This is a developer portfolio website rebuild focusing on an "80s lo-fi computer
   - Retro-futuristic interface components
 
 ### Color Schemes
+
 1. Dark Mode (Green Theme)
    - Primary: Phosphor green CRT colors
    - Secondary: Dark terminal backgrounds
@@ -25,7 +29,9 @@ This is a developer portfolio website rebuild focusing on an "80s lo-fi computer
    - Accent: Complementary retro colors
 
 ## Technical Architecture
+
 ### Core Technologies
+
 - Framework: Astro
 - Template Base: Astrowind
 - Styling: Tailwind CSS
@@ -33,6 +39,7 @@ This is a developer portfolio website rebuild focusing on an "80s lo-fi computer
 - Development Environment: Windows/Powershell
 
 ### Key Features
+
 1. Theme Switching System
    - Toggle between green/amber themes
    - Persistent theme preference storage
@@ -52,7 +59,9 @@ This is a developer portfolio website rebuild focusing on an "80s lo-fi computer
    - Blog system with multiple templates
 
 ## Content Structure
+
 ### Portfolio Sections
+
 1. Current Projects
    - Local private custom AI
    - VR/AR development
@@ -67,6 +76,7 @@ This is a developer portfolio website rebuild focusing on an "80s lo-fi computer
    - Small business solutions
 
 ### Blog Categories
+
 1. Project Updates
    - Development progress
    - New feature announcements
@@ -83,8 +93,9 @@ This is a developer portfolio website rebuild focusing on an "80s lo-fi computer
    - Industry insights
 
 ## Performance Considerations
+
 - Animation optimization
 - Lazy loading strategies
 - Performance monitoring
 - Accessibility compliance
-- Mobile responsiveness 
+- Mobile responsiveness

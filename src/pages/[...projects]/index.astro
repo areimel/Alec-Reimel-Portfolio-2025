@@ -45,16 +45,10 @@ const metadata = merge(
 
 <Layout metadata={metadata} activeSection="projects">
   {/* Back to projects link */}
-  <div class="mx-auto max-w-screen-2xl px-6 py-2  text-lg">
-    <a href="/projects" class=" hover:underline">
-      ← Back to Projects
-    </a>
+  <div class="mx-auto max-w-screen-2xl px-6 py-2 text-lg">
+    <a href="/projects" class="hover:underline"> ← Back to Projects </a>
   </div>
   <ProjectPost post={{ ...project, image: image }} url={url}>
     {project.Content ? <project.Content /> : <Fragment set:html={project.content || ''} />}
   </ProjectPost>
-  
-  
-  
-  
-</Layout> 
+</Layout>
