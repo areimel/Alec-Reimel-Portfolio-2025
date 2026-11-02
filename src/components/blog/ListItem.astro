@@ -1,5 +1,4 @@
 ---
-import type { ImageMetadata } from 'astro';
 import { Icon } from 'astro-icon/components';
 import PostTags from '~/components/blog/Tags.astro';
 
@@ -15,11 +14,19 @@ export interface Props {
 }
 
 const { post } = Astro.props;
-const image = (await findImage(post.image)) as ImageMetadata | undefined;
+const resolvedImage = await findImage(post.image);
+const image = typeof resolvedImage === 'string' ? resolvedImage : resolvedImage?.src;
 
 // Detect if this is a project post by checking for project-specific fields
 // Projects have fields like projectUrl, repoUrl, technologies, etc. that blog posts don't have
-const isProjectPost = !!(post.projectUrl || post.repoUrl || post.technologies || post.client || post.duration || post.role);
+const isProjectPost = !!(
+  post.projectUrl ||
+  post.repoUrl ||
+  post.technologies ||
+  post.client ||
+  post.duration ||
+  post.role
+);
 
 const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';
 ---

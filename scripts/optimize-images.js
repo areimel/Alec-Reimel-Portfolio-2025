@@ -14,13 +14,13 @@ const CONFIG = {
     width: 1200,
     height: 628,
     quality: 85,
-    compressionLevel: 8
+    compressionLevel: 8,
   },
   general: {
     maxWidth: 1920,
     quality: 80,
-    compressionLevel: 6
-  }
+    compressionLevel: 6,
+  },
 };
 
 // Helper function to format file sizes
@@ -64,12 +64,12 @@ async function optimizeOpenGraphImage(inputPath, outputPath = null) {
     await sharp(inputPath)
       .resize(CONFIG.opengraph.width, CONFIG.opengraph.height, {
         fit: 'cover',
-        position: 'left top'
+        position: 'left top',
       })
       .png({
         quality: CONFIG.opengraph.quality,
         compressionLevel: CONFIG.opengraph.compressionLevel,
-        progressive: true
+        progressive: true,
       })
       .toFile(actualOutputPath + '.tmp');
 
@@ -77,7 +77,7 @@ async function optimizeOpenGraphImage(inputPath, outputPath = null) {
     fs.renameSync(actualOutputPath + '.tmp', actualOutputPath);
 
     const newSize = getFileSize(actualOutputPath);
-    const reduction = ((originalSize - newSize) / originalSize * 100).toFixed(1);
+    const reduction = (((originalSize - newSize) / originalSize) * 100).toFixed(1);
 
     console.log(`✅ Optimized successfully!`);
     console.log(`📊 Size: ${formatBytes(originalSize)} → ${formatBytes(newSize)} (${reduction}% reduction)`);
@@ -112,7 +112,7 @@ async function optimizeGeneralImage(inputPath, outputPath = null) {
     // Resize if larger than maxWidth
     if (metadata.width > CONFIG.general.maxWidth) {
       pipeline = pipeline.resize(CONFIG.general.maxWidth, null, {
-        withoutEnlargement: true
+        withoutEnlargement: true,
       });
       console.log(`📐 Resizing to max width: ${CONFIG.general.maxWidth}px`);
     }
@@ -123,19 +123,19 @@ async function optimizeGeneralImage(inputPath, outputPath = null) {
         pipeline = pipeline.png({
           quality: CONFIG.general.quality,
           compressionLevel: CONFIG.general.compressionLevel,
-          progressive: true
+          progressive: true,
         });
         break;
       case '.jpg':
       case '.jpeg':
         pipeline = pipeline.jpeg({
           quality: CONFIG.general.quality,
-          progressive: true
+          progressive: true,
         });
         break;
       case '.webp':
         pipeline = pipeline.webp({
-          quality: CONFIG.general.quality
+          quality: CONFIG.general.quality,
         });
         break;
       default:
@@ -149,7 +149,7 @@ async function optimizeGeneralImage(inputPath, outputPath = null) {
     fs.renameSync(actualOutputPath + '.tmp', actualOutputPath);
 
     const newSize = getFileSize(actualOutputPath);
-    const reduction = ((originalSize - newSize) / originalSize * 100).toFixed(1);
+    const reduction = (((originalSize - newSize) / originalSize) * 100).toFixed(1);
 
     console.log(`✅ Optimized successfully!`);
     console.log(`📊 Size: ${formatBytes(originalSize)} → ${formatBytes(newSize)} (${reduction}% reduction)`);
@@ -163,9 +163,10 @@ async function optimizeGeneralImage(inputPath, outputPath = null) {
 
 // Batch optimize images in a directory
 async function optimizeDirectory(dirPath, pattern = /\.(jpe?g|png|webp)$/i, isOpenGraph = false) {
-  const files = fs.readdirSync(dirPath)
-    .filter(file => pattern.test(file))
-    .map(file => path.join(dirPath, file));
+  const files = fs
+    .readdirSync(dirPath)
+    .filter((file) => pattern.test(file))
+    .map((file) => path.join(dirPath, file));
 
   if (files.length === 0) {
     console.log(`📁 No images found in ${dirPath}`);
@@ -180,9 +181,7 @@ async function optimizeDirectory(dirPath, pattern = /\.(jpe?g|png|webp)$/i, isOp
 
   for (const filePath of files) {
     try {
-      const result = isOpenGraph
-        ? await optimizeOpenGraphImage(filePath)
-        : await optimizeGeneralImage(filePath);
+      const result = isOpenGraph ? await optimizeOpenGraphImage(filePath) : await optimizeGeneralImage(filePath);
 
       if (result) {
         totalOriginalSize += result.originalSize;
@@ -190,15 +189,17 @@ async function optimizeDirectory(dirPath, pattern = /\.(jpe?g|png|webp)$/i, isOp
         successCount++;
       }
       console.log(''); // Empty line for readability
-    } catch (error) {
+    } catch {
       console.error(`Failed to optimize ${path.basename(filePath)}`);
     }
   }
 
   if (successCount > 0) {
-    const totalReduction = ((totalOriginalSize - totalNewSize) / totalOriginalSize * 100).toFixed(1);
+    const totalReduction = (((totalOriginalSize - totalNewSize) / totalOriginalSize) * 100).toFixed(1);
     console.log(`🎉 Batch optimization complete!`);
-    console.log(`📊 Total: ${formatBytes(totalOriginalSize)} → ${formatBytes(totalNewSize)} (${totalReduction}% reduction)`);
+    console.log(
+      `📊 Total: ${formatBytes(totalOriginalSize)} → ${formatBytes(totalNewSize)} (${totalReduction}% reduction)`
+    );
     console.log(`✅ Successfully optimized ${successCount}/${files.length} images`);
   }
 }
@@ -232,7 +233,7 @@ async function main() {
         await optimizeDirectory(publicDir);
         break;
 
-      case 'file':
+      case 'file': {
         const filePath = args[1];
         if (!filePath) {
           console.error('❌ Please provide a file path');
@@ -251,6 +252,7 @@ async function main() {
           await optimizeGeneralImage(filePath);
         }
         break;
+      }
 
       default:
         console.log(`🖼️  Image Optimization Tool`);

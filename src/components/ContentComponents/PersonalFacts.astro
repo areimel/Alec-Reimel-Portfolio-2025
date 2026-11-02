@@ -1,70 +1,67 @@
 ---
-import DecoderText from "@components/AnimationComponents/DecoderText.astro";
-
 const facts = [
-    {
-        prefix: "//01_",
-        title: "Location",
-        content: `Based in the Pennsylvania/New Jersey area.
+  {
+    prefix: '//01_',
+    title: 'Location',
+    content: `Based in the Pennsylvania/New Jersey area.
         <br/><br/>
         I went to college in upstate New York, studied abroad in London, and have traveled to countries all over the world.
         <br/><br/>
         I've worked with clients from all over the US, and from across the globe. From local brick and mortar shops on Main Street to Fortune 500s and multinational conglomerates.
-        `
-    },
-    {
-        prefix: "//02_",
-        title: "Hobbies",
-        content: `
+        `,
+  },
+  {
+    prefix: '//02_',
+    title: 'Hobbies',
+    content: `
         <ul class="mt-4 space-y-4 pl-6">
           <li><strong>Music</strong>: I play guitar, bass, and dabble in synthesizers. I'm forever in the middle of recording my demo album that never seems to be finished.</li>
           <li><strong>Books, Movies, and TV</strong>: I'm a huge media nerd, with some of my favorites being books like NEUROMANCER by William Gibson and films like TRON and THE MATRIX, all major influences on my style and philosophy towards technology.</li>
           <li><strong>Digital Art</strong>: I've done graphic design work for bands and artists - once I was even asked for a sample t-shirt by a Japanese heavy metal band.</li>
-        </ul>`
-    },
-    {
-        prefix: "//03_",
-        title: "Values",
-        content: `
+        </ul>`,
+  },
+  {
+    prefix: '//03_',
+    title: 'Values',
+    content: `
         <ul class="mt-4 space-y-4 pl-6">
           <li>Open Source Technology: My personal projects are typically free to use, download, modify, and learn from.</li>
           <li>Sustainable Technology: I recycle old tech for new projects. That old laptop you're about to throw out could be your new private AI server.</li>
           <li>Developer Ease-Of-Use: I build my projects with lots of documentation and easy to read code, so anyone can jump in and use my code with minimal overhead.</li>
-        </ul>`
-    },
-    {
-        prefix: "//04_",
-        title: "Goals",
-        content: `
+        </ul>`,
+  },
+  {
+    prefix: '//04_',
+    title: 'Goals',
+    content: `
         Modern technology, as advanced as it is, can be a bit dull and boring at times. We walk around with computers in our pockets that are a million times more powerful than the computers that NASA used for the moon landings - and it's just a boring everyday thing that we barely pay attention to.
         <br/><br/>
         I want to change that. I want the future that we were promised by science fiction. Technology doesn't have to be plain - it's up to us coders to make things exciting and fun to use.
-        `
-    }
+        `,
+  },
 ];
 ---
 
 <section class="w-full p-4 md:p-8 mb-12 bg-terminal-bg-primary">
   <div class="w-full h-full max-w-screen-2xl mx-auto">
-    
     <div class="text-center mb-12">
-      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">
-        Get To Know Me
-      </h2>
+      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">Get To Know Me</h2>
     </div>
 
     <div class="facts-grid">
-      {facts.map(({ prefix, title, content }) => (
-        <>
-          <div class="facts-cell facts-header">
-            <p class="facts-prefix">{prefix}</p>
-            <h3 class="facts-title">{title}</h3>
-          </div>
-          <div class="facts-cell facts-content">
-            <div class="facts-text" set:html={content} />
-          </div>
-        </>
-      ))}
+      {
+        facts.map(({ prefix, title, content }) => (
+          <>
+            <div class="facts-cell facts-header">
+              <p class="facts-prefix">{prefix}</p>
+              <h3 class="facts-title">{title}</h3>
+            </div>
+            <div class="facts-cell facts-content">
+              <div class="facts-text" set:html={content} />
+            </div>
+          </>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -102,15 +99,13 @@ const facts = [
   .facts-text {
     @apply text-terminal-400 font-kode text-xl;
   }
-  .facts-text::marker{
-    content: "> ";
+  .facts-text::marker {
+    content: '> ';
     @apply text-terminal-700;
   }
 
-
-  ul{
+  ul {
     @apply text-lg text-terminal-400 font-kode pl-4;
-    
   }
 
   /* Responsive adjustments for smaller screens */
@@ -126,4 +121,5 @@ const facts = [
       grid-column: 1;
     }
   }
-</style> 
+</style>
+
