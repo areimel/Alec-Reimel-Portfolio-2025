@@ -27,6 +27,9 @@ export function onFxTierChange(fn: (tier: number) => void, signal?: AbortSignal)
  * `scope.revert()` also reverts `waapi` animations, but only those created synchronously
  * inside `init`. Animations created later (events, timers, promises) are not registered
  * and must be handed to `ctx.cleanup`.
+ *
+ * Call this synchronously while the entry module runs. There is no late-registration
+ * path: a call made after `astro:page-load` has already fired will not run for that page.
  */
 export function onPage(init: (ctx: PageContext) => void): void {
   let end: (() => void) | null = null;
@@ -54,7 +57,12 @@ export function onPage(init: (ctx: PageContext) => void): void {
       scope.revert();
     };
     scope.add(() => {
-      init({ signal: controller.signal, cleanup: (fn) => void cleanups.push(fn) });
+      // Scope.execute has no try/finally, so a throw would leave Anime.js globals pointing at this scope.
+      try {
+        init({ signal: controller.signal, cleanup: (fn) => void cleanups.push(fn) });
+      } catch (error) {
+        console.error(error);
+      }
     });
   });
   document.addEventListener('astro:before-swap', teardown);

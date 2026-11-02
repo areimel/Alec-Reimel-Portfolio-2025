@@ -5,6 +5,8 @@ declare global {
   }
 }
 
+// Features must be statically imported above this line: `__fxReady` is set only after they have
+// loaded, so a failed feature chunk leaves it unset and the bootstrap failsafe fires.
 window.__fxReady = true;
 
 export {};

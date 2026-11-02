@@ -27,3 +27,11 @@ test('reduced motion does not set the motion flag', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).not.toHaveClass(/motion-ok/);
 });
+
+test('a throwing page feature does not stop later features or raise page errors', async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+  await page.goto('/review-fixtures/animations');
+  await expect(page.locator('html')).toHaveAttribute('data-fixture-on-page', 'ran');
+  expect(pageErrors).toEqual([]);
+});
