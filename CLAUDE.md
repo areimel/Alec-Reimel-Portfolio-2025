@@ -2,79 +2,73 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Development Commands
+## Commands
 
-### Core Development
-- **Start development server**: `pnpm run dev` (runs on http://localhost:4321)
-- **Build for production**: `pnpm run build`
-- **Preview build**: `pnpm run preview`
-- **Development with external host**: `pnpm run dev-host`
+Package manager is pnpm. There is no test suite; `pnpm run check` and `pnpm run build` are the verification steps.
 
-### Code Quality
-- **Run all checks**: `pnpm run check` (combines Astro, ESLint, and Prettier checks)
-- **Check Astro files**: `pnpm run check:astro`
-- **Check ESLint**: `pnpm run check:eslint`
-- **Check Prettier formatting**: `pnpm run check:prettier`
-- **Fix all issues**: `pnpm run fix` (combines ESLint and Prettier fixes)
-- **Fix ESLint issues**: `pnpm run fix:eslint`
-- **Fix Prettier formatting**: `pnpm run fix:prettier`
+```bash
+pnpm run dev              # dev server at http://localhost:4321
+pnpm run dev-host         # same, exposed on the network
+pnpm run build            # static build to dist/
+pnpm run preview          # serve the build
 
-## Project Architecture
+pnpm run check            # astro check + eslint + prettier --check
+pnpm run check:astro      # or check:eslint / check:prettier individually
+pnpm run fix              # eslint --fix + prettier -w
 
-This is an Astro 5.x-based developer portfolio with a retro terminal theme. The project is built on the AstroWind template but heavily customized for a unique "80s lo-fi computer terminal" aesthetic.
-
-### Key Technologies
-- **Framework**: Astro 5.x with static site generation
-- **Styling**: Tailwind CSS with custom terminal theme variables
-- **Content**: MDX for blog posts and projects
-- **Deployment**: Netlify (configured via netlify.toml)
-- **Package Manager**: pnpm
-
-### Directory Structure
-```
-src/
-├── assets/           # Static assets (images, fonts, styles)
-├── components/       # Reusable Astro components
-│   ├── AnimationComponents/    # Terminal animations and effects
-│   ├── ContentComponents/      # Homepage content sections
-│   ├── TerminalComponents/     # Terminal UI elements
-│   ├── ProjectComponents/      # Project showcase components
-│   ├── blog/                  # Blog-specific components
-│   ├── common/                # Shared utilities
-│   └── widgets/               # Layout widgets
-├── content/          # Blog posts and project content (MDX)
-├── data/            # Static data files
-├── layouts/         # Page layouts
-├── pages/           # File-based routing
-├── styles/          # Global styles
-└── utils/           # Utility functions
+pnpm run optimize:preview # compress public/preview.png for OpenGraph
+pnpm run optimize:images  # batch-optimize images
+pnpm run optimize:og      # OpenGraph optimization
+pnpm run optimize:file ./public/hero.png --og   # a single file
 ```
 
-### Theme System
-The project uses a multi-theme system allowing the user to switch between multiple color palettes.
-- Custom fonts: Terminal/retro fonts including VT323, Share Tech Mono, Windows Command Prompt font
+## Architecture
 
-### Content Management
-- **Blog**: Located in `src/data/post/` as Markdown files
-- **Projects**: Located in `src/data/projects/` as MDX files
-- **Configuration**: Site settings in `src/config.yaml`
-- **Navigation**: Defined in `src/navigation.ts`
+An Astro 5 static site with an "80s lo-fi computer terminal" look, built on the AstroWind template. Deployed to Netlify from `dist/` (`netlify.toml`).
 
-### Important Patterns
-1. **Component Structure**: Always use the Astro component script section (---) at the top
-2. **Path Aliases**: Use `@` aliases defined in tsconfig.json (`@components/`, `@layouts/`, etc.)
-3. **Styling**: Leverage custom terminal theme classes from tailwind.config.js
-4. **Image Handling**: Uses passthrough image service (configured in astro.config.ts)
+### AstroWind leftovers
 
-### Custom Features
-- Terminal-style loading screens and animations
-- Retro CRT effects and glitch animations
-- Dynamic theme switching between green and amber terminal themes
-- Custom terminal fonts and typography
-- Animation control system for performance optimization
+Much of `src/components/widgets/` and `src/components/ui/`, and pages like `pricing.astro` and `services.astro`, come from the template. Check what is actually imported before editing a component, because several have live and dead versions side by side:
 
-### Development Notes
-- The project disables Tailwind's base styles (`applyBaseStyles: false`)
-- Custom CSS variables are defined for the terminal theme system
-- Uses Astro's partial hydration with framework-agnostic components
-- Static site generation optimized for performance
+- `PageLayout.astro` uses `SidebarNavV2.astro` for navigation (not `NavComponents/SidebarNav.astro` or a header) and `components/Footer.astro` (not `widgets/Footer.astro`).
+- `Layout.astro` uses `LoadingScreenV1.astro` (not `TerminalComponents/LoadingScreen.astro`).
+
+### Layouts and page lifecycle
+
+`Layout.astro` is the root: it mounts the theme styles, loading screen, and CRT overlay on every page, and enables View Transitions through `<ClientRouter>`. Because of client-side navigation, a script that touches the DOM must re-initialize on `astro:page-load` or `astro:after-swap`, or it stops working after the first navigation. `Layout.astro` also dispatches a custom `page-transition-complete` event.
+
+### Theme system
+
+Five themes exist: `green` (default), `amber`, `cyber`, `cyber-yellow`, and `severance`. They work as a chain:
+
+1. `CustomStyles.astro` defines a `.theme-*` class per theme, setting `--theme-*` variables, then maps them to `--terminal-*`.
+2. `tailwind.config.js` exposes those as `terminal-*` and `terminal-bg-*` color utilities.
+3. `ApplyColorMode.astro` applies the saved theme inline in `<head>` to prevent a flash, and `Layout.astro` preserves it across view transitions.
+
+Always style with these theme-aware classes rather than fixed colors, so components work under all five themes; `/styleguide` (`src/pages/styleguide.astro`) shows the palette.
+
+Adding or renaming a theme means updating every place that hardcodes the list: `CustomStyles.astro`, `ThemeSwitcher.astro`, `ApplyColorMode.astro`, `Layout.astro`, and `BasicScripts.astro`.
+
+The selected theme is stored in `localStorage.theme`, a key that AstroWind's light/dark logic in `ApplyColorMode.astro` also reads. Terminal effect toggles are stored under `terminal-effect-*`.
+
+### Configuration
+
+`src/config.yaml` is loaded by the local integration in `vendor/integration/` and exposed as the virtual module `astrowind:config` (`SITE`, `I18N`, `METADATA`, `APP_BLOG`, `UI`, `ANALYTICS`).
+
+Projects were added on top of the template and are not wired into this: `configBuilder.ts` does not read the `apps.projects` block in `config.yaml`. Project route flags, robots, and base paths are hardcoded in `src/utils/projects.ts` and `src/utils/permalinks.ts`, so change them there.
+
+### Content and routing
+
+Two collections are defined in `src/content/config.ts`, whose loaders read from `src/data/`, not `src/content/`:
+
+- `post`: `src/data/post/*.md(x)`, served at the root (`/%slug%`), with lists at `/blog`.
+- `project`: `src/data/projects/*.mdx`, served at `/projects/<slug>`. These import components such as `ProjectComponents/TextAndImage.astro` and `ProjectStats.astro` directly in the MDX.
+
+In `src/pages/[...blog]/` and `src/pages/[...projects]/`, `index.astro` renders a **single item** and `[...page].astro` renders the **paginated list**. Data access goes through `src/utils/blog.ts` and `src/utils/projects.ts`.
+
+### Conventions
+
+- **Imports:** `~/` maps to `src/` and is what the code overwhelmingly uses. `@components/`, `@layouts/`, `@assets/`, `@content/`, `@utils/`, and `@styles/` also exist. There is no `@data/` alias.
+- **Component styles:** keep CSS in a `<style>` tag inside the component. Use Tailwind utilities first, and `@apply` once three or more elements share the same classes.
+- **Tailwind base styles are disabled** (`applyBaseStyles: false`); base styles live in `src/assets/styles/tailwind.css`.
+- **Images are not processed at build time** (`passthroughImageService`). Project content references files in `public/` by absolute path, so optimize them with the `optimize:*` scripts.
