@@ -1,90 +1,58 @@
 ---
 const themes = [
-  { 
-    id: 'green', 
-    name: 'Vintage Green', 
+  {
+    id: 'green',
+    name: 'Vintage Green',
     class: 'theme-green',
-    preview: 'bg-[#40FF40]'
+    preview: 'bg-[#40FF40]',
   },
-  { 
-    id: 'amber', 
-    name: 'Cozy Amber', 
+  {
+    id: 'amber',
+    name: 'Cozy Amber',
     class: 'theme-amber',
-    preview: 'bg-[#FFA028]'
+    preview: 'bg-[#FFA028]',
   },
   {
     id: 'cyber',
     name: 'Hacker Red',
     class: 'theme-cyber',
-    preview: 'bg-[#FF003C]'
+    preview: 'bg-[#FF003C]',
   },
   {
     id: 'cyber-yellow',
     name: 'Industrial Yellow',
     class: 'theme-cyber-yellow',
-    preview: 'bg-[#FFE600]'
+    preview: 'bg-[#FFE600]',
   },
   {
     id: 'severance',
     name: 'Severance Blue',
     class: 'theme-severance',
-    preview: 'bg-[#8CF0FF]'
-  }
+    preview: 'bg-[#8CF0FF]',
+  },
 ];
 ---
 
 <div class="theme-switcher">
   <h3 class="text-terminal-500 text-lg font-bold mb-3">Terminal Theme</h3>
-  
+
   <div class="flex flex-col gap-2">
-    {themes.map(theme => (
-      <button
-        class="theme-button px-4 py-2 font-uav-mono text-xs transition-colors flex items-center border-2 border-terminal-300 gap-2"
-        data-theme={theme.id}
-        aria-label={`Switch to ${theme.name} theme`}
-      >
-        <span class={`w-4 h-4 rounded-full ${theme.preview}`}></span>
-        {theme.name}
-      </button>
-    ))}
+    {
+      themes.map((theme) => (
+        <button
+          class="theme-button px-4 py-2 font-uav-mono text-xs transition-colors flex items-center border-2 border-terminal-300 gap-2"
+          data-theme={theme.id}
+          aria-pressed={theme.id === 'severance'}
+          type="button"
+          aria-label={`Switch to ${theme.name} theme`}
+        >
+          <span class={`w-4 h-4 rounded-full ${theme.preview}`} />
+          {theme.name}
+        </button>
+      ))
+    }
   </div>
 </div>
-
-<script>
-  // This script now only handles theme switching, not initial application
-  // (initial application is handled in ApplyColorMode.astro)
-  const buttons = document.querySelectorAll('.theme-button');
-  
-  // Get theme from localStorage or default to green
-  const currentTheme = localStorage.getItem('theme') || 'green';
-  
-  // Set initial active state based on current theme
-  buttons.forEach(button => {
-    const theme = button.getAttribute('data-theme') || 'green';
-    
-    // Set initial active state
-    if (theme === currentTheme) {
-      button.classList.add('active');
-    }
-    
-    button.addEventListener('click', () => {
-      // Remove old theme and active states
-      buttons.forEach(btn => btn.classList.remove('active'));
-      
-      // Remove all possible theme classes
-      document.documentElement.classList.remove(
-        'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
-      );
-      
-      // Add new theme
-      document.documentElement.classList.add(`theme-${theme}`);
-      button.classList.add('active');
-      
-      // Save preference
-      localStorage.setItem('theme', theme);
-    });
-  });
-</script>
 
 <style>
   .theme-button {
@@ -92,11 +60,11 @@ const themes = [
     position: relative;
     overflow: hidden;
   }
-  
+
   .theme-button.active {
     @apply bg-terminal-bg-accent text-terminal-bright border-terminal-bright;
   }
-  
+
   .theme-button.active::after {
     content: '';
     position: absolute;
@@ -109,4 +77,5 @@ const themes = [
     @apply bg-terminal-bright;
     box-shadow: 0 0 5px var(--terminal-bright);
   }
-</style> 
+</style>
+

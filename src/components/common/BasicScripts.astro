@@ -1,50 +1,9 @@
----
-import { UI } from 'astrowind:config';
----
-
-<script is:inline define:vars={{ defaultTheme: UI.theme }}>
+<script is:inline>
   if (window.basic_script) {
     return;
   }
 
   window.basic_script = true;
-
-  function applyTheme(theme) {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
-
-  // Terminal theme application function
-  function applyTerminalTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'green';
-    
-    // First remove all possible theme classes
-    document.documentElement.classList.remove(
-      'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
-    );
-    
-    // Then add the saved theme
-    document.documentElement.classList.add(`theme-${savedTheme}`);
-    
-    return savedTheme;
-  }
-
-  const initTheme = function () {
-    if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-      applyTheme(defaultTheme.replace(':only', ''));
-    } else if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      applyTheme('dark');
-    } else {
-      applyTheme('light');
-    }
-  };
-  initTheme();
 
   function attachEvent(selector, event, fn) {
     const matches = typeof selector === 'string' ? document.querySelectorAll(selector) : selector;
@@ -80,11 +39,7 @@ import { UI } from 'astrowind:config';
     });
 
     attachEvent('[data-aw-toggle-color-scheme]', 'click', function () {
-      if (defaultTheme.endsWith(':only')) {
-        return;
-      }
-      document.documentElement.classList.toggle('dark');
-      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      window.portfolioTheme?.toggleColorScheme();
     });
 
     attachEvent('[data-aw-social-share]', 'click', function (_, elem) {
@@ -171,13 +126,12 @@ import { UI } from 'astrowind:config';
 
   document.addEventListener('astro:after-swap', () => {
     // Apply terminal theme first (highest priority)
-    applyTerminalTheme();
-    
+    window.portfolioTheme?.apply();
+
     // Then apply dark/light theme if needed
-    initTheme();
     onLoad();
     onPageShow();
-    
+
     // Dispatch a custom event that components can listen for
     document.dispatchEvent(new CustomEvent('themeChanged'));
   });
