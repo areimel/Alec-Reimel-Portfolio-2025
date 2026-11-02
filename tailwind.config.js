@@ -21,7 +21,7 @@ export default {
         accent: 'var(--aw-color-accent)',
         default: 'var(--aw-color-text-default)',
         muted: 'var(--aw-color-text-muted)',
-        'terminal': {
+        terminal: {
           100: 'var(--terminal-100)',
           200: 'var(--terminal-200)',
           300: 'var(--terminal-300)',
@@ -35,21 +35,21 @@ export default {
           primary: 'var(--terminal-bg-primary)',
           secondary: 'var(--terminal-bg-secondary)',
           accent: 'var(--terminal-bg-accent)',
-        }
+        },
       },
       fontFamily: {
         sans: ['var(--aw-font-sans, ui-sans-serif)', ...defaultTheme.fontFamily.sans],
         serif: ['var(--aw-font-serif, ui-serif)', ...defaultTheme.fontFamily.serif],
         heading: ['var(--aw-font-heading, ui-sans-serif)', ...defaultTheme.fontFamily.sans],
         'share-tech': ['"Share Tech Mono"', 'monospace'],
-        'vt323': ['VT323', 'monospace'],
-        'cmd': ['"Windows Command Prompt"', 'monospace'],
-        'vermin': ['"Vermin Vibes"', 'sans-serif'],
-        'nasalization': ['Nasalization', 'sans-serif'],
-        'kode': ['"Kode Mono"', 'monospace'],
+        vt323: ['VT323', 'monospace'],
+        cmd: ['"Windows Command Prompt"', 'monospace'],
+        vermin: ['"Vermin Vibes"', 'sans-serif'],
+        nasalization: ['Nasalization', 'sans-serif'],
+        kode: ['"Kode Mono"', 'monospace'],
         'uav-mono': ['"UAV OSD Mono"', 'monospace'],
         'uav-sans': ['"UAV OSD Sans"', 'monospace'],
-        'computer': ['Computerfont', 'monospace'],
+        computer: ['Computerfont', 'monospace'],
       },
 
       animation: {

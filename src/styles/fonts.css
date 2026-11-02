@@ -17,9 +17,10 @@
 
 @font-face {
   font-family: 'Windows Command Prompt';
-  src: url('/fonts/Windows-Command-Prompt.woff2') format('woff2'),
-       url('/fonts/Windows-Command-Prompt.woff') format('woff'),
-       url('/fonts/Windows-Command-Prompt.ttf') format('truetype');
+  src:
+    url('/fonts/Windows-Command-Prompt.woff2') format('woff2'),
+    url('/fonts/Windows-Command-Prompt.woff') format('woff'),
+    url('/fonts/Windows-Command-Prompt.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -36,9 +37,10 @@
 
 @font-face {
   font-family: 'Nasalization';
-  src: url('/fonts/NasalizationRg-Regular.woff2') format('woff2'),
-       url('/fonts/NasalizationRg-Regular.woff') format('woff'),
-       url('/fonts/NasalizationRg-Regular.ttf') format('truetype');
+  src:
+    url('/fonts/NasalizationRg-Regular.woff2') format('woff2'),
+    url('/fonts/NasalizationRg-Regular.woff') format('woff'),
+    url('/fonts/NasalizationRg-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -96,10 +98,11 @@
 
 @font-face {
   font-family: 'Computerfont';
-  src: url('/fonts/Computerfont.woff2') format('woff2'),
-       url('/fonts/Computerfont.woff') format('woff'),
-       url('/fonts/Computerfont.ttf') format('truetype');
+  src:
+    url('/fonts/Computerfont.woff2') format('woff2'),
+    url('/fonts/Computerfont.woff') format('woff'),
+    url('/fonts/Computerfont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-} 
+}

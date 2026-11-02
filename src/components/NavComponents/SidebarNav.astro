@@ -1,7 +1,6 @@
 ---
-import SidebarOptions from './SidebarOptions.astro';
-import ExtraMenu from './ExtraMenu.astro';
-import SidebarButton from './SidebarButton.astro';
+import SidebarOptions from '../SidebarOptions.astro';
+import SidebarButton from '../SidebarButton.astro';
 
 interface Props {
   class?: string;
@@ -10,15 +9,10 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={["sidebar-nav-container", className]}>
+<div class:list={['sidebar-nav-container', className]}>
   <!-- Hamburger Toggle Button -->
-  <SidebarButton 
-    id="sidebar-toggle"
-    icon="tabler:menu-2"
-    position="fixed top-4 left-4 z-50"
-    ariaLabel="Navigation"
-  />
-  
+  <SidebarButton id="sidebar-toggle" icon="tabler:menu-2" position="fixed top-4 left-4 z-50" ariaLabel="Navigation" />
+
   <!-- Include the SidebarOptions component -->
   <SidebarOptions />
 
@@ -30,39 +24,24 @@ const { class: className } = Astro.props;
     <div class="p-6">
       <div class="mb-8 pt-16 relative flex justify-between items-center">
         <h2 class="text-lg font-bold text-terminal-bright font-uav-mono text-glow-strong">//Alec_Reimel</h2>
-        <SidebarButton 
-          id="sidebar-close"
-          icon="tabler:x"
-          position="absolute -top-2 -left-2"
-          ariaLabel="Close"
-        />
+        <SidebarButton id="sidebar-close" icon="tabler:x" position="absolute -top-2 -left-2" ariaLabel="Close" />
       </div>
 
       <ul class="space-y-0 font-kode divide-y divide-terminal-300/20">
         <li>
-          <a href="/" class="nav-link">
-            Home
-          </a>
+          <a href="/" class="nav-link"> Home </a>
         </li>
         <li>
-          <a href="/projects" class="nav-link">
-            Projects
-          </a>
+          <a href="/projects" class="nav-link"> Projects </a>
         </li>
         <li>
-            <a href="/blog" class="nav-link">
-                Blog
-            </a>
+          <a href="/blog" class="nav-link"> Blog </a>
         </li>
         <li>
-            <a href="/styleguide" class="nav-link">
-                Styleguide
-            </a>
+          <a href="/styleguide" class="nav-link"> Styleguide </a>
         </li>
         <li>
-          <a href="/contact" class="nav-link">
-            Contact
-          </a>
+          <a href="/contact" class="nav-link"> Contact </a>
         </li>
       </ul>
     </div>
@@ -76,7 +55,7 @@ const { class: className } = Astro.props;
   </div>
 
   <!-- Extra Menu Layer -->
- <!--  <div 
+  <!--  <div 
     id="extra-menu-container" 
     class="fixed inset-0 z-35 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out flex items-center justify-center p-24 pl-72 z-40"
   >
@@ -95,7 +74,7 @@ const { class: className } = Astro.props;
 
     function toggleSidebar() {
       isOpen = !isOpen;
-      
+
       if (isOpen) {
         nav?.classList.remove('-translate-x-full');
         overlay?.classList.remove('opacity-0', 'pointer-events-none');
@@ -135,4 +114,4 @@ const { class: className } = Astro.props;
   :global(.nav-link:hover) {
     text-shadow: var(--theme-glow);
   }
-</style> 
+</style>

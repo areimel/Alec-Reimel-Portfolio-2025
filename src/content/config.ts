@@ -76,7 +76,7 @@ const projectCollection = defineCollection({
     title: z.string(),
     excerpt: z.string().optional(),
     image: z.string().optional(),
-    
+
     // Project specific fields
     projectUrl: z.string().url().optional(),
     repoUrl: z.string().url().optional(),
@@ -84,7 +84,7 @@ const projectCollection = defineCollection({
     client: z.string().optional(),
     duration: z.string().optional(),
     role: z.string().optional(),
-    
+
     category: z.string().optional(),
     tags: z.array(z.string()).optional(),
     author: z.string().optional(),

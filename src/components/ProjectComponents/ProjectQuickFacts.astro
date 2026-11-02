@@ -13,17 +13,20 @@ const { title, technologies, client, duration, role, liveUrl, githubUrl } = Astr
 ---
 
 <div class="grid md:grid-cols-2 gap-6 mb-12">
-  
   <div class="p-6 bg-terminal-bg-secondary rounded-lg border border-terminal-300/20">
-    <h1 class="text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 font-heading text-terminal-500 text-glow-strong">
+    <h1
+      class="text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 font-heading text-terminal-500 text-glow-strong"
+    >
       {title}
     </h1>
     <div class="flex flex-wrap gap-4">
-      {technologies.map((tech) => (
-        <span class="bg-terminal-bg-secondary border border-terminal-300/20 px-3 py-1 text-sm font-semibold text-terminal-400">
-          {tech}
-        </span>
-      ))}
+      {
+        technologies.map((tech) => (
+          <span class="bg-terminal-bg-secondary border border-terminal-300/20 px-3 py-1 text-sm font-semibold text-terminal-400">
+            {tech}
+          </span>
+        ))
+      }
     </div>
   </div>
 
@@ -43,12 +46,10 @@ const { title, technologies, client, duration, role, liveUrl, githubUrl } = Astr
         <dd>{role}</dd>
       </div>
     </dl>
-    <hr/>
+    <hr />
     <div class="space-y-2">
       <a href={liveUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary block">View Live Site →</a>
       <a href={githubUrl} class="textLink text-terminal-500 hover:text-terminal-bg-primary block">View on GitHub →</a>
     </div>
   </div>
-
-  
-</div> 
+</div>

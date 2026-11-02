@@ -6,7 +6,7 @@ interface Props {
   content: string;
 }
 
-const { prefix, title, content } = Astro.props;
+const { title, content } = Astro.props;
 ---
 
 <div class="facts-grid">
@@ -19,7 +19,7 @@ const { prefix, title, content } = Astro.props;
 </div>
 
 <style is:global>
-  .facts-text a{
+  .facts-text a {
     text-decoration: underline;
     text-decoration-style: dotted;
   }
@@ -58,15 +58,13 @@ const { prefix, title, content } = Astro.props;
   .facts-text {
     @apply text-terminal-400 font-kode text-xl;
   }
-  .facts-text::marker{
-    content: "> ";
+  .facts-text::marker {
+    content: '> ';
     @apply text-terminal-700;
   }
 
-
-  ul{
+  ul {
     @apply text-lg text-terminal-400 font-kode pl-4;
-    
   }
 
   /* Responsive adjustments for smaller screens */
@@ -82,4 +80,4 @@ const { prefix, title, content } = Astro.props;
       grid-column: 1;
     }
   }
-</style> 
+</style>

@@ -15,8 +15,7 @@ const { post, url } = Astro.props;
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
   <article class="max-w-screen-2xl mx-auto">
-    
-    <ProjectHeader 
+    <ProjectHeader
       title={post.title}
       technologies={post.technologies}
       liveUrl={post.projectUrl}
@@ -27,10 +26,8 @@ const { post, url } = Astro.props;
       image={post.image}
       description={post.excerpt}
     />
-    
-    <div
-      class=""
-    >
+
+    <div class="">
       <slot />
     </div>
     <div class="mx-auto px-6 sm:px-6 mt-8 flex justify-between flex-col sm:flex-row">
@@ -41,10 +38,9 @@ const { post, url } = Astro.props;
 </section>
 
 <style>
-  h1{
+  h1 {
     line-height: 1.2;
     text-align: center;
     text-wrap: balance;
   }
 </style>
-

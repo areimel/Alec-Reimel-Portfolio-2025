@@ -2,7 +2,14 @@ import type { PaginateFunction } from 'astro';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { Post } from '~/types';
-import { cleanSlug, trimSlash, PROJECTS_BASE, PROJECT_PERMALINK_PATTERN, PROJECT_CATEGORY_BASE, PROJECT_TAG_BASE } from './permalinks';
+import {
+  cleanSlug,
+  trimSlash,
+  PROJECTS_BASE,
+  PROJECT_PERMALINK_PATTERN,
+  PROJECT_CATEGORY_BASE,
+  PROJECT_TAG_BASE,
+} from './permalinks';
 
 // Using project-specific constants from permalinks.ts
 const generatePermalink = async ({
@@ -104,7 +111,7 @@ const getNormalizedProject = async (project: CollectionEntry<'project'>): Promis
     Content: Content,
 
     readingTime: remarkPluginFrontmatter?.readingTime,
-    
+
     // Add project specific fields to the returned object
     projectUrl,
     repoUrl,
@@ -256,4 +263,4 @@ export const getStaticPathsProjectTag = async ({ paginate }: { paginate: Paginat
       }
     )
   );
-}; 
+};

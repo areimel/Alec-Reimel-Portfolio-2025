@@ -2,7 +2,6 @@
 import { Icon } from 'astro-icon/components';
 import { getFormattedDate } from '~/utils/utils';
 
-
 interface Props {
   title: string;
   technologies?: string[];
@@ -19,23 +18,22 @@ interface Props {
   description?: string;
 }
 
-const { 
-  title, 
-  technologies = [], 
-  liveUrl, 
-  githubUrl, 
-  publishDate, 
-  author, 
-  readingTime, 
+const {
+  title,
+  technologies = [],
+  liveUrl,
+  githubUrl,
+  publishDate,
+  author,
+  readingTime,
   image,
-  description
+  description,
 } = Astro.props;
 ---
 
 <section class="mb-8">
   <div class="w-full h-full max-w-screen-2xl mx-auto">
     <div class="project-grid">
-      
       <!-- Cell 1: Project title and metadata -->
       <div class="div1 project-cell !bg-terminal-500">
         <p class="text-terminal-bg-primary">
@@ -61,70 +59,71 @@ const {
           }
         </p>
 
-        <h1 class="text-4xl md:text-5xl font-bold leading-10 tracking-tighter mb-4 font-heading text-terminal-bg-primary">
+        <h1
+          class="text-4xl md:text-5xl font-bold leading-10 tracking-tighter mb-4 font-heading text-terminal-bg-primary"
+        >
           {title}
         </h1>
       </div>
-      
+
       <!-- Cell 2: Project image -->
       <div class="div2 project-cell flex justify-center items-center p-0 overflow-hidden">
-        <img
-          src={image}
-          class="w-full h-auto object-cover"
-          alt={title || ''}
-          loading="eager"
-          decoding="async"
-        />
+        <img src={image} class="w-full h-auto object-cover" alt={title || ''} loading="eager" decoding="async" />
       </div>
-      
+
       <!-- Cell 3: Project details -->
       <div class="div3 project-cell">
-        <div class="font-bold font-heading text-terminal-500 text-glow-subtle inline-block text-lg border-b border-terminal-300 pb-2 mb-2">
+        <div
+          class="font-bold font-heading text-terminal-500 text-glow-subtle inline-block text-lg border-b border-terminal-300 pb-2 mb-2"
+        >
           //Technology
         </div>
 
         <div>
-          {technologies.length > 0 && (
-            <ul class="customList">
-              {technologies.map((tech) => (
-                <li class="">
-                  {tech}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-      
-      <!-- Cell 4: Project description -->
-      <div class="div4 project-cell">
-        <div class="font-bold font-heading text-terminal-500 text-glow-subtle inline-block text-lg border-b border-terminal-300 pb-2 mb-2">
-          //Project_Description
-        </div>
-        {description && (
-          <p class="text-terminal-400">{description}</p>
-        )}
-      </div>
-      
-      <!-- Cell 5: Project links -->
-      <div class="div5 project-cell">
-        <div class="flex justify-center gap-4">
-          {liveUrl && (
-            <a href={liveUrl} target="_blank" class="textLink text-terminal-500 hover:text-terminal-bg-primary">
-              <Icon name="tabler:world" class="w-5 h-5 inline-block mr-1" />
-              View Live Site
-            </a>
-          )}
-          <span>//</span>
-          {githubUrl && (
-            <a href={githubUrl} target="_blank" class="textLink text-terminal-500 hover:text-terminal-bg-primary">
-              <Icon name="tabler:brand-github" class="w-5 h-5 inline-block mr-1" />
-              View on GitHub
-            </a>
-          )}
+          {
+            technologies.length > 0 && (
+              <ul class="customList">
+                {technologies.map((tech) => (
+                  <li class="">{tech}</li>
+                ))}
+              </ul>
+            )
+          }
         </div>
       </div>
 
+      <!-- Cell 4: Project description -->
+      <div class="div4 project-cell">
+        <div
+          class="font-bold font-heading text-terminal-500 text-glow-subtle inline-block text-lg border-b border-terminal-300 pb-2 mb-2"
+        >
+          //Project_Description
+        </div>
+        {description && <p class="text-terminal-400">{description}</p>}
+      </div>
+
+      <!-- Cell 5: Project links -->
+      <div class="div5 project-cell">
+        <div class="flex justify-center gap-4">
+          {
+            liveUrl && (
+              <a href={liveUrl} target="_blank" class="textLink text-terminal-500 hover:text-terminal-bg-primary">
+                <Icon name="tabler:world" class="w-5 h-5 inline-block mr-1" />
+                View Live Site
+              </a>
+            )
+          }
+          <span>//</span>
+          {
+            githubUrl && (
+              <a href={githubUrl} target="_blank" class="textLink text-terminal-500 hover:text-terminal-bg-primary">
+                <Icon name="tabler:brand-github" class="w-5 h-5 inline-block mr-1" />
+                View on GitHub
+              </a>
+            )
+          }
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -137,43 +136,43 @@ const {
     width: 100%;
     height: 100%;
     /* Define grid areas using matrix notation */
-    grid-template-areas: 
-      "title title title details details"
-      "image image image desc desc"
-      "image image image links links";
+    grid-template-areas:
+      'title title title details details'
+      'image image image desc desc'
+      'image image image links links';
   }
-  
+
   /* Assign each div to its corresponding grid area */
   .div1 {
     grid-area: title;
   }
-  
+
   .div2 {
     grid-area: image;
   }
-  
+
   .div3 {
     grid-area: details;
   }
-  
+
   .div4 {
     grid-area: desc;
   }
-  
+
   .div5 {
     grid-area: links;
   }
-  
+
   /* Responsive adjustments for smaller screens */
   @media (max-width: 768px) {
     .project-grid {
       grid-template-columns: 1fr;
-      grid-template-areas: 
-        "title"
-        "image"
-        "details"
-        "desc"
-        "links";
+      grid-template-areas:
+        'title'
+        'image'
+        'details'
+        'desc'
+        'links';
       gap: 16px;
     }
   }
@@ -186,10 +185,9 @@ const {
   ul.customList {
     @apply text-sm text-terminal-400 font-kode list-outside pl-4;
   }
-  
+
   ul.customList li::marker {
-    content: "> ";
+    content: '> ';
     @apply text-terminal-500;
   }
 </style>
-

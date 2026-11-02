@@ -1,64 +1,10 @@
 ---
 import { UI } from 'astrowind:config';
-
-// This component handles both theme system (terminal themes) and color scheme (light/dark)
+import themeBootstrap from '~/utils/theme-bootstrap.js?raw';
 ---
 
-<script is:inline define:vars={{ defaultTheme: UI.theme || 'system' }}>
-  // First apply terminal theme before any content renders
-  function applyTerminalTheme() {
-    // Always use 'green' as the default terminal theme if not in localStorage
-    const savedTheme = localStorage.getItem('theme') || 'green';
-    
-    // First remove all possible theme classes
-    document.documentElement.classList.remove(
-      'theme-green', 'theme-amber', 'theme-cyber', 'theme-cyber-yellow', 'theme-severance'
-    );
-    
-    // Then add the saved theme
-    document.documentElement.classList.add(`theme-${savedTheme}`);
-    
-    // Save the default theme to localStorage if not already set
-    if (!localStorage.getItem('theme')) {
-      localStorage.setItem('theme', 'green');
-    }
-    
-    return savedTheme;
-  }
-  
-  // Apply terminal theme immediately to prevent FOUC
-  applyTerminalTheme();
-  
-  // Then handle light/dark mode (secondary to terminal themes)
-  function applyColorScheme(scheme) {
-    if (scheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    const matches = document.querySelectorAll('[data-aw-toggle-color-scheme] > input');
-
-    if (matches && matches.length) {
-      matches.forEach((elem) => {
-        elem.checked = scheme !== 'dark';
-      });
-    }
-  }
-
-  // Apply color scheme if needed
-  if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-    applyColorScheme(defaultTheme.replace(':only', ''));
-  } else if (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    applyColorScheme('dark');
-  } else {
-    applyColorScheme('light');
-  }
-
-  // Handle View Transitions API
-  document.addEventListener('astro:page-load', () => {
-    applyTerminalTheme();
-  });
+<meta name="color-scheme" content="dark light" />
+<script is:inline define:vars={{ defaultColorScheme: UI.theme || 'system' }}>
+  document.documentElement.dataset.colorScheme = defaultColorScheme;
 </script>
+<script is:inline set:html={themeBootstrap} />

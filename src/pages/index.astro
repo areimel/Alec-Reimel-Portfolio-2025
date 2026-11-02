@@ -1,6 +1,5 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Note from '~/components/widgets/Note.astro';
 import PersonalFacts from '~/components/ContentComponents/PersonalFacts.astro';
 import Skills from '~/components/ContentComponents/Skills.astro';
 
@@ -14,10 +13,10 @@ const metadata = {
       {
         url: '/preview.png',
         width: 1200,
-        height: 628
-      }
-    ]
-  }
+        height: 628,
+      },
+    ],
+  },
 };
 ---
 
@@ -28,7 +27,7 @@ const metadata = {
 
   <!-- Note Widget ******************* -->
 
- <!--  <Note /> -->
+  <!--  <Note /> -->
 
   <!-- Skills Widget *************** -->
 
@@ -38,6 +37,4 @@ const metadata = {
   <PersonalFacts />
 
   <!-- Content Widget **************** -->
-
-  
 </Layout>

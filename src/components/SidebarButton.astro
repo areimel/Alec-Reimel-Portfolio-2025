@@ -15,15 +15,17 @@ const { id, icon, position, ariaLabel, class: className } = Astro.props;
 <button
   id={id}
   class:list={[
-    "p-2 text-terminal-500 hover:text-terminal-bg-primary transition-all duration-300 outline-none ring-2 ring-terminal-400 hover:bg-terminal-500 hover:ring-terminal-bright",
+    'p-2 text-terminal-500 hover:text-terminal-bg-primary transition-all duration-300 outline-none ring-2 ring-terminal-400 hover:bg-terminal-500 hover:ring-terminal-bright',
     position,
-    className
+    className,
   ]}
   aria-label={ariaLabel}
 >
   <Icon name={icon} class="w-8 h-8" />
 
-  <span data-tooltip={ariaLabel} class="text-xs w-fit h-8 ring-2 ring-terminal-400 bg-terminal-bg-secondary">{ariaLabel}</span>
+  <span data-tooltip={ariaLabel} class="text-xs w-fit h-8 ring-2 ring-terminal-400 bg-terminal-bg-secondary"
+    >{ariaLabel}</span
+  >
 </button>
 
 <style>
@@ -45,10 +47,9 @@ const { id, icon, position, ariaLabel, class: className } = Astro.props;
 
   button:hover {
     text-shadow: none;
-    [data-tooltip]{
-        opacity: 1;
-        visibility: visible;
+    [data-tooltip] {
+      opacity: 1;
+      visibility: visible;
     }
   }
-
-</style> 
+</style>

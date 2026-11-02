@@ -10,23 +10,19 @@ import type { MetaData } from '~/types';
 
 export interface Props {
   metadata?: MetaData;
+  activeSection?: 'blog' | 'projects';
 }
 
-const { metadata } = Astro.props;
+const { metadata, activeSection } = Astro.props;
 ---
 
 <Layout metadata={metadata}>
-<!--   <slot name="announcement">
+  <!--   <slot name="announcement">
     <Announcement />
   </slot> -->
   <div class="flex min-h-screen">
-    <SidebarNav 
-      class="h-screen fixed top-0 left-0 w-[50px] md:w-[100px]"
-    />
-    <main 
-      id="main-content"
-      class="ml-[50px] md:ml-[100px] w-[calc(100%-50px)] md:w-[calc(100%-100px)]"
-    >
+    <SidebarNav activeSection={activeSection} class="h-screen fixed top-0 left-0 w-[50px] md:w-[100px]" />
+    <main id="main-content" class="ml-[50px] md:ml-[100px] w-[calc(100%-50px)] md:w-[calc(100%-100px)]">
       <slot />
     </main>
   </div>

@@ -3,7 +3,6 @@ import { Icon } from 'astro-icon/components';
 import Logo from '~/components/Logo.astro';
 import ThemeSwitcher from '~/components/ThemeSwitcher.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
-import Button from '~/components/ui/Button.astro';
 
 import { getHomePermalink } from '~/utils/permalinks';
 import { trimSlash, getAsset } from '~/utils/permalinks';
@@ -35,7 +34,6 @@ export interface Props {
 const {
   id = 'header',
   links = [],
-  actions = [],
   isSticky = false,
   isDark = false,
   isFullWidth = false,
@@ -137,22 +135,24 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
     >
       <div class="items-center flex justify-between w-full md:w-auto">
         <div class="flex">
-          {showToggleTheme && (
-            <div class="relative dropdown-container">
-              <button
-                class="text-terminal-500 bg-terminal-bg-primary hover:bg-terminal-bg-secondary focus:outline-none focus:ring-2 focus:ring-terminal-400 rounded-lg text-sm px-3 py-2 inline-flex items-center gap-2 transition-colors"
-                aria-label="Theme Options"
-              >
-                <Icon name="tabler:palette" class="w-5 h-5" />
-                <span class="font-medium">Color Palette</span>
-              </button>
-              <div class="absolute right-0 top-full mt-0 hidden z-50 dropdown-menu">
-                <div class="bg-terminal-bg-secondary border border-terminal-300/20 rounded-lg p-2">
-                  <ThemeSwitcher isDropdown={true} />
+          {
+            showToggleTheme && (
+              <div class="relative dropdown-container">
+                <button
+                  class="text-terminal-500 bg-terminal-bg-primary hover:bg-terminal-bg-secondary focus:outline-none focus:ring-2 focus:ring-terminal-400 rounded-lg text-sm px-3 py-2 inline-flex items-center gap-2 transition-colors"
+                  aria-label="Theme Options"
+                >
+                  <Icon name="tabler:palette" class="w-5 h-5" />
+                  <span class="font-medium">Color Palette</span>
+                </button>
+                <div class="absolute right-0 top-full mt-0 hidden z-50 dropdown-menu">
+                  <div class="bg-terminal-bg-secondary border border-terminal-300/20 rounded-lg p-2">
+                    <ThemeSwitcher isDropdown={true} />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )
+          }
           {
             showRssFeed && (
               <a
@@ -174,16 +174,16 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
   .dropdown-container {
     @apply h-auto pb-[5px] -mb-[5px];
   }
-  
+
   .dropdown-container .dropdown-menu {
     @apply translate-y-0;
   }
-  
+
   /* Add glow effect to the palette icon */
   .dropdown-container button {
     @apply relative;
   }
-  
+
   .dropdown-container button svg {
     @apply text-terminal-bright;
   }
@@ -192,11 +192,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const dropdownContainers = document.querySelectorAll('.dropdown-container');
-    
-    dropdownContainers.forEach(container => {
+
+    dropdownContainers.forEach((container) => {
       const menu = container.querySelector('.dropdown-menu');
       let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
-      
+
       if (menu) {
         container.addEventListener('mouseenter', () => {
           if (timeoutId !== undefined) {
@@ -205,7 +205,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
           }
           menu.classList.remove('hidden');
         });
-        
+
         container.addEventListener('mouseleave', () => {
           timeoutId = setTimeout(() => {
             menu.classList.add('hidden');

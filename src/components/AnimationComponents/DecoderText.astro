@@ -3,276 +3,198 @@ interface Props {
   text: string;
   as?: string;
   className?: string;
-  delay?: number; // Optional delay before animation starts (in ms)
-  duration?: number; // Duration for each character animation (in ms)
-  charDelay?: number; // Delay between each character animation (in ms)
+  delay?: number;
+  duration?: number;
+  charDelay?: number;
+  trigger?: 'in-view' | 'loadingScreenEnd' | 'hover' | 'click';
+  mobileDisable?: boolean;
 }
 
-const { 
-  text, 
-  as: Element = "span", 
-  className = "", 
+const {
+  text,
+  as: Element = 'span',
+  className = '',
   delay = 0,
-  duration = 500, 
-  charDelay = 150 
+  duration = 500,
+  charDelay = 150,
+  trigger = 'in-view',
+  mobileDisable = false,
 } = Astro.props;
-
-// Split text into words while preserving spaces
-const words = text.split(' ');
+let characterOffset = 0;
+const words = text.split(' ').map((word) => {
+  const characters = Array.from(word).map((char) => ({ char, index: characterOffset++ }));
+  characterOffset++;
+  return characters;
+});
 ---
 
-<Element 
-  class:list={["decoder-text", className]} 
+<Element
+  class:list={['decoder-text', className]}
   data-text={text}
   data-delay={delay}
   data-duration={duration}
   data-char-delay={charDelay}
+  data-trigger={trigger}
+  data-mobile-disable={mobileDisable}
 >
-  {words.map((word, wordIndex) => (
-    <>
-      <span class="decoder-word">
-        {Array.from(word).map((char, charIndex) => (
-          <span 
-            class="decoder-char" 
-            data-char={char} 
-            data-index={wordIndex > 0 
-              ? words.slice(0, wordIndex).join(' ').length + wordIndex + charIndex 
-              : charIndex}
-          >
-            {char}
-          </span>
-        ))}
-      </span>
-      {/* Add space between words, except for the last word */}
-      {wordIndex < words.length - 1 && (
-        <span class="decoder-space"> </span>
-      )}
-    </>
-  ))}
+  {
+    words.map((characters, wordIndex) => (
+      <>
+        <span class="decoder-word">
+          {characters.map(({ char, index }) => (
+            <span class="decoder-char" data-char={char} data-index={index} set:text={char} />
+          ))}
+        </span>
+        {wordIndex < words.length - 1 && <span class="decoder-space"> </span>}
+      </>
+    ))
+  }
 </Element>
 
 <script>
-  // Character pool to randomize from - only letters
-  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  
-  // Utility to get a random character from the pool
-  const getRandomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
-  
-  // Store active animations per element to prevent interruption
-  const elementAnimations = new Map<HTMLElement, {
-    intervals: Set<number>,
-    timeouts: Set<ReturnType<typeof setTimeout>>,
-    isRunning: boolean,
-    hasAnimated: boolean,
-    observer?: IntersectionObserver
-  }>();
-  
-  // Global observer list for cleanup
-  let globalObservers: IntersectionObserver[] = [];
-  
-  // Check if element should trigger (bottom 5% of viewport)
-  function checkElementInView(element: HTMLElement): boolean {
-    const rect = element.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const triggerPoint = viewportHeight * 0.95; // Bottom 5% of viewport
-    return rect.top <= triggerPoint;
-  }
-  
-  // Start the animation for a specific element
-  function startAnimation(element: HTMLElement) {
-    const animationData = elementAnimations.get(element);
-    if (!animationData || animationData.isRunning || animationData.hasAnimated) {
-      return; // Don't start if already running or already animated
-    }
-    
-    const charElements = element.querySelectorAll<HTMLElement>('.decoder-char');
-    const duration = parseInt(element.dataset.duration || '500');
-    const charDelay = parseInt(element.dataset.charDelay || '150');
-    const initialDelay = parseInt(element.dataset.delay || '0');
-    
-    // Mark as running and animated
-    animationData.isRunning = true;
-    animationData.hasAnimated = true;
-    
-    // Disconnect the observer since we only want to trigger once
-    if (animationData.observer) {
-      animationData.observer.disconnect();
-    }
-    
-    // Make the element initially transparent
-    element.style.opacity = '0';
-    
-    // Fade in entire element
-    const fadeTimeout = setTimeout(() => {
-      element.style.transition = `opacity 0.3s ease`;
-      element.style.opacity = '1';
-      
-      let completedChars = 0;
-      const totalChars = charElements.length;
-      
-      // Start the decoder animation for each character
-      charElements.forEach((charElement) => {
-        const finalChar = charElement.dataset.char || '';
-        const charIndex = parseInt(charElement.dataset.index || '0');
-        
-        // Skip animation for spaces
-        if (finalChar === ' ' || charElement.classList.contains('decoder-space')) {
-          completedChars++;
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let cleanup: (() => void) | undefined;
+
+  function initializeDecoders() {
+    cleanup?.();
+    const controller = new AbortController();
+    const observers: IntersectionObserver[] = [];
+    const timers = new Set<ReturnType<typeof setTimeout>>();
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const restores: (() => void)[] = [];
+    const later = (callback: () => void, delay: number) => {
+      const timer = setTimeout(() => {
+        timers.delete(timer);
+        callback();
+      }, delay);
+      timers.add(timer);
+    };
+    const number = (value: string | undefined, fallback: number) => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
+    };
+
+    document.querySelectorAll<HTMLElement>('.decoder-text').forEach((element) => {
+      const characters = Array.from(element.querySelectorAll<HTMLElement>('.decoder-char'));
+      const trigger = element.dataset.trigger;
+      const repeatable = trigger === 'hover' || trigger === 'click';
+      let running = false;
+      let completed = false;
+      let generation = 0;
+      const disabled = () => motion.matches || (mobile.matches && element.dataset.mobileDisable === 'true');
+      const restore = () => {
+        generation++;
+        characters.forEach((character) => (character.textContent = character.dataset.char || ''));
+        element.style.opacity = '1';
+        running = false;
+      };
+      restores.push(restore);
+      const start = () => {
+        if (disabled()) {
+          restore();
           return;
         }
-        
-        // Set initial random character
-        charElement.textContent = getRandomChar();
-        
-        // Calculate when this character should complete its animation
-        const completeTime = initialDelay + duration + (charIndex * charDelay);
-        
-        // Animation interval - rapidly cycle through random characters
-        const interval = setInterval(() => {
-          charElement.textContent = getRandomChar();
-        }, 50);
-        animationData.intervals.add(interval as unknown as number);
-        
-        // Set timeout to clear interval and set final character
-        const timeout = setTimeout(() => {
-          clearInterval(interval);
-          animationData.intervals.delete(interval as unknown as number);
-          charElement.textContent = finalChar;
-          animationData.timeouts.delete(timeout);
-          
-          completedChars++;
-          // Mark animation as complete when all characters are done
-          if (completedChars >= totalChars) {
-            animationData.isRunning = false;
-          }
-        }, completeTime);
-        animationData.timeouts.add(timeout);
-      });
-      
-      animationData.timeouts.delete(fadeTimeout);
-    }, initialDelay);
-    
-    animationData.timeouts.add(fadeTimeout);
-  }
-  
-  // Setup reveal animation for a decoder element
-  function setupRevealAnimation(element: HTMLElement) {
-    // Initialize animation data
-    const animationData = {
-      intervals: new Set<number>(),
-      timeouts: new Set<ReturnType<typeof setTimeout>>(),
-      isRunning: false,
-      hasAnimated: false,
-      observer: undefined as IntersectionObserver | undefined
+        if (running || (completed && !repeatable)) return;
+        running = true;
+        const currentGeneration = ++generation;
+        later(
+          () => {
+            if (generation !== currentGeneration) return;
+            element.style.opacity = '1';
+            if (!characters.length) {
+              running = false;
+              completed = true;
+              return;
+            }
+            let remaining = characters.length;
+            characters.forEach((character) => {
+              const end =
+                performance.now() +
+                number(element.dataset.duration, 500) +
+                number(character.dataset.index, 0) * number(element.dataset.charDelay, 150);
+              const tick = () => {
+                if (generation !== currentGeneration) return;
+                if (performance.now() >= end) {
+                  character.textContent = character.dataset.char || '';
+                  if (--remaining === 0) {
+                    running = false;
+                    completed = true;
+                  }
+                  return;
+                }
+                character.textContent = CHARS[Math.floor(Math.random() * CHARS.length)];
+                later(tick, 50);
+              };
+              tick();
+            });
+          },
+          number(element.dataset.delay, 0)
+        );
+      };
+      const skip = () => {
+        if (disabled()) restore();
+      };
+      motion.addEventListener('change', skip, { signal: controller.signal });
+      mobile.addEventListener('change', skip, { signal: controller.signal });
+      if (disabled()) return;
+      // Interactive text stays readable while waiting for a user action.
+      if (!repeatable) element.style.opacity = '0';
+      const target = element.closest('.animation-wrapper') || element;
+      if (repeatable) {
+        target.addEventListener(trigger === 'hover' ? 'mouseenter' : 'click', start, { signal: controller.signal });
+      } else if (trigger === 'loadingScreenEnd') {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (!loadingScreen || getComputedStyle(loadingScreen).display === 'none') start();
+        else {
+          document.addEventListener('loading-screen-end', start, { signal: controller.signal });
+          document.addEventListener('loadingScreenComplete', start, { signal: controller.signal });
+        }
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              start();
+              observer.disconnect();
+            }
+          },
+          { rootMargin: '0px 0px -5% 0px' }
+        );
+        observer.observe(element);
+        observers.push(observer);
+      }
+    });
+
+    cleanup = () => {
+      controller.abort();
+      observers.forEach((observer) => observer.disconnect());
+      timers.forEach(clearTimeout);
+      restores.forEach((restore) => restore());
+      cleanup = undefined;
     };
-    
-    elementAnimations.set(element, animationData);
-    
-    // Check if element is already in view
-    if (checkElementInView(element)) {
-      // Trigger immediately with small delay
-      setTimeout(() => startAnimation(element), 50);
-      return;
-    }
-    
-    // Set up intersection observer for elements not in view
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (checkElementInView(entry.target as HTMLElement)) {
-          startAnimation(entry.target as HTMLElement);
-        }
-      });
-    }, {
-      threshold: 0,
-      rootMargin: '50px 0px 0px 0px'
-    });
-    
-    animationData.observer = observer;
-    observer.observe(element);
-    globalObservers.push(observer);
   }
-  
-  // Setup all decoder text elements
-  function setupDecoderElements() {
-    const decoderElements = document.querySelectorAll<HTMLElement>('.decoder-text');
-    
-    decoderElements.forEach((element) => {
-      // Only setup if not already tracked
-      if (!elementAnimations.has(element)) {
-        setupRevealAnimation(element);
-      }
-    });
-  }
-  
-  // Cleanup function - NEVER interrupt running animations
-  function cleanupDecoderAnimations() {
-    // Disconnect all observers
-    globalObservers.forEach(observer => observer.disconnect());
-    globalObservers = [];
-    
-    // Only clean up elements that are not currently running animations
-    elementAnimations.forEach((animationData, element) => {
-      if (!animationData.isRunning) {
-        animationData.intervals.forEach(interval => clearInterval(interval));
-        animationData.timeouts.forEach(timeout => clearTimeout(timeout));
-        animationData.intervals.clear();
-        animationData.timeouts.clear();
-        
-        if (animationData.observer) {
-          animationData.observer.disconnect();
-        }
-      }
-    });
-    
-    // Remove elements that are no longer in the DOM and not running
-    const elementsToRemove: HTMLElement[] = [];
-    elementAnimations.forEach((animationData, element) => {
-      if (!document.contains(element) && !animationData.isRunning) {
-        elementsToRemove.push(element);
-      }
-    });
-    
-    elementsToRemove.forEach(element => {
-      elementAnimations.delete(element);
-    });
-  }
-  
-  // Initialize decoder elements with delay
-  function initializeDecoders() {
-    setTimeout(() => {
-      setupDecoderElements();
-    }, 50);
-  }
-  
-  // Setup for initial page load and view transitions
-  document.addEventListener('DOMContentLoaded', initializeDecoders);
-  
-  // Handle view transitions - preserve running animations
-  document.addEventListener('astro:before-swap', cleanupDecoderAnimations);
-  document.addEventListener('astro:after-swap', initializeDecoders);
+
+  document.addEventListener('astro:page-load', initializeDecoders);
+  document.addEventListener('astro:before-swap', () => cleanup?.());
 </script>
 
 <style>
   .decoder-text {
     display: inline-flex;
     flex-wrap: wrap;
-    transition: opacity 0.3s ease;
-    opacity: 0;
-    /* font-family: monospace; */
-    /* @apply tracking-tight; */
   }
-  
+
   .decoder-word {
     display: inline-block;
     white-space: nowrap;
   }
-  
+
   .decoder-char {
     display: inline-block;
   }
-  
+
   .decoder-space {
     display: inline-block;
     width: 1ch;
   }
-</style> 
+</style>

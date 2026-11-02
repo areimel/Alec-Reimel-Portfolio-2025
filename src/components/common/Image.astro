@@ -1,9 +1,10 @@
 ---
+import type { ImageMetadata } from 'astro';
 import { findImage } from '~/utils/images';
 
 type Props = {
-  src: string;
-  alt: string;
+  src: string | ImageMetadata;
+  alt?: string;
   class?: string;
   width?: number | string;
   height?: number | string;
@@ -11,18 +12,11 @@ type Props = {
   decoding?: 'async' | 'sync' | 'auto';
 } & Record<string, unknown>;
 
-const { src, alt, class: className, loading = 'lazy', decoding = 'async', ...rest } = Astro.props;
+const { src, alt = '', class: className, loading = 'lazy', decoding = 'async', ...rest } = Astro.props;
 
 // Find the image and handle both string paths and ImageMetadata objects
 const _image = await findImage(src);
-const imageSrc = typeof _image === 'string' ? _image : _image?.src || src;
+const imageSrc = typeof _image === 'string' ? _image : _image?.src || (typeof src === 'string' ? src : src.src);
 ---
 
-<img 
-  src={imageSrc} 
-  alt={alt} 
-  class={className}
-  loading={loading}
-  decoding={decoding}
-  {...rest}
-/>
+<img src={imageSrc} alt={alt} class={className} loading={loading} decoding={decoding} {...rest} />

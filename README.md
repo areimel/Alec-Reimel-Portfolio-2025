@@ -6,26 +6,26 @@ This project is a rebuild of my developer portfolio website, designed to showcas
 
 The core design revolves around simulating the look and feel of vintage computer monitors, blending elements of retro-futurism, cyberpunk, and cassette futurism with neo-brutalist design principles. Key visual features include:
 
-*   **Dual Color Schemes:** A theme system toggling between classic green phosphor (dark mode) and amber CRT (light mode) aesthetics.
-*   **Retro-Futurist UI:** Interface components inspired by old-school terminals.
-*   **Glitch Effects & Filters:** Intentional visual artifacts and overlays to enhance the lo-fi feel.
-*   **Animations:** Loading screens, page transitions, cursor effects, and text animations contribute to the dynamic terminal experience. An animation control panel allows users to toggle effects.
+- **Dual Color Schemes:** A theme system toggling between classic green phosphor (dark mode) and amber CRT (light mode) aesthetics.
+- **Retro-Futurist UI:** Interface components inspired by old-school terminals.
+- **Glitch Effects & Filters:** Intentional visual artifacts and overlays to enhance the lo-fi feel.
+- **Animations:** Loading screens, page transitions, cursor effects, and text animations contribute to the dynamic terminal experience. An animation control panel allows users to toggle effects.
 
 ## Tech Stack
 
-*   **Framework:** [Astro](https://astro.build/) (v5.x)
-*   **Base Template:** [Astrowind](https://github.com/onwidget/astrowind) (heavily customized)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/) with custom theme configuration
-*   **Deployment:** [Netlify](https://www.netlify.com/)
-*   **Package Manager:** [pnpm](https://pnpm.io/)
+- **Framework:** [Astro](https://astro.build/) (v5.x)
+- **Base Template:** [Astrowind](https://github.com/onwidget/astrowind) (heavily customized)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) with custom theme configuration
+- **Deployment:** [Netlify](https://www.netlify.com/)
+- **Package Manager:** [pnpm](https://pnpm.io/)
 
 ## Key Features
 
-*   **Green/Amber Theme Switcher:** Toggles between the two primary color schemes.
-*   **Advanced Animation System:** Includes loading screens, page transitions, cursor effects, and text animations.
-*   **Animation Control Panel:** Allows users to enable/disable certain animations for performance or preference.
-*   **Portfolio Showcase:** Sections detailing current projects (AI, VR/AR, Analytics, Templates) and past client work.
-*   **Blog System:** Features posts categorized as "Project Updates," "Coding Crash Courses," and "Tips & Tricks," with distinct templates.
+- **Green/Amber Theme Switcher:** Toggles between the two primary color schemes.
+- **Advanced Animation System:** Includes loading screens, page transitions, cursor effects, and text animations.
+- **Animation Control Panel:** Allows users to enable/disable certain animations for performance or preference.
+- **Portfolio Showcase:** Sections detailing current projects (AI, VR/AR, Analytics, Templates) and past client work.
+- **Blog System:** Features posts categorized as "Project Updates," "Coding Crash Courses," and "Tips & Tricks," with distinct templates.
 
 ## Project Structure
 
@@ -51,8 +51,8 @@ The core design revolves around simulating the look and feel of vintage computer
 
 ### Prerequisites
 
-*   Node.js (LTS version recommended)
-*   pnpm (or npm/yarn)
+- Node.js (LTS version recommended)
+- pnpm (or npm/yarn)
 
 ### Installation
 
@@ -86,12 +86,12 @@ The output will be generated in the `dist/` directory.
 
 ## Configuration
 
-*   **Site Metadata & Features:** Modify `./src/config.yaml` for site name, metadata, blog settings, etc.
-*   **Styling & Theme:**
-    *   Customize base styles in `src/assets/styles/tailwind.css`.
-    *   Adjust Tailwind theme settings (colors, fonts) in `tailwind.config.cjs`.
-    *   Specific theme component styles might be found in `src/components/CustomStyles.astro` or similar.
-*   **Navigation:** Edit `./src/navigation.js` to change header/footer links.
+- **Site Metadata & Features:** Modify `./src/config.yaml` for site name, metadata, blog settings, etc.
+- **Styling & Theme:**
+  - Customize base styles in `src/assets/styles/tailwind.css`.
+  - Adjust Tailwind theme settings (colors, fonts) in `tailwind.config.cjs`.
+  - Specific theme component styles might be found in `src/components/CustomStyles.astro` or similar.
+- **Navigation:** Edit `./src/navigation.js` to change header/footer links.
 
 ## Deployment
 

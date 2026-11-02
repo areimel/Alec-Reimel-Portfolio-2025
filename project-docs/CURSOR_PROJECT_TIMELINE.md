@@ -1,6 +1,7 @@
 # Project Timeline and Checklist
 
 ## Phase 1: Project Setup and Foundation ✅
+
 - [x] Initialize Astro project with Astrowind template
 - [x] Set up Tailwind CSS configuration
 - [x] Configure Netlify deployment
@@ -8,6 +9,7 @@
 - [x] Set up version control
 
 ## Phase 2: Theme System Development 🚀 (Current Phase)
+
 - [x] Research and define color palettes
   - [x] Green theme refinement
   - [x] Amber theme development (3 options)
@@ -17,6 +19,7 @@
 - [ ] Develop transition animations between themes
 
 ## Phase 3: Core Components and Layout
+
 - [ ] Design and implement main layout structure
 - [ ] Create navigation system
 - [ ] Build header component
@@ -25,6 +28,7 @@
 - [ ] Implement page transition system
 
 ## Phase 4: Animation System
+
 - [ ] Develop cursor effects
 - [ ] Create text animation components
 - [ ] Implement glitch effects
@@ -33,6 +37,7 @@
 - [ ] Optimize animation performance
 
 ## Phase 5: Content Development - Portfolio
+
 - [ ] Design project showcase template
 - [ ] Create current projects section
   - [ ] AI development page
@@ -46,6 +51,7 @@
   - [ ] Small business section
 
 ## Phase 6: Blog System
+
 - [ ] Design blog index page
 - [ ] Create blog post templates
   - [ ] Project update template
@@ -55,6 +61,7 @@
 - [ ] Set up blog post metadata system
 
 ## Phase 7: Testing and Optimization
+
 - [ ] Perform accessibility testing
 - [ ] Mobile responsiveness testing
 - [ ] Performance optimization
@@ -62,8 +69,9 @@
 - [ ] Content proofreading
 
 ## Phase 8: Launch Preparation
+
 - [ ] Final content review
 - [ ] SEO optimization
 - [ ] Analytics setup
 - [ ] Documentation completion
-- [ ] Launch checklist review 
+- [ ] Launch checklist review

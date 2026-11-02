@@ -10,14 +10,12 @@ interface NavItem {
 }
 
 interface Props {
+  activeSection?: 'blog' | 'projects';
   class?: string;
   style?: string;
 }
 
-const { 
-  class: className, 
-  style
-} = Astro.props;
+const { activeSection, class: className, style } = Astro.props;
 
 // Get current path for active link detection
 const currentPath = new URL(Astro.request.url).pathname;
@@ -28,14 +26,15 @@ const navItems: NavItem[] = [
   { href: '/projects', text: 'Projects', icon: 'tabler:briefcase', match: ['/projects', '/project/'] },
   { href: '/blog', text: 'Blog', icon: 'tabler:article', match: ['/blog', '/post/'] },
   /*{ href: '/styleguide', text: 'Styleguide', icon: 'tabler:color-swatch' }, */
-  { href: '/contact', text: 'Contact', icon: 'tabler:mail' }
+  { href: '/contact', text: 'Contact', icon: 'tabler:mail' },
 ];
 
 // Helper function to check if a nav item is current
 function isCurrent(item: NavItem): boolean {
+  if (activeSection && item.href === `/${activeSection}`) return true;
   if (item.href === currentPath) return true;
   if (item.match) {
-    return item.match.some(path => {
+    return item.match.some((path) => {
       // Special handling for home page - only match exact path
       if (path === '/') {
         return currentPath === '/';
@@ -48,7 +47,7 @@ function isCurrent(item: NavItem): boolean {
 }
 ---
 
-<div id="sidebar-container" class:list={["sidebar-nav-container h-full", className]} style={style}>
+<div id="sidebar-container" class:list={['sidebar-nav-container h-full', className]} style={style}>
   <!-- Sidebar Navigation -->
   <nav
     id="sidebar-nav"
@@ -56,28 +55,28 @@ function isCurrent(item: NavItem): boolean {
   >
     <div class="relative flex-1">
       <ul class="space-y-0 font-kode divide-y divide-terminal-400 border-b border-terminal-400">
-        {navItems.map((item) => (
-          <li>
-            <a 
-              href={item.href} 
-              class:list={[
-                "nav-link flex items-center justify-center w-full",
-                { current: isCurrent(item) }
-              ]}
-            >
-              <div class="icon-container flex flex-col items-center justify-center p-2">
-                <Icon name={item.icon} class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
-                <span class="text-[6px] md:text-[10px] font-uav-mono">{item.text}</span>
-              </div>
-            </a>
-          </li>
-        ))}
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item) ? 'page' : undefined}
+                class:list={['nav-link flex items-center justify-center w-full', { current: isCurrent(item) }]}
+              >
+                <div class="icon-container flex flex-col items-center justify-center p-2">
+                  <Icon name={item.icon} class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
+                  <span class="text-[6px] md:text-[10px] font-uav-mono">{item.text}</span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </div>
-    
+
     <!-- Settings button at the bottom -->
     <div class="border-t border-terminal-400 mt-auto">
-      <button 
+      <button
         id="theme-settings-btn"
         class="flex flex-col items-center justify-center w-full h-[50px] md:h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
         aria-label="Theme Settings"
@@ -95,7 +94,7 @@ function isCurrent(item: NavItem): boolean {
 <script>
   function setupSidebar() {
     const settingsBtn = document.getElementById('theme-settings-btn');
-    
+
     // Setup settings button
     settingsBtn?.addEventListener('click', () => {
       // Check if the openThemeOptionsModal function exists (it should be defined in ThemeOptions.astro)
@@ -110,7 +109,6 @@ function isCurrent(item: NavItem): boolean {
 </script>
 
 <style>
-  
   /* Navigation link styling */
   :global(.nav-link) {
     @apply text-terminal-500 hover:text-terminal-bg-primary transition-colors hover:bg-terminal-500 h-[50px] md:h-[100px];
@@ -125,4 +123,4 @@ function isCurrent(item: NavItem): boolean {
   :global(.nav-link.current) {
     @apply text-terminal-bg-primary bg-terminal-500;
   }
-</style> 
+</style>

@@ -45,7 +45,7 @@ const metadata = merge(
 ) as MetaData;
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} activeSection="blog">
   <SinglePost post={{ ...post, image: image }} url={url}>
     {post.Content ? <post.Content /> : <Fragment set:html={post.content || ''} />}
   </SinglePost>

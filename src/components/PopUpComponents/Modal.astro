@@ -9,101 +9,128 @@ interface Props {
   contentClass?: string;
 }
 
-const { 
-  id, 
-  title, 
-  closeOnClickOutside = true, 
-  class: className = '',
-  contentClass = ''
-} = Astro.props;
+const { id, title, closeOnClickOutside = true, class: className = '', contentClass = '' } = Astro.props;
 ---
 
-<div id={`${id}-container`} class="modal-container fixed inset-0 z-50 hidden">
+<div
+  id={`${id}-container`}
+  class="modal-container fixed inset-0 z-50 hidden"
+  data-modal-id={id}
+  data-close-outside={String(closeOnClickOutside)}
+>
   <!-- Backdrop/Overlay -->
-  <div 
-    id={`${id}-backdrop`} 
+  <div
+    id={`${id}-backdrop`}
     class="modal-backdrop fixed inset-0 bg-terminal-bg-primary/70 backdrop-blur-sm transition-opacity duration-300"
-  ></div>
-  
+  >
+  </div>
+
   <!-- Modal Content -->
-  <div 
-    id={`${id}-content`} 
+  <div
+    id={`${id}-content`}
     class:list={[
-      "modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-terminal-bg-secondary border border-terminal-400 shadow-lg w-[850px] max-w-[90vw] max-h-[90vh] overflow-auto transition-all duration-300",
-      contentClass
+      'modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-terminal-bg-secondary border border-terminal-400 shadow-lg w-[850px] max-w-[90vw] max-h-[90vh] overflow-auto transition-all duration-300',
+      contentClass,
     ]}
     role="dialog"
     aria-labelledby={title ? `${id}-title` : undefined}
     aria-modal="true"
   >
-    {title && (
-      <div class="flex justify-between items-center p-2 bg-terminal-400">
-        <h2 id={`${id}-title`} class="text-lg font-bold text-terminal-bg-secondary font-uav-mono text-glow-strong">
-          {title}
-        </h2>
-        <button 
-          id={`${id}-close`} 
-          class="modal-close p-1 text-terminal-bg-secondary hover:text-terminal-bright transition-colors"
-          aria-label="Close"
-        >
-          <Icon name="tabler:x" class="w-8 h-8" />
-        </button>
-      </div>
-    )}
-    
-    <div class:list={["modal-body", className]}>
+    {
+      title && (
+        <div class="flex justify-between items-center p-2 bg-terminal-400">
+          <h2 id={`${id}-title`} class="text-lg font-bold text-terminal-bg-secondary font-uav-mono text-glow-strong">
+            {title}
+          </h2>
+          <button
+            id={`${id}-close`}
+            class="modal-close p-1 text-terminal-bg-secondary hover:text-terminal-bright transition-colors"
+            aria-label="Close"
+          >
+            <Icon name="tabler:x" class="w-8 h-8" />
+          </button>
+        </div>
+      )
+    }
+
+    <div class:list={['modal-body', className]}>
       <slot />
     </div>
   </div>
 </div>
 
-<script define:vars={{ id, closeOnClickOutside }}>
-  // Setup for this specific modal instance
-  function setupModal() {
-    const modalContainer = document.getElementById(`${id}-container`);
-    const modalBackdrop = document.getElementById(`${id}-backdrop`);
-    const closeBtn = document.getElementById(`${id}-close`);
-    
-    // Function to open the modal
-    window[`open${id}Modal`] = function() {
-      modalContainer?.classList.remove('hidden');
-      // Add animation classes
-      setTimeout(() => {
-        modalContainer?.classList.add('modal-active');
-      }, 10); // Small delay for the animation to work properly
-    };
-    
-    // Function to close the modal
-    window[`close${id}Modal`] = function() {
-      modalContainer?.classList.remove('modal-active');
-      // Wait for animation to complete before hiding
-      setTimeout(() => {
-        modalContainer?.classList.add('hidden');
-      }, 300);
-    };
-    
-    // Close button event
-    closeBtn?.addEventListener('click', window[`close${id}Modal`]);
-    
-    // Close on backdrop click if enabled
-    if (closeOnClickOutside) {
-      modalBackdrop?.addEventListener('click', (e) => {
-        if (e.target === modalBackdrop) {
-          window[`close${id}Modal`]();
-        }
+<script>
+  let cleanupModals = () => {};
+
+  function setupModals() {
+    cleanupModals();
+    const controller = new AbortController();
+    const cleanups: Array<() => void> = [];
+    document.querySelectorAll<HTMLElement>('[data-modal-id]').forEach((container) => {
+      const id = container.dataset.modalId!;
+      const dialog = container.querySelector<HTMLElement>('[role="dialog"]');
+      let timer: ReturnType<typeof setTimeout>;
+      let opener: HTMLElement | null = null;
+      const open = () => {
+        clearTimeout(timer);
+        opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        container.classList.remove('hidden');
+        timer = setTimeout(() => {
+          container.classList.add('modal-active');
+          dialog?.querySelector<HTMLElement>('button, input, textarea, a[href]')?.focus();
+        }, 10);
+      };
+      const close = () => {
+        clearTimeout(timer);
+        container.classList.remove('modal-active');
+        timer = setTimeout(() => container.classList.add('hidden'), 300);
+        if (opener?.isConnected) opener.focus();
+      };
+      const openName = `open${id}Modal` as `open${string}Modal`;
+      const closeName = `close${id}Modal` as `close${string}Modal`;
+      window[openName] = open;
+      window[closeName] = close;
+      container.querySelector('.modal-close')?.addEventListener('click', close, { signal: controller.signal });
+      container.querySelector('.modal-backdrop')?.addEventListener(
+        'click',
+        () => {
+          if (container.dataset.closeOutside === 'true') close();
+        },
+        { signal: controller.signal }
+      );
+      container.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'Escape') close();
+          if (event.key !== 'Tab' || !dialog) return;
+          const controls = Array.from(
+            dialog.querySelectorAll<HTMLElement>('button, input, textarea, select, a[href], [tabindex="0"]')
+          ).filter((element) => element.getClientRects().length && !element.hasAttribute('disabled'));
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+          }
+        },
+        { signal: controller.signal }
+      );
+      cleanups.push(() => {
+        clearTimeout(timer);
+        if (window[openName] === open) delete window[openName];
+        if (window[closeName] === close) delete window[closeName];
       });
-    }
-    
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modalContainer?.classList.contains('hidden')) {
-        window[`close${id}Modal`]();
-      }
     });
+    cleanupModals = () => {
+      controller.abort();
+      cleanups.forEach((cleanup) => cleanup());
+    };
   }
-  
-  // Setup on initial load and page navigation
-  document.addEventListener('astro:page-load', setupModal);
+  document.addEventListener('astro:page-load', setupModals);
+  document.addEventListener('astro:before-swap', () => cleanupModals());
 </script>
 
 <style>
@@ -112,24 +139,26 @@ const {
     opacity: 0;
     transition: opacity 0.3s ease-out;
   }
-  
+
   .modal-container.modal-active {
     opacity: 1;
   }
-  
+
   .modal-content {
     transform: translate(-50%, -48%) scale(0.96);
     opacity: 0;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    transition:
+      transform 0.3s ease-out,
+      opacity 0.3s ease-out;
   }
-  
+
   .modal-active .modal-content {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
-  
+
   /* Add subtle glow to modal */
   .modal-content {
-    box-shadow: 0 0 15px rgba(var(--terminal-bright-rgb), 0.15);
+    box-shadow: 0 0 15px var(--terminal-100);
   }
-</style> 
+</style>

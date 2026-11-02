@@ -11,7 +11,7 @@ metadata:
   title:
     default: Alec Reimel Developer Portfolio
     template: '%s | Alec Reimel Developer Portfolio'
-  description: "I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along with highly optimized, conversion-centric marketing websites."
+  description: 'I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along with highly optimized, conversion-centric marketing websites.'
   robots:
     index: true
     follow: true
@@ -62,7 +62,7 @@ apps:
 
     isRelatedPostsEnabled: true
     relatedPostsCount: 4
-    
+
   projects:
     isEnabled: true
     projectsPerPage: 12

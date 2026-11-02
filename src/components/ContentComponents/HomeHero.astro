@@ -1,21 +1,14 @@
 ---
-  
-  import TerminalPrefix from "@components/TerminalComponents/TerminalPrefix.astro";
-  import ContactFormModal from "@components/PopUpComponents/ContactFormModal.astro";
-  import DecoderText from "@components/AnimationComponents/DecoderText.astro";
-  import ArdaLogo from "@components/SvgComponents/ArdaLogo.astro";
-  import NameLogo from "@components/SvgComponents/NameLogo.astro";
-  import NameLogoV1R2 from "@components/SvgComponents/NameLogoV1R2.astro";
-  import NameLogoV2 from "@components/SvgComponents/NameLogoV2.astro";
-  import ButtonLink from "@components/ui/ButtonLink.astro";
-  import TextLink from "@components/ui/TextLink.astro";
-
+import ContactFormModal from '@components/PopUpComponents/ContactFormModal.astro';
+import ArdaLogo from '@components/SvgComponents/ArdaLogo.astro';
+import NameLogo from '@components/SvgComponents/NameLogo.astro';
+import ButtonLink from '@components/ui/ButtonLink.astro';
+import TextLink from '@components/ui/TextLink.astro';
 ---
 
 <section class="w-full min-h-screen mb-12 bg-terminal-bg-primary">
-  <div class="w-full h-full ">
+  <div class="w-full h-full">
     <div class="bento-grid">
-      
       <!-- Cell 1: Main hero section -->
       <div class="div1 bento-cell">
         <!-- <h1 class="text-4xl md:text-5xl font-bold mb-4 text-terminal-bright font-uav-mono text-glow-strong">
@@ -25,18 +18,19 @@
           <NameLogo />
         </div>
         <!-- <NameLogoV1R2 /> -->
-        <div class="text-xl md:text-2xl text-terminal-400 mb-0">
-          Coder // Designer // Hacker
-        </div>
+        <div class="text-xl md:text-2xl text-terminal-400 mb-0">Coder // Designer // Hacker</div>
         <p class="text-lg md:text-xl text-terminal-400 font-kode">
           10 years of industry experience, lifelong cyberpunk.
-          <br/><br/>
-          I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along with highly optimized, conversion-centric marketing websites. 
-          <br/><br/>
-          Beyond frontend, I have multiple other niche skills - ranging from tracking and analytics to virtual reality and custom private AI. I've worked on projects as simple as basic landing pages to as complex as live interactive art installations.
+          <br /><br />
+          I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along
+          with highly optimized, conversion-centric marketing websites.
+          <br /><br />
+          Beyond frontend, I have multiple other niche skills - ranging from tracking and analytics to virtual reality and
+          custom private AI. I've worked on projects as simple as basic landing pages to as complex as live interactive art
+          installations.
         </p>
       </div>
-      
+
       <!-- Cell 2 -->
       <div class="div2 bento-cell">
         <h2>Skills</h2>
@@ -46,7 +40,7 @@
           <li><strong>Advanced Skills</strong>: AI Development, Virtual Reality, Augmented Reality, Custom Hardware</li>
         </ul>
       </div>
-      
+
       <!-- Cell 3 -->
       <div class="div3 bento-cell">
         <h2>Tech Stack</h2>
@@ -58,7 +52,7 @@
           <li><strong>Hosting & Data</strong>: Github, Netlify, Vercel, Supabase, Firebase</li>
         </ul>
       </div>
-      
+
       <!-- Cell 4 -->
       <div class="div4 bento-cell">
         <h2 class="">Freelance</h2>
@@ -66,14 +60,12 @@
           <div class="w-full h-auto max-w-[300px] mx-auto mb-8">
             <ArdaLogo />
           </div>
-          <ButtonLink 
-            href="https://advancedresearch.dev" 
-            target="_blank" 
-            class="w-full text-center"
-          >//Learn_More</ButtonLink>
+          <ButtonLink href="https://advancedresearch.dev" target="_blank" class="w-full text-center"
+            >//Learn_More</ButtonLink
+          >
         </div>
       </div>
-      
+
       <!-- Cell 5 -->
       <div class="div5 bento-cell">
         <h2>Latest Projects</h2>
@@ -93,27 +85,24 @@
           </li>
         </ul>
       </div>
-      
-             <!-- Cell 6 -->
-       <div class="div6 bento-cell">
-         <h2 class="">Contact</h2>
-         <p class="text-terminal-400 font-kode mb-4">Ready to start a project or have questions? Drop me a line.</p>
-         <ButtonLink modalId="contact" class="w-full text-center">
-          //Contact_Me
-         </ButtonLink>
-       </div>
-       
-       <!-- Cell 7 -->
-       <div class="div7 bento-cell">
-         <h2>AI Tech Stack</h2>
-         <div class="text-sm text-terminal-400">
+
+      <!-- Cell 6 -->
+      <div class="div6 bento-cell">
+        <h2 class="">Contact</h2>
+        <p class="text-terminal-400 font-kode mb-4">Ready to start a project or have questions? Drop me a line.</p>
+        <ButtonLink modalId="contact" class="w-full text-center"> //Contact_Me </ButtonLink>
+      </div>
+
+      <!-- Cell 7 -->
+      <div class="div7 bento-cell">
+        <h2>AI Tech Stack</h2>
+        <div class="text-sm text-terminal-400">
           <ul>
             <li><strong>Coding Apps</strong>: Claude Code, Gemini CLI, Qwen, Cursor, Lovable, Firebase</li>
             <li><strong>Local AI</strong>: Ollama, LM Studio</li>
           </ul>
-         </div>
-       </div>
-
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -123,95 +112,95 @@
 
 <style>
   .bento-grid {
-     display: grid;
-     grid-template-columns: repeat(8, 1fr);
-     grid-template-rows: auto;
-     grid-template-areas: 
-       "div1 div1 div1 div1 div1 div1 div2 div2"
-       "div1 div1 div1 div1 div1 div1 div3 div3"
-       "div4 div4 div5 div5 div6 div6 div7 div7"
-       "div4 div4 div5 div5 div6 div6 div7 div7"
-       "div4 div4 div5 div5 div6 div6 div7 div7";
-     gap: 0px;
-     height: 100%;
-     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'div1 div1 div1 div1 div1 div1 div2 div2'
+      'div1 div1 div1 div1 div1 div1 div3 div3'
+      'div4 div4 div5 div5 div6 div6 div7 div7'
+      'div4 div4 div5 div5 div6 div6 div7 div7'
+      'div4 div4 div5 div5 div6 div6 div7 div7';
+    gap: 0px;
+    height: 100%;
+    width: 100%;
   }
-  
+
   .div1 {
     grid-area: div1;
   }
-  
+
   .div2 {
     grid-area: div2;
   }
-  
+
   .div3 {
     grid-area: div3;
   }
-  
+
   .div4 {
     grid-area: div4;
   }
-  
+
   .div5 {
     grid-area: div5;
   }
-  
-     .div6 {
-     grid-area: div6;
-   }
-   
-   .div7 {
-     grid-area: div7;
-   }
-  
-     /* Tablet responsive adjustments */
-   @media (max-width: 1024px) and (min-width: 769px) {
-     .bento-grid {
-       grid-template-columns: repeat(6, 1fr);
-       grid-template-rows: repeat(8, 1fr);
-       grid-template-areas: 
-         "div1 div1 div1 div1 div2 div2"
-         "div1 div1 div1 div1 div2 div2"
-         "div1 div1 div1 div1 div3 div3"
-         "div1 div1 div1 div1 div3 div3"
-         "div4 div4 div5 div5 div6 div6"
-         "div4 div4 div5 div5 div6 div6"
-         "div4 div4 div5 div5 div6 div6"
-         "div7 div7 div7 div7 div7 div7";
-     }
-   }
-   
-   /* Mobile responsive adjustments */
-   @media (max-width: 768px) {
-     .bento-grid {
-       grid-template-columns: 1fr;
-       grid-template-rows: repeat(7, auto);
-       grid-template-areas: 
-         "div1"
-         "div2"
-         "div3"
-         "div4"
-         "div5"
-         "div6"
-         "div7";
-     }
-   }
 
-  .bento-cell{
+  .div6 {
+    grid-area: div6;
+  }
+
+  .div7 {
+    grid-area: div7;
+  }
+
+  /* Tablet responsive adjustments */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .bento-grid {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      grid-template-areas:
+        'div1 div1 div1 div1 div2 div2'
+        'div1 div1 div1 div1 div2 div2'
+        'div1 div1 div1 div1 div3 div3'
+        'div1 div1 div1 div1 div3 div3'
+        'div4 div4 div5 div5 div6 div6'
+        'div4 div4 div5 div5 div6 div6'
+        'div4 div4 div5 div5 div6 div6'
+        'div7 div7 div7 div7 div7 div7';
+    }
+  }
+
+  /* Mobile responsive adjustments */
+  @media (max-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(7, auto);
+      grid-template-areas:
+        'div1'
+        'div2'
+        'div3'
+        'div4'
+        'div5'
+        'div6'
+        'div7';
+    }
+  }
+
+  .bento-cell {
     @apply bg-terminal-bg-secondary p-6 shadow-md flex flex-col justify-start border border-terminal-300;
   }
 
-  h2{
+  h2 {
     @apply text-xl md:text-2xl font-semibold mb-2 text-terminal-500 font-uav-mono;
   }
-  ul{
+  ul {
     @apply text-sm text-terminal-400 font-kode;
   }
-  ul::marker{
-    content: "> "
+  ul::marker {
+    content: '> ';
   }
-  strong{
+  strong {
     @apply text-terminal-bright;
   }
 </style>
