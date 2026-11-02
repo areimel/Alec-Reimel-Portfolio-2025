@@ -57,7 +57,7 @@ const skills = [
 <section id="skills" class="w-full p-4 md:p-8 mb-12 bg-terminal-bg-primary">
   <div class="w-full h-full max-w-screen-2xl mx-auto">
     <div class="text-center mb-12">
-      <h2 class="text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">Skills</h2>
+      <h2 class="text-4xl md:text-5xl font-semibold text-terminal-500 font-uav-mono mt-2">Skills</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[15px]">
@@ -105,6 +105,15 @@ const skills = [
   }
 
   .skill-title {
+    overflow-wrap: anywhere;
     text-shadow: var(--theme-glow);
+  }
+</style>
+
+<style>
+  @media (max-width: 639px) {
+    .skill-title {
+      font-size: clamp(1rem, 5vw, 1.875rem);
+    }
   }
 </style>

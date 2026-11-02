@@ -1,0 +1,52 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import AnimationWrapper from '~/components/AnimationComponents/AnimationWrapper.astro';
+import DecoderText from '~/components/AnimationComponents/DecoderText.astro';
+
+export function getStaticPaths() {
+  return process.env.REVIEW_TEST_FIXTURES === '1' ? [{ params: { fixture: 'animations' } }] : [];
+}
+---
+
+<Layout metadata={{ title: 'Animation regression fixture', robots: { index: false, follow: false } }}>
+  <main class="p-8">
+    <h1 id="unicode"><DecoderText text="A 🧪 third word" as="span" duration={100} charDelay={10} /></h1>
+    <div id="loading">
+      <AnimationWrapper
+        animation="DecoderText"
+        trigger="loadingScreenEnd"
+        text="Loading complete"
+        duration={100}
+        charDelay={10}
+      />
+    </div>
+    <div id="hover">
+      <AnimationWrapper animation="DecoderText" trigger="hover" text="Hover replay" duration={400} charDelay={10} />
+    </div>
+    <div id="click">
+      <AnimationWrapper animation="DecoderText" trigger="click" text="Click replay" duration={400} charDelay={10} />
+    </div>
+    <div id="mobile">
+      <AnimationWrapper
+        animation="DecoderText"
+        trigger="click"
+        text="Mobile readable"
+        mobileDisable
+        duration={400}
+        charDelay={10}
+      />
+    </div>
+    <div style="height: 150vh"></div>
+    <div id="in-view">
+      <AnimationWrapper
+        animation="DecoderText"
+        trigger="in-view"
+        text="Visible later"
+        delay={700}
+        duration={100}
+        charDelay={10}
+      />
+    </div>
+    <a href="/">Home</a>
+  </main>
+</Layout>

@@ -42,9 +42,7 @@ const words = text.split(' ').map((word) => {
       <>
         <span class="decoder-word">
           {characters.map(({ char, index }) => (
-            <span class="decoder-char" data-char={char} data-index={index}>
-              {char}
-            </span>
+            <span class="decoder-char" data-char={char} data-index={index} set:text={char} />
           ))}
         </span>
         {wordIndex < words.length - 1 && <span class="decoder-space"> </span>}

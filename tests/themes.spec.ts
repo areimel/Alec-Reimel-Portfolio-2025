@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 const themes = ['green', 'amber', 'cyber', 'cyber-yellow', 'severance'];
 for (const stored of [null, '', 'dark', 'light', 'obsolete', ...themes]) {
@@ -19,6 +19,7 @@ for (const stored of [null, '', 'dark', 'light', 'obsolete', ...themes]) {
 }
 
 test('themes work after navigation and persist on reload', async ({ page }) => {
+  test.setTimeout(60_000); // Ten route transitions plus modal animations across all five themes.
   await page.goto('/');
   for (const theme of themes) {
     await page.locator('#theme-settings-btn').click();
@@ -54,7 +55,7 @@ test('storage exceptions still allow theme switching', async ({ page }) => {
 test('Severance renders without JavaScript and without theme classes', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/');
+  await page.goto('http://127.0.0.1:4399/');
   await expect(page.locator('html')).toHaveClass(/theme-severance/);
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(0, 14, 20)');
   await context.close();

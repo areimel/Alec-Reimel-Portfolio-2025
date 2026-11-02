@@ -6,7 +6,7 @@ export default defineConfig({
   workers: 3,
   retries: 0,
   reporter: 'list',
-  use: { baseURL: 'http://127.0.0.1:4321', trace: 'retain-on-failure' },
+  use: { baseURL: 'http://127.0.0.1:4399', trace: 'retain-on-failure' },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
@@ -14,8 +14,10 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['iPhone 13'] } },
   ],
   webServer: {
-    command: 'pnpm run preview --host 127.0.0.1',
-    url: 'http://127.0.0.1:4321',
+    command:
+      'REVIEW_TEST_FIXTURES=1 pnpm exec astro build --outDir .test-dist && pnpm exec astro preview --outDir .test-dist --host 127.0.0.1 --port 4399',
+    timeout: 120_000,
+    url: 'http://127.0.0.1:4399',
     reuseExistingServer: false,
   },
 });

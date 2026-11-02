@@ -25,3 +25,5 @@ pnpm-lock.yaml
 # browser test output
 playwright-report/
 test-results/
+
+.test-dist/
