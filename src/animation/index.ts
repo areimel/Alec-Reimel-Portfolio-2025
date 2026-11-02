@@ -1,6 +1,8 @@
 // Animation engine entry point. Feature modules add their start calls below.
 import { startOverlay } from './overlay';
 import { startBoot } from './boot';
+import { onPage } from './core';
+import { startCursors } from './ui';
 
 declare global {
   interface Window {
@@ -10,6 +12,8 @@ declare global {
 
 // The overlay outlives page swaps, so it starts here rather than through `onPage`.
 document.addEventListener('astro:page-load', startOverlay);
+
+onPage(startCursors);
 
 // The loader belongs to the document, not a page, so it also starts here.
 startBoot();
