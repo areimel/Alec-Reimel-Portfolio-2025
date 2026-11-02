@@ -1,0 +1,37 @@
+---
+// Runs before first paint: sets the motion flag and fx tier on <html>, and guarantees the page
+// is never stuck behind the loader if the animation chunk fails to load.
+---
+
+<script is:inline>
+  (function () {
+    if (window.__fxBootstrapped) return;
+    window.__fxBootstrapped = true;
+
+    let failed = false;
+
+    function apply() {
+      const root = document.documentElement;
+      if (!failed && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        root.classList.add('motion-ok');
+      }
+      try {
+        const tier = sessionStorage.getItem('fx-tier');
+        if (tier !== null) root.setAttribute('data-fx-tier', tier);
+      } catch {
+        // Storage may be blocked.
+      }
+    }
+
+    apply();
+    document.addEventListener('astro:after-swap', apply);
+
+    setTimeout(function () {
+      if (window.__fxReady) return;
+      failed = true;
+      document.documentElement.classList.remove('motion-ok');
+      const loader = document.getElementById('loading-screen');
+      if (loader) loader.style.display = 'none';
+    }, 6000);
+  })();
+</script>
