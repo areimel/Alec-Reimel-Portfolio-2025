@@ -1,5 +1,5 @@
 import { test, expect } from './fixtures';
-import { flashesPerSecond, BOOT_FLICKER } from '../src/animation/keyframes';
+import { flashesPerSecond, BOOT_FLICKER, GLITCH_BURSTS } from '../src/animation/keyframes';
 
 test.describe('flashesPerSecond', () => {
   test('counts 0, 1 and 2 reversals', () => {
@@ -34,4 +34,20 @@ test.describe('flashesPerSecond', () => {
   test('boot flicker stays within 3 flashes per second', () => {
     expect(flashesPerSecond(BOOT_FLICKER.opacity, BOOT_FLICKER.duration)).toBeLessThanOrEqual(3);
   });
+});
+
+test.describe('glitch bursts', () => {
+  test('there are bursts to choose from', () => {
+    expect(GLITCH_BURSTS.length).toBeGreaterThan(0);
+  });
+
+  for (const [index, burst] of GLITCH_BURSTS.entries()) {
+    test(`burst ${index} is 150-250ms with at most one reversal`, () => {
+      expect(burst.duration).toBeGreaterThanOrEqual(150);
+      expect(burst.duration).toBeLessThanOrEqual(250);
+      // 3 starts per second, one reversal each, so no second can hold more than 3 flashes
+      expect(flashesPerSecond(burst.opacity, 1000)).toBeLessThanOrEqual(1);
+      expect(flashesPerSecond(burst.opacity, burst.duration)).toBeLessThanOrEqual(1);
+    });
+  }
 });

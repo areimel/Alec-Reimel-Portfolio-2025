@@ -35,3 +35,28 @@ export function flashesPerSecond(opacities: number[], durationMs: number): numbe
 
 /** CRT power-on flicker for the loader. At most 2 reversals in any 1000ms window (limit: 3). */
 export const BOOT_FLICKER = { opacity: [0, 0.6, 0.2, 0.9, 1], duration: 1200 };
+
+export type GlitchBurst = { opacity: number[]; translate?: string[]; clipPath?: string[]; duration: number };
+
+/**
+ * Short glitches for hover, modals, page changes and ambient. Each opacity sequence has at most one
+ * reversal, and glitch.ts allows 3 starts per second, so no second holds more than 3 flashes.
+ */
+export const GLITCH_BURSTS: GlitchBurst[] = [
+  {
+    opacity: [1, 0.5, 1],
+    translate: ['0px 0px', '-3px 0px', '2px 0px'],
+    clipPath: ['inset(0% 0% 0% 0%)', 'inset(20% 0% 55% 0%)', 'inset(0% 0% 0% 0%)'],
+    duration: 180,
+  },
+  {
+    opacity: [1, 1, 0.6, 1],
+    translate: ['0px 0px', '3px 0px', '-2px 0px', '0px 0px'],
+    duration: 220,
+  },
+  {
+    opacity: [1, 0.7, 1],
+    clipPath: ['inset(0% 0% 0% 0%)', 'inset(45% 0% 25% 0%)', 'inset(0% 0% 0% 0%)'],
+    duration: 160,
+  },
+];
