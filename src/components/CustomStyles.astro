@@ -318,6 +318,12 @@ import '@fontsource-variable/inter';
 </style>
 
 <style is:global>
+  /* Governor tier 3: lighter glow on weak devices. */
+  html[data-fx-tier='3'] {
+    --theme-glow: var(--theme-glow-subtle);
+    --theme-glow-strong: var(--theme-glow-subtle);
+  }
+
   .textLink {
     text-decoration: underline;
     text-decoration-style: dotted;

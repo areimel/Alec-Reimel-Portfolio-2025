@@ -5,6 +5,7 @@ import { onPage } from './core';
 import { startCursors, startReveals } from './ui';
 import { startDecode } from './decode';
 import { startGlitches } from './glitch';
+import { startGovernor } from './governor';
 
 declare global {
   interface Window {
@@ -22,6 +23,7 @@ onPage(startDecode);
 // The loader belongs to the document, not a page, so it also starts here.
 startBoot();
 startGlitches();
+startGovernor();
 
 // Features must be statically imported above this line: `__fxReady` is set only after they have
 // loaded, so a failed feature chunk leaves it unset and the bootstrap failsafe fires.
