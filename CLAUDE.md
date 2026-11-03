@@ -4,13 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Package manager is pnpm. There is no test suite; `pnpm run check` and `pnpm run build` are the verification steps.
+Package manager is pnpm. Verification is `pnpm run check`, `pnpm run build`, and the Playwright suite in `tests/` (`pnpm run test:e2e`, which builds with `REVIEW_TEST_FIXTURES=1` into `.test-dist` and serves it on port 4399; projects: chromium, firefox, webkit, mobile). The suite is large, so on a constrained machine run single specs with `pnpm exec playwright test tests/<file>.spec.ts --project=chromium --workers=1`.
 
 ```bash
 pnpm run dev              # dev server at http://localhost:4321
 pnpm run dev-host         # same, exposed on the network
 pnpm run build            # static build to dist/
 pnpm run preview          # serve the build
+pnpm run test:e2e         # build + full Playwright suite (4 browser projects)
+pnpm run perf --out <file.json>  # perf measurement, ~15 min; records in docs/superpowers/perf/
 
 pnpm run check            # astro check + eslint + prettier --check
 pnpm run check:astro      # or check:eslint / check:prettier individually
@@ -30,12 +32,23 @@ An Astro 5 static site with an "80s lo-fi computer terminal" look, built on the 
 
 Much of `src/components/widgets/` and `src/components/ui/`, and pages like `pricing.astro` and `services.astro`, come from the template. Check what is actually imported before editing a component, because several have live and dead versions side by side:
 
-- `PageLayout.astro` uses `SidebarNavV2.astro` for navigation (not `NavComponents/SidebarNav.astro` or a header) and `components/Footer.astro` (not `widgets/Footer.astro`).
-- `Layout.astro` uses `LoadingScreenV1.astro` (not `TerminalComponents/LoadingScreen.astro`).
+- `PageLayout.astro` uses `SidebarNavV2.astro` for navigation (no header) and `components/Footer.astro`.
+- `Layout.astro` uses `LoadingScreenV1.astro`.
 
 ### Layouts and page lifecycle
 
 `Layout.astro` is the root: it mounts the theme styles, loading screen, and CRT overlay on every page, and enables View Transitions through `<ClientRouter>`. Because of client-side navigation, a script that touches the DOM must re-initialize on `astro:page-load` or `astro:after-swap`, or it stops working after the first navigation. `Layout.astro` also dispatches a custom `page-transition-complete` event.
+
+### Animation engine (`src/animation/`)
+
+All motion is driven from `src/animation/` (Anime.js, subpath imports only: `animejs/waapi`, `animejs/timer`, `animejs/scope`). `index.ts` is the entry point loaded by `Layout.astro`; it sets `window.__fxReady`, and a bootstrap failsafe fires if the chunk fails to load. `onPage(init)` in `core.ts` re-runs a feature on every `astro:page-load` inside an Anime.js scope and releases it on `astro:before-swap`. `keyframes.ts` is pure data and must not import the DOM or animejs.
+
+- **Two tiers, chosen per effect.** The compositor tier uses `waapi.animate` with CSS-string easings only (`linear`, `ease-out`, `cubic-bezier()`, `steps()`; never `linear()`, `out(3)` or JS easings) for the scanline, cursor blink, reveals, modals, glows and boot motion. The JS tier uses `createTimer` with a low frame rate for noise steps, text decoding and glitch scheduling.
+- **Animate only `transform`, `translate`, `scale`, `opacity` and `clip-path`.** Never animate `box-shadow`, `text-shadow`, `filter`, `width` or `background-position`. `tests/boot.spec.ts` enforces this on `/`, `/contact` and a project page.
+- **No new CSS `@keyframes`.** The only ones allowed are `fade-in` and `fade-out` (view transitions, `Layout.astro`) and `loadingGlow` (`LoadingScreenV1.astro`). The glow stays in CSS because the loader paints before the Anime.js chunk arrives.
+- **Governor (`governor.ts`).** Sets `data-fx-tier` on `<html>` and only steps down, when too many frames are long; the tier is kept in `sessionStorage` (`fx-tier`). Tier 1: no ambient glitches. Tier 2: no reactive glitches and noise at 8 fps instead of 15. Tier 3: text decoding off. `localStorage['fx-tier-lock']` (`0`-`3`) pins a tier and disables measuring; the perf script locks tier 0.
+- Reduced motion disables the boot sequence, decoding, glitches and reveals; explicit `terminal-effect-*` opt-ins still work.
+- `ClientRouter` replaces `<html>` attributes and classes on every swap, so anything stored on `<html>` (including `data-fx-tier`) must be reapplied on `astro:after-swap`.
 
 ### Theme system
 

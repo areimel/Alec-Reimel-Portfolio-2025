@@ -105,3 +105,38 @@ test('navigating during boot leaves no stuck state', async ({ page }) => {
   await expect(page.locator('#loading-screen')).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+const BANNED = ['boxShadow', 'textShadow', 'filter', 'width', 'backgroundPosition'];
+
+test('no route runs banned animation properties', async ({ page }) => {
+  await page.addInitScript((banned) => {
+    const hits = new Set<string>();
+    (window as unknown as { __banned: Set<string> }).__banned = hits;
+    const sample = () => {
+      for (const animation of document.getAnimations()) {
+        const effect = animation.effect as KeyframeEffect | null;
+        // View-transition pseudo-element animations are out of scope.
+        if (effect?.pseudoElement?.startsWith('::view-transition')) continue;
+        for (const frame of effect?.getKeyframes() ?? []) {
+          for (const key of Object.keys(frame)) if (banned.includes(key)) hits.add(key);
+        }
+      }
+      requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  }, BANNED);
+  const banned = () => page.evaluate(() => [...(window as unknown as { __banned: Set<string> }).__banned]);
+
+  for (const route of ['/', '/contact', '/projects/arda-site-scanner']) {
+    await page.goto(route);
+    await expect(page.locator('#loading-screen')).toBeHidden();
+    await page.mouse.move(0, 0);
+    for (const link of await page.locator('a:visible').all()) {
+      await link.hover({ timeout: 1000 }).catch(() => undefined);
+    }
+    await page.locator('#theme-settings-btn').click();
+    await page.waitForTimeout(500);
+    await page.keyboard.press('Escape');
+    expect(await banned(), route).toEqual([]);
+  }
+});

@@ -31,7 +31,7 @@ Use PascalCase for Astro components (such as `ProjectHeader.astro`), camelCase f
 
 ## Testing Guidelines
 
-No automated test framework, test script, or coverage threshold is configured. Run `pnpm run check` and `pnpm run build` before submitting changes. Preview affected routes and verify responsive layouts, theme switching, animation controls, and contact forms when relevant. Match content frontmatter to the collection schemas.
+Playwright tests live in `tests/` (`pnpm run test:e2e` builds to `.test-dist` and runs chromium, firefox, webkit and mobile projects; no coverage threshold is configured). Run `pnpm run check`, `pnpm run build`, and the specs relevant to your change before submitting. On a memory-constrained machine, run single specs with `pnpm exec playwright test tests/<file>.spec.ts --project=chromium --workers=1`. Preview affected routes and verify responsive layouts, theme switching, animation controls, and contact forms when relevant. Match content frontmatter to the collection schemas.
 
 ## Commit & Pull Request Guidelines
 
