@@ -1,76 +1,77 @@
 ---
+author: Alec Reimel
 publishDate: 2025-07-20T00:00:00Z
-title: ARDA-Site-Scanner
-excerpt: A simple but powerful command-line/terminal app that runs Playwright, an automated browser tool. The app crawls a website, scrapes data, takes screenshots, and runs tests for performance, SEO, ADA compliance, and more.
-image: /images/projects/arda-site-scanner/arda-site-scanner-terminal.jpg
+updateDate: 2026-11-03T00:00:00Z
+title: ARDA Site Scanner — CLI Project in Progress
+excerpt: An in-progress website auditing CLI concept. The public repository currently provides a Node.js, TypeScript, and Ink command-line scaffold; Playwright scanning and reporting are planned.
+image: /images/projects/arda-site-scanner/arda-site-scanner-scaffold.webp
 tags:
   - cli
   - terminal
-  - playwright
-  - web-scraping
-  - testing
-  - performance
-  - seo
-  - accessibility
+  - typescript
   - nodejs
   - utility
-projectUrl: https://github.com/areimel/ARDA-Site-Scanner # Placeholder GitHub repo
-repoUrl: https://github.com/areimel/ARDA-Site-Scanner # Placeholder GitHub repo
+repoUrl: https://github.com/areimel/ARDA-Site-Scanner
 technologies:
-  - 'Node.js: Application runtime'
-  - 'Playwright: Automated browser testing & scraping'
-  - 'Command-Line Interface (CLI): User interaction'
-  - 'NPM: Package management'
+  - 'Node.js: Command-line runtime'
+  - 'TypeScript & React Ink: Existing CLI scaffold'
+  - 'Commander: Argument parsing'
+  - 'Playwright: Planned browser automation'
 ---
 
-import Logo from '~/components/Logo.astro';
-import { YouTube, Tweet, Vimeo } from 'astro-embed';
 import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
-import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
 
 <TextAndImage
-  headline="Automated Website Analysis & Testing"
-  bodyText="ARDA-Site-Scanner is a robust command-line application built with Node.js and Playwright, designed to automate comprehensive website analysis. It can crawl entire websites, scrape data, capture screenshots, and perform various tests, making it an invaluable tool for developers, QA engineers, and digital marketers."
-  imageSrc="/images/projects/arda-site-scanner/arda-site-scanner-terminal.jpg"
-  imageAlt="Computer terminal with automation code running"
+  headline="A Website Auditing CLI in Progress"
+  bodyText="ARDA Site Scanner is a project concept for collecting website observations from a command-line interface. The intended direction is browser automation with Playwright: visiting pages, capturing screenshots, and reporting useful checks. The current public repository is a TypeScript and Ink starter scaffold. Website crawling, Playwright integration, and audit reports are not implemented in that public scaffold."
+  imageSrc="/images/projects/arda-site-scanner/arda-site-scanner-scaffold.webp"
+  imageAlt="Current scaffold diagram: Commander reads a name and React Ink renders a greeting; scanning is planned"
   flexDirection="text-first"
 />
 
-<TextAndImage
-  headline="Powered by Playwright for Deep Insights"
-  bodyText="At its core, ARDA-Site-Scanner leverages Playwright, a powerful browser automation library. This enables it to simulate real user interactions, execute JavaScript, and access the full DOM, allowing for in-depth analysis of website performance, SEO elements, and critical ADA compliance issues that traditional scanners might miss."
-  imageSrc="/images/projects/arda-site-scanner/arda-scanner-playwright.jpg"
-  imageAlt="Laptop computer displaying browser automation and web testing interface"
-  flexDirection="image-first"
-/>
-
-<TextAndImage
-  headline="Versatile Testing & Reporting Features"
-  bodyText={`The scanner offers a wide array of functionalities, including performance auditing (e.g., Lighthouse scores), SEO best practices validation, and accessibility (ADA) compliance checks. It generates detailed reports and screenshots, highlighting issues and providing clear actionable insights for improvement.`}
-  imageSrc="/images/projects/arda-site-scanner/arda-scanner-testing.jpg"
-  imageAlt="UX designer creating wireframes and testing documentation on paper"
-  flexDirection="text-first"
-/>
-
-<TextAndImage
-  headline="A Developer's Essential Toolkit Addition"
-  bodyText='ARDA-Site-Scanner is a "party favor" project designed to be a highly useful, standalone utility for developers. It simplifies repetitive testing and analysis tasks, freeing up time for more complex development work, while also demonstrating practical application of Node.js and Playwright for robust automation.'
-  imageSrc="/images/projects/arda-site-scanner/arda-scanner-toolkit.jpg"
-  imageAlt="Developer working on laptop computer with development tools and terminal interface"
-  flexDirection="image-first"
-/>
-
-<ProjectStats
-  title="Automated Quality Assurance"
-  content="Streamlines the process of identifying website issues related to performance, SEO, and accessibility, improving overall site quality."
-/>
-
-<ProjectStats
-  title="Comprehensive Data Collection"
-  content="Goes beyond basic checks to scrape detailed data and take screenshots, offering a complete picture of website health."
-/>
-
-<ProjectStats
-  title="Developer Productivity Boost"
-  content="Reduces manual testing efforts, allowing developers to focus on building features and fixing critical bugs more efficiently."
-/>
+<section className="font-kode text-terminal-400 space-y-6 mb-12">
+  <h2 className="text-2xl font-heading text-terminal-500">Current Public Implementation</h2>
+  <p>
+    The repository starts from the ts-ink-template project. Its CLI entry point uses Commander to read a name argument
+    and renders a greeting with React Ink. This provides a starting structure for a terminal application, rather than a
+    working website scanner.
+  </p>
+  <p>
+    See the{' '}
+    <a href="https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/src/cli.tsx" className="underline">
+      CLI entry point
+    </a>
+    ,{' '}
+    <a href="https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/src/ui.tsx" className="underline">
+      current terminal interface
+    </a>
+    , and{' '}
+    <a href="https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/package.json" className="underline">
+      package manifest
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Planned Direction</h2>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>Accept a website URL and visit pages using browser automation.</li>
+    <li>Capture screenshots and extract page metadata for inspection.</li>
+    <li>Present repeatable observations in a useful terminal or exported report.</li>
+    <li>Make failures and incomplete scans visible instead of presenting partial results as a full audit.</li>
+  </ul>
+  <h2 className="text-2xl font-heading text-terminal-500">Limits of Automated Auditing</h2>
+  <p>
+    Future automated checks would provide evidence for review, not a guarantee of search rankings or accessibility
+    compliance. Accessibility also requires human evaluation, and performance results depend on the tested environment.
+  </p>
+  <p>
+    For a more developed example of browser-focused software, see{' '}
+    <a href="/projects/arda-analytics" className="underline">
+      ARDA Analytics
+    </a>
+    . To discuss developer roles,{' '}
+    <a href="/contact" className="underline">
+      contact me
+    </a>
+    .
+  </p>
+</section>

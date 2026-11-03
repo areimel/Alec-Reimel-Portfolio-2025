@@ -1,0 +1,107 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import { profile } from '~/data/profile';
+
+const metadata = {
+  title: 'Software Developer Résumé',
+  description:
+    'Alec Reimel’s résumé: 10+ years in full-stack development, technical leadership, applied AI, and analytics. View his experience and download the PDF.',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Résumé"
+    title="Alec Reimel — Software Developer"
+    subtitle="Doylestown, Pennsylvania · Interested in US remote developer roles"
+  />
+  <section class="max-w-4xl mx-auto px-6 pb-16 font-kode text-terminal-400 space-y-8">
+    <p class="flex flex-wrap gap-4">
+      <a href={profile.resumePdf} download class="underline text-terminal-500">Download résumé (PDF)</a>
+      <a href={profile.linkedin} class="underline">LinkedIn</a>
+      <a href={profile.github} class="underline">GitHub</a>
+    </p>
+    <div class="border border-terminal-300 bg-terminal-bg-secondary p-6 space-y-4">
+      <h2 class="text-2xl font-uav-mono text-terminal-500">Profile</h2>
+      <p>
+        Hands-on software developer with 10+ years of professional web development experience spanning full-stack
+        applications, frontend engineering, and marketing technology. I have led development teams supporting
+        approximately 300 client websites and built shared tools for AI knowledge access, monitoring, security
+        operations, and automation.
+      </p>
+      <p>
+        <a href="/contact" class="underline">Contact me about a role</a> ·
+        <a href="mailto:alecreimel@gmail.com" class="underline">alecreimel@gmail.com</a> ·
+        <a href="https://github.com/areimel" class="underline">GitHub: areimel</a>
+      </p>
+    </div>
+    <div class="border border-terminal-300 bg-terminal-bg-secondary p-6 space-y-4">
+      <h2 class="text-2xl font-uav-mono text-terminal-500">Technical focus</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Languages: JavaScript, TypeScript, HTML, CSS, PHP, SQL, Python, C#, and C++.</li>
+        <li>Web development: React, Next.js, Node.js, Astro, WordPress, Tailwind CSS, shadcn/ui, Vue, and Angular.</li>
+        <li>Applied AI: AI agents, MCP integrations, self-hosted models, and workflow automation.</li>
+        <li>Analytics: browser event tracking, Google Tag Manager, campaign attribution, and user journey tracking.</li>
+        <li>Interface development: responsive layouts, accessibility, and content organization.</li>
+        <li>Delivery and operations: Git, CI/CD, Netlify, Vercel, database administration, and web security.</li>
+      </ul>
+    </div>
+    <div class="border border-terminal-300 bg-terminal-bg-secondary p-6 space-y-6">
+      <h2 class="text-2xl font-uav-mono text-terminal-500">Professional experience</h2>
+      {
+        profile.experience.map((role) => (
+          <article class="space-y-3">
+            <h3 class="text-xl text-terminal-500">
+              {role.title} — {role.employer}
+            </h3>
+            <p>
+              {role.period} · {role.location}
+            </p>
+            <ul class="list-disc pl-6 space-y-2">
+              {role.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+    <div class="border border-terminal-300 bg-terminal-bg-secondary p-6 space-y-4">
+      <h2 class="text-2xl font-uav-mono text-terminal-500">Education</h2>
+      <p>{profile.education.degree}<br />{profile.education.school} · {profile.education.period}</p>
+    </div>
+    <div class="border border-terminal-300 bg-terminal-bg-secondary p-6 space-y-6">
+      <h2 class="text-2xl font-uav-mono text-terminal-500">Selected projects</h2>
+      <div class="space-y-2">
+        <h3 class="text-xl text-terminal-500">
+          <a href="/projects/arda-analytics" class="underline">ARDA Analytics</a>
+        </h3>
+        <p>
+          A browser analytics plugin with TypeScript services for UTM parameters, forms, event forwarding to Google Tag
+          Manager, and user journey triggers. Includes a React demonstration site and Jest test definitions.
+        </p>
+        <a href="https://github.com/areimel/ARDA-Analytics" class="underline">Explore the source code</a>
+      </div>
+      <div class="space-y-2">
+        <h3 class="text-xl text-terminal-500">
+          <a href="/projects/company-ai-prompts" class="underline">AI Prompt Directory</a>
+        </h3>
+        <p>
+          An Astro and Tailwind CSS directory for organizing reusable AI prompts, with Markdown content, category
+          browsing, and a prompt templating workflow.
+        </p>
+        <a href="https://github.com/areimel/company-ai-prompts" class="underline">Explore the source code</a>
+      </div>
+      <div class="space-y-2">
+        <h3 class="text-xl text-terminal-500"><a href="/projects/bio-link" class="underline">Bio-Link</a></h3>
+        <p>An Astro-based project for a simple mobile-first landing page that collects important links in one place.</p>
+        <a href="https://github.com/areimel/Bio-Link" class="underline">Explore the source code</a>
+      </div>
+    </div>
+    <p>
+      <a href={profile.resumePdf} download class="underline">Download my full résumé (PDF)</a> or
+      <a href="/contact" class="underline">contact me</a> to discuss my experience and the needs of your team.
+    </p>
+  </section>
+</Layout>

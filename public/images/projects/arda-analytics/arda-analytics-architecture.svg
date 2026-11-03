@@ -1,0 +1,46 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">ARDA Analytics</title>
+  <desc id="desc">
+    Architecture diagram: browser interactions feed AnalyticsService, which forwards events to Google Tag Manager
+    dataLayer.
+  </desc>
+  <rect width="1200" height="630" fill="#07151b" />
+  <g fill="#9ae6cf" font-family="monospace">
+    <text x="64" y="92" font-size="36" font-weight="bold">ARDA Analytics</text>
+    <text x="64" y="135" font-size="21">Verified browser analytics architecture</text>
+  </g>
+  <rect x="64" y="215" width="310" height="150" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="86" y="257" fill="#d1fae5" font-size="22" font-family="monospace">Browser interactions</text>
+  <text x="86" y="290" fill="#d1fae5" font-size="22" font-family="monospace">UTM parameters</text>
+  <text x="86" y="323" fill="#d1fae5" font-size="22" font-family="monospace">Forms &amp; journeys</text>
+  <rect x="445" y="215" width="310" height="150" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="467" y="257" fill="#d1fae5" font-size="22" font-family="monospace">AnalyticsService</text>
+  <text x="467" y="290" fill="#d1fae5" font-size="22" font-family="monospace">Coordinates tracking</text>
+  <text x="467" y="323" fill="#d1fae5" font-size="22" font-family="monospace">TypeScript modules</text>
+  <rect x="826" y="215" width="310" height="150" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="848" y="257" fill="#d1fae5" font-size="22" font-family="monospace">GTM dataLayer</text>
+  <text x="848" y="290" fill="#d1fae5" font-size="22" font-family="monospace">CustomEvent</text>
+  <text x="848" y="323" fill="#d1fae5" font-size="22" font-family="monospace">eventLabel</text>
+  <path
+    d="M374 290H430l-15-10m15 10-15 10M755 290H811l-15-10m15 10-15 10"
+    stroke="#6ed7b6"
+    stroke-width="3"
+    fill="none"
+  />
+  <text x="64" y="445" fill="#9ae6cf" font-size="23" font-family="monospace">
+    Separate modules for attribution, forms, GTM, and user journeys.
+  </text>
+  <text x="64" y="485" fill="#9ae6cf" font-size="23" font-family="monospace">
+    React demo interface + Jest test definitions in the repository.
+  </text>
+  <text x="64" y="580" fill="#9ae6cf" font-size="18" font-family="monospace">
+    Alec Reimel · Public repository architecture
+  </text>
+</svg>

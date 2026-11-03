@@ -10,7 +10,7 @@ import CustomStyles from '~/components/CustomStyles.astro';
 import FxBootstrap from '~/components/common/FxBootstrap.astro';
 import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
 import Metadata from '~/components/common/Metadata.astro';
-// import SiteVerification from '~/components/common/SiteVerification.astro';
+import SiteVerification from '~/components/common/SiteVerification.astro';
 // import Analytics from '~/components/common/Analytics.astro';
 import GoogleTagManagerHead from '~/components/common/GoogleTagManagerHead.astro';
 import GoogleTagManagerBody from '~/components/common/GoogleTagManagerBody.astro';
@@ -44,8 +44,7 @@ const defaultTheme = 'theme-severance';
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
-    <!-- <SiteVerification />
-    <Analytics /> -->
+    <SiteVerification />
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />

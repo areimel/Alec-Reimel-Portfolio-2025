@@ -1,7 +1,9 @@
 ---
 publishDate: 2024-04-04T00:00:00Z
-title: AI-Assisted Web Development using Cursor
-excerpt: Discover how Cursor IDE, powered by advanced AI models, is revolutionizing web development by offering intelligent code completion, refactoring, and pair programming capabilities.
+updateDate: 2026-11-03T00:00:00Z
+author: Alec Reimel
+title: AI-Assisted Web Development — A Reviewable Workflow
+excerpt: 'A practical workflow for using AI coding tools such as Cursor: define the change, inspect the diff, test real behavior, and keep engineering decisions visible.'
 image: /images/blog/photo-1633356122544-f134324a6cee.webp
 tags:
   - web-development
@@ -11,110 +13,46 @@ tags:
   - Cursor
 ---
 
-The landscape of web development is rapidly evolving, and at the forefront of this transformation is Cursor, an innovative IDE that harnesses the power of advanced AI models to enhance developer productivity. Let's explore how this next-generation development environment is changing the way we write code and build websites.
+AI coding tools such as Cursor can help draft components, explain unfamiliar code, and suggest changes. The useful engineering question is how to turn a generated suggestion into a change that another developer can understand, review, and maintain.
 
-## The AI-Powered Development Revolution
+This article describes a workflow for doing that. It is a set of practical review steps, rather than a benchmark or a claim that a particular model produces correct code automatically.
 
-Cursor represents a paradigm shift in how developers interact with their code editor. Built on the foundation of VSCode but supercharged with AI capabilities, Cursor brings the power of large language models directly into your development workflow. The result is a more intuitive, efficient, and intelligent coding experience.
+## Start with an observable outcome
 
-### Core AI Features
+Describe what a user should be able to do before asking for an implementation. For example, “A recruiter can open the contact page and send a message using only the keyboard” gives a clearer target than “Improve the form.”
 
-At the heart of Cursor's capabilities are several powerful AI models:
+Include the relevant constraints: framework, existing components, responsive behavior, and how failures should appear. Small changes are easier to evaluate because there are fewer unrelated decisions to inspect at once.
 
-- Claude 3 Sonnet for sophisticated code generation and problem-solving
-- GPT-4 integration for complex code analysis and refactoring
-- Custom-trained models for context-aware code completion
-- Specialized models for documentation generation and code explanation
+## Read the surrounding code
 
-![Target](/images/blog/photo-1542831371-29b0f74f9713.webp)
+A generated component has to fit into an existing application. Check how nearby code handles state, styling, navigation, data loading, and accessibility. Prefer the project's established patterns when they serve the intended behavior.
 
-### Intelligent Code Generation
+For a portfolio built with Astro, a useful question is whether an interaction needs browser JavaScript at all. Content and links can often remain in rendered HTML, while forms or interactive controls need additional behavior.
 
-Cursor's AI capabilities go far beyond simple code completion:
+## Review the diff as an implementation
 
-- Generate entire components and functions from natural language descriptions
-- Automatically implement complex algorithms and data structures
-- Create test cases and documentation automatically
-- Refactor existing code with intelligent suggestions
+Treat a suggestion as code that needs review. Inspect dependencies, event listeners, error paths, and any assumptions about the environment.
 
-## Enhanced Development Workflow
+For a contact form, that means looking beyond the success state:
 
-One of Cursor's most powerful features is its ability to understand your project's context and provide relevant assistance:
+- Are fields labeled and required values validated?
+- Is the submit button protected from repeated submissions?
+- Does a failed request leave a useful message and a way to retry?
+- Are keyboard focus and modal behavior usable?
+- Does the implementation avoid sending unnecessary information?
 
-- Smart code navigation and reference finding
-- Intelligent error detection and fixing
-- Context-aware code suggestions
-- Automated code review and optimization
+These checks help make the review concrete. A plausible explanation from a coding tool is not evidence that the behavior works.
 
-### Real-time AI Pair Programming
+## Test the behavior that matters
 
-Cursor acts as an intelligent pair programmer that:
+Use the checks appropriate to the change: type diagnostics, a production build, focused automated tests, and direct inspection of the affected page. For interactive browser behavior, test the path a person actually follows, including its failure case.
 
-1. Understands your project's architecture
-2. Suggests best practices and design patterns
-3. Helps debug complex issues
-4. Explains code behavior and potential improvements
+Tests should establish the intended outcome rather than merely repeat the implementation. A form test that verifies a visible error after a failed request is more useful than one that only checks whether a submit handler exists.
 
-![Target](/images/blog/photo-1461749280684-dccba630e2f6.webp)
+## Keep the engineering evidence
 
-## Practical Applications
+A useful project write-up explains the problem, the developer's contribution, an important decision, and how the result was checked. Mention AI assistance when relevant, but keep attention on the work that can be inspected.
 
-Cursor excels in various web development scenarios:
+My [ARDA Analytics project](/projects/arda-analytics) links to implementation modules and test definitions. The [AI Prompt Directory](/projects/company-ai-prompts) is another example of organizing reusable AI-related content into a developer-facing tool.
 
-### Frontend Development
-
-- Generating React/Vue/Angular components
-- Writing complex CSS animations
-- Creating responsive layouts
-- Implementing accessibility features
-
-### Backend Development
-
-- API endpoint implementation
-- Database schema design
-- Authentication systems
-- Performance optimization
-
-### Full-Stack Integration
-
-- End-to-end feature implementation
-- API integration
-- State management
-- Testing and deployment
-
-## Advanced Features
-
-Cursor includes several sophisticated capabilities:
-
-- Natural language code search across your entire codebase
-- Intelligent code refactoring suggestions
-- Automated documentation generation
-- Git integration with AI-powered commit messages
-- Multi-file context understanding
-
-### Getting Started with Cursor
-
-To begin using Cursor for your web development:
-
-1. Download and install Cursor from cursor.sh
-2. Configure your preferred AI models and settings
-3. Set up project-specific configurations
-4. Learn the key AI commands and shortcuts
-
-![Target](/images/blog/photo-1555066931-4365d14bab8c.webp)
-
-## The Future of AI-Assisted Development
-
-As AI technology continues to evolve, Cursor is constantly improving with:
-
-- More sophisticated code generation capabilities
-- Enhanced project understanding and context awareness
-- Improved natural language processing
-- Better integration with development workflows
-- Advanced debugging and optimization features
-
-## Conclusion
-
-Cursor represents a significant leap forward in web development tooling, combining the power of advanced AI models with a familiar IDE experience. Whether you're building a simple website or a complex web application, Cursor's AI capabilities can help you write better code faster, catch bugs earlier, and maintain higher code quality.
-
-The integration of AI into the development process isn't just about automation—it's about augmenting developer capabilities and enabling more creative and efficient problem-solving. As the technology continues to mature, tools like Cursor will become increasingly essential in the modern developer's toolkit.
+For more about my technical focus, see my [professional overview](/resume). If your team is hiring a software developer, [get in touch](/contact).

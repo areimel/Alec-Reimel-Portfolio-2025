@@ -1,4 +1,5 @@
 ---
+import ResponsiveImage from '~/components/common/ResponsiveImage.astro';
 interface Props {
   /**
    * The heading text for the section
@@ -59,7 +60,13 @@ const imageClasses = skew ? 'skew-transform' : '';
   {/* Image Section */}
   <div class="w-1/2">
     <div class={`relative aspect-video border border-terminal-300/20 ${imageClasses}`}>
-      <img src={imageSrc} alt={imageAlt} class="w-full h-full object-cover" loading="lazy" decoding="async" />
+      <ResponsiveImage
+        src={imageSrc}
+        alt={imageAlt}
+        class="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   </div>
 </div>

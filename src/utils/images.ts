@@ -1,4 +1,5 @@
 import type { ImageMetadata } from 'astro';
+import responsiveImages from '~/generated/responsive-images.json';
 import type { OpenGraph } from '@astrolib/seo';
 
 const load = async function () {
@@ -58,7 +59,7 @@ export const adaptOpenGraphImages = async (
 
   const images = openGraph.images;
 
-  // Simple image processing without optimization
+  // Resolve local responsive previews while preserving caller metadata.
   const adaptedImages = await Promise.all(
     images.map(async (image) => {
       if (image?.url) {
@@ -69,13 +70,21 @@ export const adaptOpenGraphImages = async (
           };
         }
 
-        // Just use the image as-is without any optimization
-        const imageUrl = typeof resolvedImage === 'string' ? resolvedImage : resolvedImage?.src || '';
+        // Prefer a bounded local preview with known dimensions for social sharing.
+        const sourceUrl = typeof resolvedImage === 'string' ? resolvedImage : resolvedImage?.src || '';
+        const variants = (responsiveImages as Record<string, { src: string; width: number; height: number }[]>)[
+          sourceUrl
+        ];
+        const preview = variants?.at(-1);
+        const imageUrl = preview?.src || sourceUrl;
 
         return {
           url: imageUrl.startsWith('/') ? String(new URL(imageUrl, astroSite)) : imageUrl,
-          width: typeof resolvedImage !== 'string' ? resolvedImage?.width : undefined,
-          height: typeof resolvedImage !== 'string' ? resolvedImage?.height : undefined,
+          width:
+            preview?.width ?? image.width ?? (typeof resolvedImage !== 'string' ? resolvedImage?.width : undefined),
+          height:
+            preview?.height ?? image.height ?? (typeof resolvedImage !== 'string' ? resolvedImage?.height : undefined),
+          alt: image.alt,
         };
       }
 

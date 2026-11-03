@@ -26,6 +26,7 @@ const metadataDefinition = () =>
             .array(
               z.object({
                 url: z.string(),
+                alt: z.string().optional(),
                 width: z.number().optional(),
                 height: z.number().optional(),
               })

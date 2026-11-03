@@ -10,6 +10,9 @@ import { getCanonical, getPermalink } from '~/utils/permalinks';
 import { getStaticPathsProjectPost, projectPostRobots } from '~/utils/projects';
 import { findImage } from '~/utils/images';
 import type { MetaData } from '~/types';
+import StructuredData from '~/components/common/StructuredData.astro';
+import Breadcrumbs from '~/components/common/Breadcrumbs.astro';
+import { contentStructuredData } from '~/utils/structuredData';
 
 export const prerender = true;
 
@@ -35,7 +38,16 @@ const metadata = merge(
     openGraph: {
       type: 'article',
       ...(image
-        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
+        ? {
+            images: [
+              {
+                url: image,
+                width: (image as ImageMetadata)?.width,
+                height: (image as ImageMetadata)?.height,
+                alt: project.title,
+              },
+            ],
+          }
         : {}),
     },
   },
@@ -44,10 +56,14 @@ const metadata = merge(
 ---
 
 <Layout metadata={metadata} activeSection="projects">
-  {/* Back to projects link */}
-  <div class="mx-auto max-w-screen-2xl px-6 py-2 text-lg">
-    <a href="/projects" class="hover:underline"> ← Back to Projects </a>
-  </div>
+  <StructuredData data={contentStructuredData(project, String(metadata.canonical || url), 'CreativeWork')} />
+  <Breadcrumbs
+    items={[
+      { name: 'Home', path: '/' },
+      { name: 'Projects', path: '/projects' },
+      { name: project.title, path: new URL(String(url)).pathname },
+    ]}
+  />
   <ProjectPost post={{ ...project, image: image }} url={url}>
     {project.Content ? <project.Content /> : <Fragment set:html={project.content || ''} />}
   </ProjectPost>

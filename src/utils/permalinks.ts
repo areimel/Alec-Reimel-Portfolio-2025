@@ -1,6 +1,6 @@
 import slugify from 'limax';
 
-import { SITE, APP_BLOG } from 'astrowind:config';
+import { SITE, APP_BLOG, APP_PROJECTS } from 'astrowind:config';
 
 import { trim } from '~/utils/utils';
 
@@ -26,9 +26,9 @@ export const CATEGORY_BASE = cleanSlug(APP_BLOG?.category?.pathname);
 export const TAG_BASE = cleanSlug(APP_BLOG?.tag?.pathname) || 'tag';
 
 // Project constants
-export const PROJECTS_BASE = 'projects';
-export const PROJECT_CATEGORY_BASE = 'category';
-export const PROJECT_TAG_BASE = 'tag';
+export const PROJECTS_BASE = cleanSlug(APP_PROJECTS.list.pathname) || 'projects';
+export const PROJECT_CATEGORY_BASE = cleanSlug(APP_PROJECTS.category.pathname) || 'category';
+export const PROJECT_TAG_BASE = cleanSlug(APP_PROJECTS.tag.pathname) || 'tag';
 
 export const POST_PERMALINK_PATTERN = trimSlash(APP_BLOG?.post?.permalink || `${BLOG_BASE}/%slug%`);
 export const PROJECT_PERMALINK_PATTERN = trimSlash(`${PROJECTS_BASE}/%slug%`);
@@ -36,7 +36,7 @@ export const PROJECT_PERMALINK_PATTERN = trimSlash(`${PROJECTS_BASE}/%slug%`);
 /** */
 export const getCanonical = (path = ''): string | URL => {
   const url = String(new URL(path, SITE.site));
-  if (SITE.trailingSlash == false && path && url.endsWith('/')) {
+  if (SITE.trailingSlash == false && new URL(url).pathname !== '/' && path && url.endsWith('/')) {
     return url.slice(0, -1);
   } else if (SITE.trailingSlash == true && path && !url.endsWith('/')) {
     return url + '/';

@@ -3,16 +3,20 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import ContactFormFull from '~/components/Forms/ContactFormFull.astro';
 import { Icon } from 'astro-icon/components';
+import { profile } from '~/data/profile';
 
 const metadata = {
-  title: 'Contact',
+  title: 'Contact Alec Reimel | Software Developer',
+  ignoreTitleTemplate: true,
+  description:
+    'Contact Alec Reimel about remote software developer roles in the US, engineering opportunities, or project collaborations.',
 };
 ---
 
 <Layout metadata={metadata}>
   <!-- HeroText Widget ******************* -->
 
-  <HeroText tagline="Contact" title="Let's Connect!" />
+  <HeroText tagline="Contact" title="Let's talk about your team" />
 
   <!-- Contact Form Section -->
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
@@ -26,17 +30,18 @@ const metadata = {
           <div>
             <!--             <h2 class="text-3xl font-bold font-uav-mono text-terminal-500 text-glow-strong mb-4 text-center text-balance"></h2> -->
             <p class="text-terminal-400 font-kode text-lg">
-              Have a project in mind? Send me a message.
+              Hiring a software developer? Send me a message about your team and the role.
               <br /><br />
-              I specialize in building websites, marketing tools, and specialized fringe technology such as Artificial Intelligence,
-              Virtual Reality, and custom-built devices.
+              I build web interfaces and developer tools with JavaScript, React, Next.js, and Astro. I'm based in the Pennsylvania/New
+              Jersey area and interested in remote roles across the US.
               <br /><br />
-              I try to get back to emails within 48 hours.
+              You can also contact me directly by email, review my <a href="/resume" class="underline">résumé</a>, or
+              <a href={profile.linkedin} class="underline">connect on LinkedIn</a>.
             </p>
           </div>
           <a
             href="mailto:alecreimel@gmail.com"
-            class="text-terminal-400 hover:bg-terminal-400 hover:text-terminal-bg-primary transition-colors font-kode text-lg inline-flex items-center gap-2 px-2 py-1"
+            class="text-terminal-400 hover:bg-terminal-400 hover:text-terminal-bg-primary transition-colors font-kode text-base sm:text-lg inline-flex max-w-full items-center gap-2 px-2 py-1"
           >
             <Icon name="mdi:email" class="w-6 h-6" />
             alecreimel@gmail.com

@@ -1,7 +1,9 @@
 /* Terminal/Console Fonts */
 @font-face {
   font-family: 'Share Tech Mono';
-  src: url('/fonts/ShareTechMono-Regular.ttf') format('truetype');
+  src:
+    url('/fonts/ShareTechMono-Regular.woff2') format('woff2'),
+    url('/fonts/ShareTechMono-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -9,7 +11,9 @@
 
 @font-face {
   font-family: 'VT323';
-  src: url('/fonts/VT323-Regular.ttf') format('truetype');
+  src:
+    url('/fonts/VT323-Regular.woff2') format('woff2'),
+    url('/fonts/VT323-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -29,7 +33,9 @@
 /* Display/Title Fonts */
 @font-face {
   font-family: 'Vermin Vibes';
-  src: url('/fonts/Vermin Vibes 1989.ttf') format('truetype');
+  src:
+    url('/fonts/Vermin Vibes 1989.woff2') format('woff2'),
+    url('/fonts/Vermin Vibes 1989.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -49,7 +55,9 @@
 /* Code/Monospace Fonts */
 @font-face {
   font-family: 'Kode Mono';
-  src: url('/fonts/KodeMono-Regular.ttf') format('truetype');
+  src:
+    url('/fonts/KodeMono-Regular.woff2') format('woff2'),
+    url('/fonts/KodeMono-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -57,7 +65,9 @@
 
 @font-face {
   font-family: 'Kode Mono';
-  src: url('/fonts/KodeMono-Medium.ttf') format('truetype');
+  src:
+    url('/fonts/KodeMono-Medium.woff2') format('woff2'),
+    url('/fonts/KodeMono-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -65,7 +75,9 @@
 
 @font-face {
   font-family: 'Kode Mono';
-  src: url('/fonts/KodeMono-SemiBold.ttf') format('truetype');
+  src:
+    url('/fonts/KodeMono-SemiBold.woff2') format('woff2'),
+    url('/fonts/KodeMono-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -73,7 +85,9 @@
 
 @font-face {
   font-family: 'Kode Mono';
-  src: url('/fonts/KodeMono-Bold.ttf') format('truetype');
+  src:
+    url('/fonts/KodeMono-Bold.woff2') format('woff2'),
+    url('/fonts/KodeMono-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -82,7 +96,9 @@
 /* Special Purpose Fonts */
 @font-face {
   font-family: 'UAV OSD Mono';
-  src: url('/fonts/UAV-OSD-Mono.ttf') format('truetype');
+  src:
+    url('/fonts/UAV-OSD-Mono.woff2') format('woff2'),
+    url('/fonts/UAV-OSD-Mono.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -90,7 +106,9 @@
 
 @font-face {
   font-family: 'UAV OSD Sans';
-  src: url('/fonts/UAV-OSD-Sans-Mono.ttf') format('truetype');
+  src:
+    url('/fonts/UAV-OSD-Sans-Mono.woff2') format('woff2'),
+    url('/fonts/UAV-OSD-Sans-Mono.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

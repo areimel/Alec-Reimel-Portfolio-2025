@@ -23,6 +23,8 @@ const currentPath = new URL(Astro.request.url).pathname;
 // Navigation items array
 const navItems: NavItem[] = [
   { href: '/', text: 'Home', icon: 'tabler:home', match: ['/'] },
+  { href: '/about', text: 'About', icon: 'tabler:user' },
+  { href: '/resume', text: 'Résumé', icon: 'tabler:file-text' },
   { href: '/projects', text: 'Projects', icon: 'tabler:briefcase', match: ['/projects', '/project/'] },
   { href: '/blog', text: 'Blog', icon: 'tabler:article', match: ['/blog', '/post/'] },
   /*{ href: '/styleguide', text: 'Styleguide', icon: 'tabler:color-swatch' }, */
@@ -53,7 +55,7 @@ function isCurrent(item: NavItem): boolean {
     id="sidebar-nav"
     class="h-full w-full bg-terminal-bg-secondary border-r border-terminal-400 transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
   >
-    <div class="relative flex-1">
+    <div class="relative flex-1 min-h-0 overflow-y-auto">
       <ul class="space-y-0 font-kode divide-y divide-terminal-400 border-b border-terminal-400">
         {
           navItems.map((item) => (
@@ -65,7 +67,7 @@ function isCurrent(item: NavItem): boolean {
               >
                 <div class="icon-container flex flex-col items-center justify-center p-2">
                   <Icon name={item.icon} class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
-                  <span class="text-[6px] md:text-[10px] font-uav-mono">{item.text}</span>
+                  <span class="text-[10px] md:text-xs font-kode">{item.text}</span>
                 </div>
               </a>
             </li>
@@ -75,14 +77,14 @@ function isCurrent(item: NavItem): boolean {
     </div>
 
     <!-- Settings button at the bottom -->
-    <div class="border-t border-terminal-400 mt-auto">
+    <div class="border-t border-terminal-400 mt-auto shrink-0">
       <button
         id="theme-settings-btn"
         class="flex flex-col items-center justify-center w-full h-[50px] md:h-[100px] p-2 text-terminal-500 hover:text-terminal-bg-primary hover:bg-terminal-500 transition-colors"
         aria-label="Theme Settings"
       >
         <Icon name="tabler:adjustments" class="w-5 h-5 md:w-8 md:h-8 mb-1 md:mb-2" />
-        <span class="text-[6px] md:text-[10px] font-uav-mono">Theme</span>
+        <span class="text-[10px] md:text-xs font-kode">Theme</span>
       </button>
     </div>
   </nav>

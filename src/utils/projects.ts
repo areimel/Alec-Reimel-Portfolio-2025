@@ -1,4 +1,5 @@
 import type { PaginateFunction } from 'astro';
+import { APP_PROJECTS } from 'astrowind:config';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { Post } from '~/types';
@@ -135,20 +136,19 @@ const load = async function (): Promise<Array<Post>> {
 
 let _projects: Array<Post>;
 
-// Config values - can be expanded later with specific project settings
-export const isProjectsEnabled = true;
-export const isRelatedProjectsEnabled = false;
-export const isProjectsListRouteEnabled = true;
-export const isProjectPostRouteEnabled = true;
-export const isProjectCategoryRouteEnabled = true;
-export const isProjectTagRouteEnabled = false;
+export const isProjectsEnabled = APP_PROJECTS.isEnabled;
+export const isRelatedProjectsEnabled = APP_PROJECTS.isRelatedProjectsEnabled;
+export const isProjectsListRouteEnabled = APP_PROJECTS.list.isEnabled;
+export const isProjectPostRouteEnabled = APP_PROJECTS.project.isEnabled;
+export const isProjectCategoryRouteEnabled = APP_PROJECTS.category.isEnabled;
+export const isProjectTagRouteEnabled = APP_PROJECTS.tag.isEnabled;
 
-export const projectsListRobots = { index: true, follow: true };
-export const projectPostRobots = { index: true, follow: true };
-export const projectCategoryRobots = { index: true, follow: true };
-export const projectTagRobots = { index: false, follow: true };
+export const projectsListRobots = APP_PROJECTS.list.robots;
+export const projectPostRobots = APP_PROJECTS.project.robots;
+export const projectCategoryRobots = APP_PROJECTS.category.robots;
+export const projectTagRobots = APP_PROJECTS.tag.robots;
 
-export const projectsPerPage = 12; // More projects per page than blog posts
+export const projectsPerPage = APP_PROJECTS.projectsPerPage;
 
 /** */
 export const fetchProjects = async (): Promise<Array<Post>> => {
@@ -231,7 +231,7 @@ export const getStaticPathsProjectCategory = async ({ paginate }: { paginate: Pa
     paginate(
       projects.filter((project) => project.category?.slug && categorySlug === project.category?.slug),
       {
-        params: { category: categorySlug, projects: PROJECT_CATEGORY_BASE || undefined },
+        params: { category: categorySlug, projects: `${PROJECTS_BASE}/${PROJECT_CATEGORY_BASE}` },
         pageSize: projectsPerPage,
         props: { category: categories[categorySlug] },
       }
@@ -257,7 +257,7 @@ export const getStaticPathsProjectTag = async ({ paginate }: { paginate: Paginat
     paginate(
       projects.filter((project) => Array.isArray(project.tags) && project.tags.find((elem) => elem.slug === tagSlug)),
       {
-        params: { tag: tagSlug, projects: PROJECT_TAG_BASE || undefined },
+        params: { tag: tagSlug, projects: `${PROJECTS_BASE}/${PROJECT_TAG_BASE}` },
         pageSize: projectsPerPage,
         props: { tag: tags[tagSlug] },
       }

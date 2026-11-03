@@ -11,6 +11,9 @@ import { getCanonical, getPermalink } from '~/utils/permalinks';
 import { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';
 import { findImage } from '~/utils/images';
 import type { MetaData } from '~/types';
+import StructuredData from '~/components/common/StructuredData.astro';
+import Breadcrumbs from '~/components/common/Breadcrumbs.astro';
+import { contentStructuredData } from '~/utils/structuredData';
 import RelatedPosts from '~/components/blog/RelatedPosts.astro';
 
 export const prerender = true;
@@ -37,7 +40,16 @@ const metadata = merge(
     openGraph: {
       type: 'article',
       ...(image
-        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
+        ? {
+            images: [
+              {
+                url: image,
+                width: (image as ImageMetadata)?.width,
+                height: (image as ImageMetadata)?.height,
+                alt: post.title,
+              },
+            ],
+          }
         : {}),
     },
   },
@@ -46,6 +58,14 @@ const metadata = merge(
 ---
 
 <Layout metadata={metadata} activeSection="blog">
+  <StructuredData data={contentStructuredData(post, String(metadata.canonical || url), 'BlogPosting')} />
+  <Breadcrumbs
+    items={[
+      { name: 'Home', path: '/' },
+      { name: 'Blog', path: '/blog' },
+      { name: post.title, path: new URL(String(url)).pathname },
+    ]}
+  />
   <SinglePost post={{ ...post, image: image }} url={url}>
     {post.Content ? <post.Content /> : <Fragment set:html={post.content || ''} />}
   </SinglePost>

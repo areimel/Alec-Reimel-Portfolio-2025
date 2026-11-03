@@ -1,0 +1,46 @@
+---
+import manifest from '~/generated/responsive-images.json';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src?: string | ImageMetadata;
+  alt: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync' | 'auto';
+  sizes?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const {
+  src,
+  alt,
+  loading = 'lazy',
+  decoding = 'async',
+  sizes = '(min-width: 1024px) 900px, 100vw',
+  ...rest
+} = Astro.props;
+const source = typeof src === 'string' ? src : src?.src;
+const variants = source
+  ? (manifest as Record<string, { src: string; width: number; height: number }[]>)[source]
+  : undefined;
+const largest = variants?.at(-1);
+---
+
+{
+  source && (
+    <img
+      src={largest?.src ?? source}
+      srcset={variants?.map((variant) => `${variant.src} ${variant.width}w`).join(', ')}
+      sizes={variants ? sizes : undefined}
+      width={largest?.width ?? (typeof src === 'object' ? src.width : undefined)}
+      height={largest?.height ?? (typeof src === 'object' ? src.height : undefined)}
+      alt={alt}
+      loading={loading}
+      fetchpriority={loading === 'eager' ? 'high' : undefined}
+      decoding={decoding}
+      {...rest}
+    />
+  )
+}
