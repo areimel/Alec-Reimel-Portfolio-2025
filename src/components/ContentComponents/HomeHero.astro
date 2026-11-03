@@ -11,24 +11,24 @@ import TextLink from '@components/ui/TextLink.astro';
     <div class="bento-grid">
       <!-- Cell 1: Main hero section -->
       <div class="div1 bento-cell">
-        <!-- <h1 class="text-4xl md:text-5xl font-bold mb-4 text-terminal-bright font-uav-mono text-glow-strong">
-          Alec Reimel
-        </h1> -->
-        <div class="mb-8">
-          <NameLogo />
-        </div>
-        <!-- <NameLogoV1R2 /> -->
-        <div class="text-xl md:text-2xl text-terminal-400 mb-0">Coder // Designer // Hacker</div>
+        <div class="mb-6" aria-hidden="true"><NameLogo /></div>
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-terminal-bright font-kode">
+          Alec Reimel — Software Developer
+        </h1>
+        <p class="text-xl text-terminal-400 mb-4">Full-stack applications, applied AI, and developer tools.</p>
         <p class="text-lg md:text-xl text-terminal-400 font-kode">
-          10 years of industry experience, lifelong cyberpunk.
+          I bring 10+ years of professional experience in full-stack development, frontend engineering, and marketing
+          technology. I've led development teams supporting approximately 300 client websites and built tools for AI
+          knowledge access, monitoring, and automation.
           <br /><br />
-          I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along
-          with highly optimized, conversion-centric marketing websites.
-          <br /><br />
-          Beyond frontend, I have multiple other niche skills - ranging from tracking and analytics to virtual reality and
-          custom private AI. I've worked on projects as simple as basic landing pages to as complex as live interactive art
-          installations.
+          Based in the Pennsylvania/New Jersey area, I'm interested in remote software developer opportunities across the
+          US. Explore my projects for implementation details and source code, or get in touch about your team.
         </p>
+        <div class="flex flex-wrap gap-4 mt-6">
+          <ButtonLink href="/contact">Contact me about a role</ButtonLink>
+          <ButtonLink href="/resume">View resume/CV</ButtonLink>
+          <TextLink href="/projects">Explore projects</TextLink>
+        </div>
       </div>
 
       <!-- Cell 2 -->
@@ -48,20 +48,20 @@ import TextLink from '@components/ui/TextLink.astro';
           <li><strong>Standard</strong>: HTML/CSS/Javascript</li>
           <li><strong>Frameworks</strong>: Node.js, React, Next.js, Astro</li>
           <li><strong>Libraries</strong>: Tailwind CSS, Shadcn-UI</li>
-          <li><strong>OS</strong>: Windows, Linux, Android, hacked virtual Mac</li>
+          <li><strong>OS</strong>: Windows, Linux, Android</li>
           <li><strong>Hosting & Data</strong>: Github, Netlify, Vercel, Supabase, Firebase</li>
         </ul>
       </div>
 
       <!-- Cell 4 -->
       <div class="div4 bento-cell">
-        <h2 class="">Freelance</h2>
+        <h2 class="">Independent work</h2>
         <div class="flex flex-col items-center justify-center mt-12">
           <div class="w-full h-auto max-w-[300px] mx-auto mb-8">
             <ArdaLogo />
           </div>
           <ButtonLink href="https://advancedresearch.dev" target="_blank" class="w-full text-center"
-            >//Learn_More</ButtonLink
+            >Explore freelance work</ButtonLink
           >
         </div>
       </div>
@@ -69,7 +69,7 @@ import TextLink from '@components/ui/TextLink.astro';
       <!-- Cell 5 -->
       <div class="div5 bento-cell">
         <h2>Latest Projects</h2>
-        <p class="text-terminal-400 font-kode mb-4">Check out my latest, coolest projects</p>
+        <p class="text-terminal-400 font-kode mb-4">Explore the tools I build and the problems they address.</p>
         <ul class="list-disc list-outside pl-4 space-y-2">
           <li>
             <TextLink href="/projects/company-ai-prompts">AI Prompt Library Template</TextLink>
@@ -78,7 +78,7 @@ import TextLink from '@components/ui/TextLink.astro';
             <TextLink href="/projects/arda-analytics">ARDA-Analytics</TextLink>
           </li>
           <li>
-            <TextLink href="/projects/arda-site-scanner">ARDA Site Scanner</TextLink>
+            <TextLink href="/projects/arda-site-scanner">ARDA Site Scanner (in progress)</TextLink>
           </li>
           <li>
             <TextLink href="/projects/bio-link">Bio-Link Template</TextLink>
@@ -89,8 +89,10 @@ import TextLink from '@components/ui/TextLink.astro';
       <!-- Cell 6 -->
       <div class="div6 bento-cell">
         <h2 class="">Contact</h2>
-        <p class="text-terminal-400 font-kode mb-4">Ready to start a project or have questions? Drop me a line.</p>
-        <ButtonLink modalId="contact" class="w-full text-center"> //Contact_Me </ButtonLink>
+        <p class="text-terminal-400 font-kode mb-4">
+          Hiring a software developer? I'd like to hear about your team and the role.
+        </p>
+        <ButtonLink href="/contact" class="w-full text-center">Contact me about a role</ButtonLink>
       </div>
 
       <!-- Cell 7 -->

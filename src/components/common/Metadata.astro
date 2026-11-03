@@ -9,6 +9,9 @@ import type { MetaData } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 
 import { adaptOpenGraphImages } from '~/utils/images';
+import StructuredData from './StructuredData.astro';
+import { personId, websiteId } from '~/utils/structuredData';
+import { profile } from '~/data/profile';
 
 export interface Props extends MetaData {
   dontUseTitleTemplate?: boolean;
@@ -63,6 +66,48 @@ const seoProps: AstroSeoProps = merge(
     twitter: twitter,
   }
 );
+
+const profilePage = ['/about', '/resume'].includes(Astro.url.pathname.replace(/\/$/, ''));
+const pageTitle = title || METADATA?.title?.default;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: 'Alec Reimel',
+      url: String(getCanonical('/about')),
+      jobTitle: 'Software Developer',
+      description: 'Software developer building web applications, developer tools, and analytics integrations.',
+      sameAs: [profile.github, profile.linkedin],
+      alumniOf: { '@type': 'CollegeOrUniversity', name: profile.education.school },
+      subjectOf: {
+        '@type': 'DigitalDocument',
+        name: 'Alec Reimel résumé',
+        url: String(getCanonical(profile.resumePdf)),
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      url: String(getCanonical('/')),
+      name: SITE.name,
+      publisher: { '@id': personId },
+      inLanguage: I18N.language,
+    },
+    {
+      '@type': profilePage ? 'ProfilePage' : 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: pageTitle,
+      description: description || METADATA?.description,
+      isPartOf: { '@id': websiteId },
+      ...(profilePage ? { mainEntity: { '@id': personId } } : { about: { '@id': personId } }),
+      inLanguage: I18N.language,
+    },
+  ],
+};
 ---
 
+<StructuredData data={structuredData} />
 <AstroSeo {...{ ...seoProps, openGraph: await adaptOpenGraphImages(seoProps?.openGraph, Astro.site) }} />

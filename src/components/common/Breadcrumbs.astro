@@ -1,0 +1,39 @@
+---
+import StructuredData from './StructuredData.astro';
+import { getCanonical } from '~/utils/permalinks';
+
+interface Props {
+  items: { name: string; path: string }[];
+}
+const { items } = Astro.props;
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: String(getCanonical(item.path)),
+  })),
+};
+---
+
+<StructuredData data={data} />
+<nav aria-label="Breadcrumb" class="mx-auto max-w-screen-2xl px-6 pt-6 font-kode text-sm text-terminal-400">
+  <ol class="flex flex-wrap gap-x-2 gap-y-1">
+    {
+      items.map((item, index) => (
+        <li class="inline-flex items-center gap-2">
+          {index > 0 && <span aria-hidden="true">/</span>}
+          {index === items.length - 1 ? (
+            <span aria-current="page">{item.name}</span>
+          ) : (
+            <a href={item.path} class="underline hover:text-terminal-bright">
+              {item.name}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

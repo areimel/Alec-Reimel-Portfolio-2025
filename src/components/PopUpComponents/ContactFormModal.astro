@@ -62,6 +62,7 @@ import { Icon } from 'astro-icon/components';
           class="w-full bg-terminal-bg-primary border border-terminal-300 text-terminal-500 font-kode p-2.5 text-sm focus:border-terminal-500 focus:outline-none focus:ring-1 focus:ring-terminal-500"
         >
           <option value="">Select a subject...</option>
+          <option value="hiring">Hiring / Developer Role</option>
           <option value="general">General Inquiry</option>
           <option value="support">Technical Support</option>
           <option value="business">Business Opportunity</option>
@@ -120,7 +121,10 @@ import { Icon } from 'astro-icon/components';
             <Icon name="tabler:check" class="w-3 h-3 text-terminal-500 opacity-0 transition-opacity check-icon" />
           </div>
           <span class="text-terminal-300 font-kode text-sm no-glow">
-            I agree to the collection and processing of my personal information as described in the Privacy Policy.
+            I agree to the collection and processing of my personal information as described in the <a
+              href="/privacy"
+              class="underline">Privacy Policy</a
+            >.
           </span>
         </label>
       </div>

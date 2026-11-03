@@ -1,6 +1,6 @@
 site:
-  name: Alec Reimel Developer Portfolio
-  site: 'https://alecreimel.com'
+  name: Alec Reimel — Software Developer
+  site: 'https://www.alecreimel.com'
   base: '/'
   trailingSlash: false
 
@@ -9,22 +9,21 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Alec Reimel Developer Portfolio
-    template: '%s | Alec Reimel Developer Portfolio'
-  description: 'I specialize in Frontend Web Development - building immersive interactive experiences that make headlines, along with highly optimized, conversion-centric marketing websites.'
+    default: Alec Reimel — Software Developer
+    template: '%s | Alec Reimel'
+  description: 'Alec Reimel builds web applications, developer tools, and analytics integrations. Explore his projects and experience, and connect about US remote software roles.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: Alec Reimel Developer Portfolio
+    site_name: Alec Reimel — Software Developer
     images:
       - url: '/preview.png'
         width: 1200
         height: 628
+        alt: 'Alec Reimel — Software Developer'
     type: website
   twitter:
-    handle: '@alecreimel'
-    site: '@alecreimel'
     cardType: summary_large_image
 
 i18n:
@@ -49,7 +48,7 @@ apps:
         index: true
 
     category:
-      isEnabled: true
+      isEnabled: false
       pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
       robots:
         index: true
@@ -80,7 +79,7 @@ apps:
         index: true
 
     category:
-      isEnabled: true
+      isEnabled: false
       pathname: 'category' # Category main path /projects/category/some-category
       robots:
         index: true

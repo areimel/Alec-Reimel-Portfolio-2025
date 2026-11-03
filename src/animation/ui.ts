@@ -130,6 +130,7 @@ export function startReveals(ctx: PageContext): void {
               duration: REVEAL_MS,
               delay: index * REVEAL_STAGGER_MS,
               ease: 'cubic-bezier(0.22, 1, 0.36, 1)',
+              onComplete: (animation) => animation.revert(),
             })
           );
           // Animation fill holds opacity 0 through the delay, so the hiding rule can lift now.

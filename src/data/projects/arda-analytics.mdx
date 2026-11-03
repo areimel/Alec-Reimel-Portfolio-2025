@@ -1,73 +1,108 @@
 ---
+author: Alec Reimel
 publishDate: 2025-07-28T00:00:00Z
-title: ARDA-Analytics
-excerpt: A user tracking plugin for websites that integrates with Google Tag Manager and Google Analytics to give developers and marketers a detailed view of their users' behavior.
-image: /images/projects/arda-analytics/arda-analytics-dashboard.jpg
+updateDate: 2026-11-03T00:00:00Z
+title: ARDA Analytics — Browser Events & GTM Integration
+excerpt: A browser analytics plugin with TypeScript services for campaign attribution, form tracking, user journey triggers, and Google Tag Manager event forwarding, plus a React demo site.
+image: /images/projects/arda-analytics/arda-analytics-architecture.webp
 tags:
   - analytics
   - google-tag-manager
-  - google-analytics
   - javascript
+  - typescript
   - plugin
   - web-development
-  - tracking
-projectUrl: https://github.com/areimel/ARDA-Analytics # Placeholder GitHub repo
-repoUrl: https://github.com/areimel/ARDA-Analytics # Placeholder GitHub repo
+repoUrl: https://github.com/areimel/ARDA-Analytics
 technologies:
-  - 'JavaScript: Core logic and integration'
-  - 'Google Tag Manager: Event and data layer management'
-  - 'Google Analytics: Data reporting and visualization'
-  - 'NPM: Package management and distribution'
+  - 'TypeScript & JavaScript: Browser analytics services'
+  - 'Google Tag Manager: Event forwarding'
+  - 'React: Demo and documentation interface'
+  - 'Jest: Browser-oriented test definitions'
+  - 'pnpm: Workspace management'
 ---
 
-import Logo from '~/components/Logo.astro';
-import { YouTube, Tweet, Vimeo } from 'astro-embed';
 import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
-import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
 
 <TextAndImage
-  headline="Comprehensive User Behavior Tracking"
-  bodyText="ARDA-Analytics is a powerful, customizable JavaScript plugin designed to give website owners deep insights into user behavior. By leveraging Google Tag Manager (GTM) and Google Analytics (GA), it captures a rich array of interactions, from clicks and scrolls to form submissions and video engagement, providing a holistic view of the user journey."
-  imageSrc="/images/projects/arda-analytics/arda-analytics-user-tracking.jpg"
-  imageAlt="Professional monitoring screens displaying real-time user behavior analytics and tracking data"
+  headline="Connecting Website Interactions to Analytics"
+  bodyText="ARDA Analytics organizes browser tracking into reusable services rather than putting every event handler into one page script. Its public source includes campaign parameter capture, form integration, Google Tag Manager forwarding, and user journey triggers. The project also includes a React website for demonstrating events and presenting documentation."
+  imageSrc="/images/projects/arda-analytics/arda-analytics-architecture.webp"
+  imageAlt="Architecture diagram: browser events flow through AnalyticsService into the GTM data layer"
   flexDirection="text-first"
 />
 
-<TextAndImage
-  headline="Seamless Integration with GTM & GA"
-  bodyText="Built for effortless integration, ARDA-Analytics extends the capabilities of your existing GTM and GA setup. It provides pre-configured data layers and custom events, simplifying the process of setting up advanced tracking without extensive coding. This means faster deployment and more accurate data collection for marketers and developers alike."
-  imageSrc="/images/projects/arda-analytics/arda-analytics-integration.jpg"
-  imageAlt="Laptop displaying statistical data and analytics charts for Google Tag Manager and Google Analytics integration"
-  flexDirection="image-first"
-/>
-
-<TextAndImage
-  headline="Actionable Insights for Optimization"
-  bodyText={`Beyond just collecting data, ARDA-Analytics is engineered to deliver actionable insights. By tracking granular user interactions, it helps identify pain points, optimize conversion funnels, and personalize user experiences. The collected data empowers data-driven decisions, leading to improved website performance and user satisfaction.`}
-  imageSrc="/images/projects/arda-analytics/arda-analytics-insights.jpg"
-  imageAlt="Professional workspace with MacBook Pro showing data insights and optimization analytics for business decision-making"
-  flexDirection="text-first"
-/>
-
-<TextAndImage
-  headline="Modular & Extensible Design"
-  bodyText="Designed with flexibility in mind, ARDA-Analytics features a modular architecture that allows for easy customization and extension. Developers can readily add new tracking events, integrate with other analytics platforms, or adapt the plugin to specific project requirements, ensuring it grows with your needs."
-  imageSrc="/images/projects/arda-analytics/arda-analytics-modular.jpg"
-  imageAlt="Close-up view of HTML and JavaScript code on laptop screen representing modular development and extensible plugin architecture"
-  flexDirection="image-first"
-/>
-
-<ProjectStats
-  title="Enhanced User Understanding"
-  content="Provides a deeper understanding of user interactions beyond basic page views, allowing for more targeted content and feature development."
-/>
-
-<ProjectStats
-  title="Streamlined Implementation"
-  content="Simplifies the setup of complex tracking scenarios through its GTM and GA integration, reducing development time and potential errors."
-/>
-
-<ProjectStats
-  title="Optimized for Performance"
-  content="Built to be lightweight and efficient, ensuring that comprehensive tracking does not negatively impact website loading times or user experience."
-/>
+<section className="font-kode text-terminal-400 space-y-6 mb-12">
+  <h2 className="text-2xl font-heading text-terminal-500">Architecture and Implementation</h2>
+  <p>
+    The central <code>AnalyticsService</code> coordinates smaller modules for UTM parameters, form fields, GTM event
+    pushes, and user journey tracking. This separation gives each concern a defined place in the code while keeping an
+    integration entry point for the application using the plugin.
+  </p>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>Campaign attribution captures UTM values and makes them available to form workflows.</li>
+    <li>
+      Form helpers detect and add attribution fields, with a MutationObserver option for dynamically inserted forms.
+    </li>
+    <li>Event forwarding writes a CustomEvent object and eventLabel to the GTM data layer.</li>
+    <li>
+      Journey triggers run callbacks when configured event combinations occur, with options for one-time execution.
+    </li>
+  </ul>
+  <p>
+    Explore the{' '}
+    <a href="https://github.com/areimel/ARDA-Analytics/blob/HEAD/plugin/src/analytics.service.ts" className="underline">
+      orchestration service
+    </a>{' '}
+    and the{' '}
+    <a
+      href="https://github.com/areimel/ARDA-Analytics/blob/HEAD/plugin/src/analytics-micro-services/gtm-event-push.ts"
+      className="underline"
+    >
+      GTM event module
+    </a>{' '}
+    to see these boundaries in the source.
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Validation and Integration Boundaries</h2>
+  <p>
+    The repository contains Jest tests for initialization, configuration changes, event pushes, click and form handling,
+    and cleanup. These definitions document intended behavior; their presence alone does not establish that a particular
+    release passes every test. A site adopting the plugin still needs to verify its own events, GTM configuration, and
+    reporting destination.
+  </p>
+  <p>
+    The plugin forwards browser events; it does not replace an analytics reporting platform. Data collection and consent
+    choices also belong to the integrating site. Performance and data quality should be measured in that site's actual
+    environment rather than inferred from the plugin's architecture.
+  </p>
+  <p>
+    Review the{' '}
+    <a
+      href="https://github.com/areimel/ARDA-Analytics/blob/HEAD/plugin/src/__tests__/index.test.js"
+      className="underline"
+    >
+      test definitions
+    </a>{' '}
+    and{' '}
+    <a href="https://github.com/areimel/ARDA-Analytics" className="underline">
+      project repository
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What This Project Demonstrates</h2>
+  <p>
+    Browser API integration, modular TypeScript services, event-driven behavior, and a React interface for exploring
+    developer-facing functionality. It connects frontend implementation with the practical needs of analytics
+    integration.
+  </p>
+  <p>
+    Hiring for a role involving frontend applications or developer tools?{' '}
+    <a href="/contact" className="underline">
+      Get in touch
+    </a>{' '}
+    or see my{' '}
+    <a href="/resume" className="underline">
+      professional overview
+    </a>
+    .
+  </p>
+</section>

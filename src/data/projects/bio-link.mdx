@@ -1,4 +1,5 @@
 ---
+author: Alec Reimel
 publishDate: 2025-07-15T00:00:00Z
 title: Bio-Link
 excerpt: A simple LinkTree or LinkInBio clone. Built with Astro and intended for developers to easily and quickly set up a simple link-centric, mobile-first landing page.
@@ -11,16 +12,13 @@ tags:
   - portfolio
   - open-source
   - utility
-projectUrl: https://github.com/areimel/Bio-Link # Placeholder GitHub repo
-repoUrl: https://github.com/areimel/Bio-Link # Placeholder GitHub repo
+repoUrl: https://github.com/areimel/Bio-Link
 technologies:
   - 'Astro: Website framework & architecture'
   - 'Tailwind CSS: UI Styling'
   - 'Markdown/MDX: Content management'
 ---
 
-import Logo from '~/components/Logo.astro';
-import { YouTube, Tweet, Vimeo } from 'astro-embed';
 import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
 import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
 
@@ -34,7 +32,7 @@ import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
 
 <TextAndImage
   headline="Built for Developers with Astro & Tailwind"
-  bodyText="Leveraging Astro's performance-oriented architecture and Tailwind CSS for rapid styling, Bio-Link is ideal for developers seeking a lightweight solution. Its minimal JavaScript footprint ensures lightning-fast load times, and the use of Markdown/MDX for content makes it incredibly easy to manage links and text."
+  bodyText="Leveraging Astro's performance-oriented architecture and Tailwind CSS for rapid styling, Bio-Link is ideal for developers seeking a lightweight solution. The project uses Markdown/MDX for content and Astro components for presentation, keeping link editing separate from the page layout."
   imageSrc="/images/projects/bio-link/bio-link-coding.jpg"
   imageAlt="Developer workspace with computer displaying code, representing web development with Astro and Tailwind CSS"
   flexDirection="image-first"
@@ -58,7 +56,7 @@ import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
 
 <ProjectStats
   title="Minimal & Fast"
-  content="Designed for optimal performance with minimal overhead, ensuring quick loading times and a smooth user experience on any device, especially mobile."
+  content="Designed as a focused landing page with a small set of links and content. Actual loading performance depends on the deployed assets and hosting setup."
 />
 
 <ProjectStats

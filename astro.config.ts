@@ -28,7 +28,10 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-    sitemap(),
+    sitemap({
+      filter: (page) =>
+        !/^\/(?:styleguide|pricing|services|terms|404|review-fixtures)(?:\/|$)/.test(new URL(page).pathname),
+    }),
     mdx(),
     icon({
       include: {

@@ -7,3 +7,20 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Keep every incoming path on the canonical HTTPS www origin.
+[[redirects]]
+  from = "https://alecreimel.com/*"
+  to = "https://www.alecreimel.com/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://alecreimel.com/*"
+  to = "https://www.alecreimel.com/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.alecreimel.com/*"
+  to = "https://www.alecreimel.com/:splat"
+  status = 301
+  force = true

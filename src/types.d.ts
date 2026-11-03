@@ -84,6 +84,7 @@ export interface MetaDataRobots {
 
 export interface MetaDataImage {
   url: string;
+  alt?: string;
   width?: number;
   height?: number;
 }

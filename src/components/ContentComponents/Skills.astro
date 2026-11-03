@@ -13,7 +13,7 @@ const skills = [
     prefix: '_02',
     title: 'Tracking & Analytics',
     description:
-      "I'm an expert in behavioral tracking and user analytics, having published multiple website plugins and tools for helping marketers understand their users - currently in use by a number of household name brands. <br/><br/> I specialize in Google Analytics and Google Tag Manager, and I've acted as the tech lead on dozens of marketing campaigns.",
+      'I build behavioral tracking and analytics tools, including ARDA-Analytics, a JavaScript project for Google Analytics and Google Tag Manager integration. <br/><br/> My focus is making interaction data useful to developers and marketing teams.',
     icon: 'tabler:cloud-computing',
   },
   {
@@ -27,14 +27,14 @@ const skills = [
     prefix: '_04',
     title: 'Accessibility',
     description:
-      "Accessibility is a crucial but often overlooked aspect of web development, and it's something I've always been a strong advocate for.  <br/><br/> All of my projects are built with solid accessibility baked in from the start - but I'm also an expert at fixing up websites that aren't up to ADA specs.",
+      "Accessibility is a crucial but often overlooked aspect of web development, and it's something I've always been a strong advocate for.  <br/><br/> I work on semantic HTML, keyboard navigation, readable interfaces, and reduced-motion support, and use testing to identify accessibility issues.",
     icon: 'tabler:list-check',
   },
   {
     prefix: '_05',
     title: 'SEO',
     description:
-      "Working in the marketing industry has given me a keen understanding of Search Engine Optimization, both from a content and a technical standpoint. <br/><br/> SEO is more than just keywords, it's about building your website in a way that's optimized for search engines, social media, and now for AI.",
+      "Working in the marketing industry has given me a keen understanding of Search Engine Optimization, both from a content and a technical standpoint. <br/><br/> SEO is more than just keywords, it's about building your website in a way that's optimized for search engines and social sharing, with clear content that people and automated tools can understand.",
     icon: 'tabler:rocket',
   },
   {
@@ -72,7 +72,7 @@ const skills = [
             <h3 class="skill-title text-3xl font-semibold text-terminal-500 font-uav-mono mb-4">{title}</h3>
 
             <div class="skill-content mt-auto">
-              <p class="text-terminal-400 font-kode text-lg" set:html={description} />
+              <div class="text-terminal-400 font-kode text-lg" set:html={description} />
             </div>
           </div>
         ))

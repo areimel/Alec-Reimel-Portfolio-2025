@@ -8,6 +8,7 @@ export type Config = {
   i18n?: I18NConfig;
   apps?: {
     blog?: AppBlogConfig;
+    projects?: AppProjectsConfig;
   };
   ui?: unknown;
   analytics?: unknown;
@@ -68,6 +69,14 @@ export interface AppBlogConfig {
       follow: boolean;
     };
   };
+}
+export interface AppProjectsConfig extends Omit<
+  AppBlogConfig,
+  'postsPerPage' | 'isRelatedPostsEnabled' | 'relatedPostsCount' | 'post'
+> {
+  projectsPerPage: number;
+  isRelatedProjectsEnabled: boolean;
+  project: AppBlogConfig['post'];
 }
 export interface AnalyticsConfig {
   vendors: {
@@ -172,6 +181,23 @@ const getAppBlog = (config: Config) => {
   return merge({}, _default, config?.apps?.blog ?? {}) as AppBlogConfig;
 };
 
+const getAppProjects = (config: Config): AppProjectsConfig => {
+  const defaults = getAppBlog({});
+  return merge(
+    {},
+    {
+      isEnabled: true,
+      projectsPerPage: 12,
+      isRelatedProjectsEnabled: false,
+      project: { ...defaults.post, permalink: '/projects/%slug%' },
+      list: { ...defaults.list, pathname: 'projects' },
+      category: { ...defaults.category, pathname: 'category' },
+      tag: { ...defaults.tag, isEnabled: false },
+    },
+    config.apps?.projects ?? {}
+  );
+};
+
 const getUI = (config: Config) => {
   const _default = {
     theme: 'system',
@@ -198,6 +224,7 @@ export default (config: Config) => ({
   I18N: getI18N(config),
   METADATA: getMetadata(config),
   APP_BLOG: getAppBlog(config),
+  APP_PROJECTS: getAppProjects(config),
   UI: getUI(config),
   ANALYTICS: getAnalytics(config),
 });

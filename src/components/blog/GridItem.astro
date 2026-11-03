@@ -1,4 +1,5 @@
 ---
+import ResponsiveImage from '~/components/common/ResponsiveImage.astro';
 import { APP_BLOG } from 'astrowind:config';
 import type { Post } from '~/types';
 
@@ -24,7 +25,7 @@ const imageSrc = typeof image === 'string' ? image : image?.src;
       image &&
         (link ? (
           <a href={link}>
-            <img
+            <ResponsiveImage
               src={imageSrc}
               class="w-full md:h-full rounded shadow-lg bg-gray-400 dark:bg-slate-700 object-cover"
               alt={post.title}
@@ -33,7 +34,7 @@ const imageSrc = typeof image === 'string' ? image : image?.src;
             />
           </a>
         ) : (
-          <img
+          <ResponsiveImage
             src={imageSrc}
             class="w-full md:h-full rounded shadow-lg bg-gray-400 dark:bg-slate-700 object-cover"
             alt={post.title}

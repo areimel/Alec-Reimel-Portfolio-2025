@@ -20,7 +20,9 @@ const { page } = Astro.props as Props;
 const currentPage = page.currentPage ?? 1;
 
 const metadata = {
-  title: `Projects${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
+  title: `Software Projects${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
+  description:
+    'Explore Alec Reimel’s software projects, including analytics integrations, web applications, and developer tools, with source code and implementation notes.',
   robots: {
     index: projectsListRobots?.index && currentPage === 1,
     follow: projectsListRobots?.follow,
@@ -33,7 +35,9 @@ const metadata = {
 
 <Layout metadata={metadata} activeSection="projects">
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline subtitle="Explore my portfolio of projects showcasing my skills, expertise, and creative solutions.">
+    <Headline
+      subtitle="Web applications, analytics integrations, and developer tools. Read implementation notes and explore the source code."
+    >
       Projects
     </Headline>
     <BlogList posts={page.data} />

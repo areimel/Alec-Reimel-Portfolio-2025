@@ -1,4 +1,5 @@
 ---
+import { profile } from '~/data/profile';
 // Astro Props
 // interface Props {
 //     title: string;
@@ -11,10 +12,14 @@ const currentYear = new Date().getFullYear();
 
 <footer class="bg-terminal-bg-secondary border-t border-terminal-400 py-8 px-4 mt-16 text-center">
   <nav class="mb-4">
-    <ul class="flex justify-center space-x-6 font-kode">
+    <ul class="flex flex-wrap justify-center gap-x-6 gap-y-3 font-kode">
       <li>
         <a href="/" class="footer-link">Home</a>
       </li>
+      <li><a href="/about" class="footer-link">About</a></li>
+      <li><a href="/resume" class="footer-link">Résumé</a></li>
+      <li><a href={profile.github} class="footer-link">GitHub</a></li>
+      <li><a href={profile.linkedin} class="footer-link">LinkedIn</a></li>
       <li>
         <a href="/projects" class="footer-link">Projects</a>
       </li>
@@ -24,6 +29,7 @@ const currentYear = new Date().getFullYear();
       <li>
         <a href="/contact" class="footer-link">Contact</a>
       </li>
+      <li><a href="/privacy" class="footer-link">Privacy</a></li>
     </ul>
   </nav>
   <p class="text-terminal-400 text-sm font-kode text-glow-subtle">

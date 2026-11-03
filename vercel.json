@@ -11,5 +11,18 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "alecreimel.com"
+        }
+      ],
+      "destination": "https://www.alecreimel.com/:path*",
+      "permanent": true
+    }
   ]
 }

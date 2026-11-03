@@ -26,7 +26,8 @@
     "optimize:og": "node scripts/optimize-images.js og",
     "optimize:file": "node scripts/optimize-images.js file",
     "test:e2e": "pnpm run build && playwright test",
-    "perf": "node scripts/perf-measure.mjs"
+    "perf": "node scripts/perf-measure.mjs",
+    "optimize:responsive": "node scripts/generate-responsive-images.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
