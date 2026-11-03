@@ -36,6 +36,17 @@ export function getStaticPaths() {
     <div id="reveal-target" class="reveal">Hash target</div>
     <div style="height: 150vh"></div>
     <h2 id="auto-far">Auto heading far</h2>
+    <div style="font-family: Georgia, serif">
+      <h2 id="auto-long">
+        A very long heading that has to wrap across several lines on a narrow phone screen while it decodes
+      </h2>
+      <p id="after-long">Sibling below the long heading</p>
+      <div id="flex-row" style="display: flex; gap: 1rem">
+        <h2 id="auto-flex">Wiggly shrink wrap</h2>
+        <p id="flex-sibling">Flex sibling</p>
+      </div>
+    </div>
+    <DecoderText as="h2" className="decoder-h2" text="Decoder text as heading" duration={300} charDelay={20} />
     <a href="/">Home</a>
   </main>
 </Layout>

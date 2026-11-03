@@ -157,16 +157,36 @@ test('decode causes no layout shift', async ({ page }) => {
 test('headings stay accessible during decode', async ({ page }) => {
   await page.goto(fixture);
   await expect(page.locator('#loading-screen')).toBeHidden();
+  const original =
+    'A very long heading that has to wrap across several lines on a narrow phone screen while it decodes';
+  const long = page.locator('#auto-long');
+  await long.evaluate((el) => el.scrollIntoView());
+  await expect(long).not.toHaveText(original);
+  // The role query must resolve while the visible text is scrambled: it is checked before and after.
+  let whileScrambled = 0;
+  for (let i = 0; i < 3; i++) {
+    const before = await long.evaluate((el, text) => el.textContent?.replace(/\s+/g, ' ').trim() !== text, original);
+    const matches = await page.getByRole('heading', { name: original }).count();
+    const after = await long.evaluate((el, text) => el.textContent?.replace(/\s+/g, ' ').trim() !== text, original);
+    expect(matches).toBe(1);
+    if (before && after) whileScrambled++;
+  }
+  expect(whileScrambled).toBeGreaterThan(0);
+});
+
+test('heading keeps its label and hidden view while scrambled, then drops both', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
   const result = await page.evaluate(async () => {
     const el = document.querySelector<HTMLElement>('#auto-far')!;
-    const original = el.textContent;
+    const text = el.textContent;
     el.scrollIntoView();
     let scrambled = 0;
     let unlabelled = 0;
     for (let i = 0; i < 70; i++) {
-      if (el.textContent !== original) {
+      if (el.textContent !== text) {
         scrambled++;
-        if (el.getAttribute('aria-label') !== original || !el.querySelector('[aria-hidden="true"]')) unlabelled++;
+        if (el.getAttribute('aria-label') !== text || !el.querySelector('[aria-hidden="true"]')) unlabelled++;
       }
       await new Promise((r) => setTimeout(r, 16));
     }
@@ -283,3 +303,65 @@ for (const when of ['before', 'during'] as const) {
     await expect(heading).toHaveText('Auto heading far');
   });
 }
+
+test.describe('narrow proportional layout', () => {
+  test.use({ viewport: { width: 320, height: 700 } });
+
+  for (const [heading, sibling] of [
+    ['#auto-long', '#after-long'],
+    ['#auto-flex', '#flex-sibling'],
+  ] as const) {
+    test(`${heading} and its sibling do not move during decode`, async ({ page }) => {
+      await page.goto(fixture);
+      await expect(page.locator('#loading-screen')).toBeHidden();
+      const result = await page.evaluate(
+        async ([h, s]) => {
+          const el = document.querySelector<HTMLElement>(h)!;
+          const next = document.querySelector<HTMLElement>(s)!;
+          const original = el.textContent;
+          const rect = (node: HTMLElement) => {
+            const r = node.getBoundingClientRect();
+            return `${r.left}|${r.top + scrollY}|${r.width}|${r.height}`;
+          };
+          el.scrollIntoView();
+          const own = new Set<string>();
+          const other = new Set<string>();
+          let scrambled = 0;
+          for (let i = 0; i < 80; i++) {
+            own.add(rect(el));
+            other.add(rect(next));
+            if (el.textContent !== original) scrambled++;
+            await new Promise((r) => setTimeout(r, 16));
+          }
+          return { own: [...own], other: [...other], scrambled };
+        },
+        [heading, sibling]
+      );
+      expect(result.scrambled).toBeGreaterThan(0);
+      expect(result.own).toHaveLength(1);
+      expect(result.other).toHaveLength(1);
+    });
+  }
+});
+
+test('a decoder-text heading in main is decoded once and ends on its real text', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const result = await page.evaluate(async () => {
+    const el = document.querySelector<HTMLElement>('h2.decoder-h2')!;
+    const real = 'Decoder text as heading';
+    el.scrollIntoView();
+    let scrambled = 0;
+    let wrongLabel = 0;
+    for (let i = 0; i < 180; i++) {
+      const label = el.getAttribute('aria-label');
+      if (el.textContent !== real) scrambled++;
+      if (label !== null && label !== real) wrongLabel++;
+      await new Promise((r) => setTimeout(r, 16));
+    }
+    return { scrambled, wrongLabel, text: el.textContent, label: el.getAttribute('aria-label') };
+  });
+  expect(result.scrambled).toBeGreaterThan(0);
+  expect(result.wrongLabel).toBe(0);
+  expect(result).toMatchObject({ text: 'Decoder text as heading', label: null });
+});

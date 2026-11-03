@@ -19,6 +19,8 @@ const SCRAMBLED = /^[A-Za-z0-9]$/;
 
 type Job = { tick(now: number): void; finish(): void };
 const jobs = new Set<Job>();
+// A decode already in flight on an element. A second request joins it rather than capturing scrambled text.
+const inFlight = new Map<HTMLElement, { handle: Decode; waiters: Array<() => void> }>();
 
 const segmenter = typeof Intl !== 'undefined' && 'Segmenter' in Intl ? new Intl.Segmenter(undefined) : null;
 const graphemes = (text: string): string[] =>
@@ -49,6 +51,11 @@ document.addEventListener('visibilitychange', () => {
 
 /** Scrambles `el` and resolves it to its exact original text, one character at a time. */
 export function decodeElement(el: HTMLElement, opts: DecodeOptions): Decode {
+  const running = inFlight.get(el);
+  if (running) {
+    if (opts.onDone) running.waiters.push(opts.onDone);
+    return running.handle;
+  }
   const original = el.textContent ?? '';
   const parts = graphemes(original);
   if (document.hidden || !parts.some((part) => SCRAMBLED.test(part))) {
@@ -57,15 +64,18 @@ export function decodeElement(el: HTMLElement, opts: DecodeOptions): Decode {
   }
 
   const priorLabel = el.getAttribute('aria-label');
-  const priorHeight = el.style.height;
+  const priorPosition = el.style.position;
+  const box = getComputedStyle(el);
   const view = document.createElement('span');
   view.setAttribute('aria-hidden', 'true');
   view.textContent = original;
-  const height = el.getBoundingClientRect().height;
+  // The real text stays in flow as an invisible `::before` sizer (see tailwind.css), so the box, wrapping
+  // and neighbours cannot change. The scrambled view floats over the content box and is clipped to it.
+  if (box.position === 'static') el.style.position = 'relative';
+  view.style.cssText = `position:absolute;overflow:hidden;top:${box.paddingTop};right:${box.paddingRight};bottom:${box.paddingBottom};left:${box.paddingLeft}`;
   el.setAttribute('aria-label', original);
+  el.setAttribute('data-decode-text', original);
   el.replaceChildren(view);
-  // A scrambled line must not wrap differently, so the box is held until the real text is back.
-  if (height > 0) el.style.height = `${height}px`;
 
   const start = performance.now();
   const total = opts.duration + Math.max(parts.length - 1, 0) * opts.charDelay;
@@ -80,8 +90,10 @@ export function decodeElement(el: HTMLElement, opts: DecodeOptions): Decode {
     if (jobs.size === 0) timer.pause();
     if (priorLabel === null) el.removeAttribute('aria-label');
     else el.setAttribute('aria-label', priorLabel);
-    el.style.height = priorHeight;
+    el.removeAttribute('data-decode-text');
+    el.style.position = priorPosition;
     el.textContent = original;
+    inFlight.delete(el);
   };
 
   const job: Job = {
@@ -98,18 +110,21 @@ export function decodeElement(el: HTMLElement, opts: DecodeOptions): Decode {
     },
     finish() {
       if (done) return;
+      const waiters = inFlight.get(el)?.waiters ?? [];
       release();
-      opts.onDone?.();
+      waiters.forEach((waiter) => waiter());
     },
   };
 
-  jobs.add(job);
-  timer.play();
-  return {
+  const handle: Decode = {
     cancel() {
       if (!done) release();
     },
   };
+  inFlight.set(el, { handle, waiters: opts.onDone ? [opts.onDone] : [] });
+  jobs.add(job);
+  timer.play();
+  return handle;
 }
 
 const number = (value: string | undefined, fallback: number) => {
@@ -207,7 +222,11 @@ function startTriggers(ctx: PageContext, track: (decode: Decode) => Decode) {
 function startHeadings(ctx: PageContext, track: (decode: Decode) => Decode) {
   if (!motionAllowed() || fxTier() >= 3) return;
   const targets = Array.from(document.querySelectorAll<HTMLElement>('main h1, main h2')).filter(
-    (el) => el.childElementCount === 0 && !el.hasAttribute('data-no-decode') && !!el.textContent?.trim()
+    (el) =>
+      el.childElementCount === 0 &&
+      !el.classList.contains('decoder-text') &&
+      !el.hasAttribute('data-no-decode') &&
+      !!el.textContent?.trim()
   );
   if (targets.length === 0) return;
 
