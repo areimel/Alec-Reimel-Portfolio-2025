@@ -31,7 +31,7 @@ const {
         {
           tagline && (
             <p
-              class="text-base text-secondary dark:text-blue-200 font-bold tracking-wide uppercase intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+              class="text-base text-secondary dark:text-blue-200 font-bold tracking-wide uppercase reveal"
               set:html={tagline}
             />
           )
@@ -39,7 +39,7 @@ const {
         {
           title && (
             <h1
-              class="text-5xl md:text-[7.5vw] font-bold leading-tighter tracking-normal mb-4 font-heading dark:text-gray-200 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+              class="text-5xl md:text-[7.5vw] font-bold leading-tighter tracking-normal mb-4 font-heading dark:text-gray-200 reveal"
               set:html={title}
             />
           )
@@ -47,15 +47,12 @@ const {
         <div class="max-w-3xl mx-auto">
           {
             subtitle && (
-              <p
-                class="text-xl text-muted mb-6 dark:text-slate-300 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade tracking-normal"
-                set:html={subtitle}
-              />
+              <p class="text-xl text-muted mb-6 dark:text-slate-300 reveal tracking-normal" set:html={subtitle} />
             )
           }
           {
             actions && (
-              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 reveal">
                 {Array.isArray(actions) ? (
                   actions.map((action) => (
                     <div class="flex w-full sm:w-auto">
@@ -71,9 +68,7 @@ const {
         </div>
         {content && <Fragment set:html={content} />}
       </div>
-      <div
-        class="intersect-once intercept-no-queue intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-      >
+      <div class="reveal">
         {
           image && (
             <div class="relative m-auto max-w-5xl">

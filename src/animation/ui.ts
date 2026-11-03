@@ -65,3 +65,51 @@ export function startCursors(_ctx: PageContext): void {
     waapi.animate(cursor, { opacity: [1, 0], duration: 1000, ease: 'steps(2, jump-none)', loop: true });
   });
 }
+
+const REVEAL_MIN_WIDTH = 768;
+const REVEAL_MS = 1000;
+const REVEAL_STAGGER_MS = 100;
+
+/** Fades `.reveal` elements in as they scroll into view, once each. */
+export function startReveals(ctx: PageContext): void {
+  const targets = Array.from(document.querySelectorAll<HTMLElement>('.reveal:not(.revealed)'));
+  if (targets.length === 0) return;
+
+  const reveal = (el: HTMLElement) => el.classList.add('revealed');
+  const animations: WaapiAnimation[] = [];
+  // Whatever happens, never leave a target hidden or an animation holding inline styles.
+  ctx.cleanup(() => {
+    animations.forEach((animation) => animation.revert());
+    targets.forEach(reveal);
+  });
+
+  if (!motionAllowed() || window.innerWidth < REVEAL_MIN_WIDTH) {
+    targets.forEach(reveal);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries
+        .filter((entry) => entry.isIntersecting)
+        .forEach((entry, index) => {
+          const el = entry.target as HTMLElement;
+          observer.unobserve(el);
+          animations.push(
+            waapi.animate(el, {
+              opacity: [0, 1],
+              transform: ['translateY(2rem)', 'none'],
+              duration: REVEAL_MS,
+              delay: index * REVEAL_STAGGER_MS,
+              ease: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            })
+          );
+          // Animation fill holds opacity 0 through the delay, so the hiding rule can lift now.
+          reveal(el);
+        });
+    },
+    { threshold: 0, rootMargin: '0px 0px -5% 0px' }
+  );
+  ctx.cleanup(() => observer.disconnect());
+  targets.forEach((el) => observer.observe(el));
+}
