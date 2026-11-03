@@ -1,5 +1,22 @@
 # Animation engine: baseline vs final
 
+## Latest result (after the performance pass, commit b42d8cc)
+
+**This section supersedes the tables below.** The performance pass was stopped early at the owner's request, so these numbers come from **one run** rather than a median of three, which makes them noisier. The baseline is `baseline-rerun.json`, re-recorded on the same machine on 2026-11-03 from the pre-engine commit (median of 3). The cause-by-cause trace was not finished, so the remaining cost is not attributed.
+
+| Route / mode @4x | TaskDuration | paintEvents | RecalcStyle | ScriptDuration | LayoutDuration  | longFrameShare  |
+| ---------------- | ------------ | ----------- | ----------- | -------------- | --------------- | --------------- |
+| / idle           | -19%         | -63%        | +14%        | +23%           | 0.001 → 0.052 s | 0.0000 → 0.0000 |
+| / scroll         | +1%          | -50%        | -6%         | +18%           | 0.000 → 0.159 s | 0.0000 → 0.0034 |
+| /contact idle    | +12%         | -95%        | -29%        | +12%           | 0.001 → 0.058 s | 0.0000 → 0.0057 |
+| /contact scroll  | -13%         | -80%        | -38%        | +5%            | 0.000 → 0.076 s | 0.0000 → 0.0011 |
+| project idle     | -29%         | -79%        | -27%        | -8%            | 0.001 → 0.117 s | 0.0000 → 0.0000 |
+| project scroll   | -6%          | -22%        | -19%        | +6%            | 0.000 → 0.153 s | 0.0011 → 0.0011 |
+
+**The bar is still not fully met.** Paint and most total main-thread time improved, but /contact idle still costs more main-thread time, and long frames appear where the baseline had none (under 1% of frames).
+
+---
+
 **Verification caveat.** The full four-browser Playwright suite has NOT been run on the final code. The last full run was stopped for low memory at test 232 of 292. On the final code only these ran, on chromium with `--workers=1`: `tests/boot.spec.ts` (9/9), `tests/overlay.spec.ts` (5/5), `tests/governor.spec.ts` (11/11), plus `pnpm run check` and `pnpm run build` (clean).
 
 ## Setup
