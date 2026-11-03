@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures';
+import { test, expect, type Page } from './fixtures';
 
 const fixture = '/review-fixtures/animations';
 
@@ -11,11 +11,6 @@ test('standalone Unicode text and loading completion settle correctly', async ({
   await expect(page.locator('#unicode .decoder-text')).toHaveText('A 🧪 third word');
   await expect(page.locator('#loading .decoder-text')).toHaveCSS('opacity', '1');
   await expect(page.locator('#loading .decoder-text')).toHaveText('Loading complete');
-  expect(
-    await page
-      .locator('#unicode .decoder-char')
-      .evaluateAll((chars) => chars.map((char) => Number((char as HTMLElement).dataset.index)))
-  ).toEqual([0, 2, 4, 5, 6, 7, 8, 10, 11, 12, 13]);
   expect(errors).toEqual([]);
 });
 
@@ -23,8 +18,8 @@ for (const trigger of ['hover', 'click'] as const) {
   test(`${trigger} triggers replay after completion`, async ({ page }) => {
     await page.goto(fixture);
     await expect(page.locator('#loading-screen')).toBeHidden();
-    const target = page.locator(`#${trigger} .animation-wrapper`);
-    const text = target.locator('.decoder-text');
+    const text = page.locator(`#${trigger} .decoder-text`);
+    const target = text;
     const finalText = trigger === 'hover' ? 'Hover replay' : 'Click replay';
     await expect(text).toHaveText(finalText);
     await expect(text).toHaveCSS('opacity', '1');
@@ -87,14 +82,204 @@ test('rapid navigation cancels decoding without errors and reinitializes on retu
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(fixture);
   await expect(page.locator('#loading-screen')).toBeHidden();
-  await page.locator('#click .animation-wrapper').click();
+  await page.locator('#click .decoder-text').click();
   await page.locator('a[href="/"]').click();
   // Give browser-driven view transitions a separate navigation budget.
   await expect(page).toHaveURL('/', { timeout: 15_000 });
   await page.goBack();
   await expect(page).toHaveURL(fixture, { timeout: 15_000 });
-  await page.locator('#click .animation-wrapper').click();
+  await page.locator('#click .decoder-text').click();
   await expect(page.locator('#click .decoder-text')).not.toHaveText('Click replay');
   await expect(page.locator('#click .decoder-text')).toHaveText('Click replay');
   expect(errors).toEqual([]);
 });
+
+const lonelySurrogate = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+
+test('emoji text never shows a broken character while decoding', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const emoji = page.locator('#emoji .decoder-text');
+  await expect(emoji).toHaveText('Beep 🧪 boop 👩‍🔬');
+  await emoji.click();
+  const samples = await page.evaluate(async () => {
+    const el = document.querySelector('#emoji .decoder-text')!;
+    const seen: string[] = [];
+    for (let i = 0; i < 40; i++) {
+      seen.push(el.textContent || '');
+      await new Promise((r) => setTimeout(r, 16));
+    }
+    return seen;
+  });
+  expect(samples.some((text) => text !== 'Beep 🧪 boop 👩‍🔬')).toBe(true);
+  expect(samples.filter((text) => lonelySurrogate.test(text) || !text.includes('🧪') || !text.includes('👩‍🔬'))).toEqual(
+    []
+  );
+  await expect(emoji).toHaveText('Beep 🧪 boop 👩‍🔬');
+});
+
+test('decode causes no layout shift', async ({ page }) => {
+  await page.addInitScript(() => {
+    (window as unknown as { __shift: number }).__shift = 0;
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as unknown as { hadRecentInput: boolean; value: number }[])
+        if (!entry.hadRecentInput) (window as unknown as { __shift: number }).__shift += entry.value;
+    }).observe({ type: 'layout-shift', buffered: true });
+  });
+  await page.goto('/');
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  await page.waitForTimeout(1500);
+  expect(await page.evaluate(() => (window as unknown as { __shift: number }).__shift)).toBeLessThan(0.01);
+
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const result = await page.evaluate(async () => {
+    const el = document.querySelector<HTMLElement>('#auto-far')!;
+    const original = el.textContent;
+    const box = () => {
+      const r = el.getBoundingClientRect();
+      return `${r.left}|${r.top + scrollY}|${r.width}|${r.height}`;
+    };
+    el.scrollIntoView();
+    const boxes = new Set<string>();
+    let scrambled = 0;
+    for (let i = 0; i < 70; i++) {
+      boxes.add(box());
+      if (el.textContent !== original) scrambled++;
+      await new Promise((r) => setTimeout(r, 16));
+    }
+    return { boxes: [...boxes], scrambled };
+  });
+  expect(result.scrambled).toBeGreaterThan(0);
+  expect(result.boxes).toHaveLength(1);
+});
+
+test('headings stay accessible during decode', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const result = await page.evaluate(async () => {
+    const el = document.querySelector<HTMLElement>('#auto-far')!;
+    const original = el.textContent;
+    el.scrollIntoView();
+    let scrambled = 0;
+    let unlabelled = 0;
+    for (let i = 0; i < 70; i++) {
+      if (el.textContent !== original) {
+        scrambled++;
+        if (el.getAttribute('aria-label') !== original || !el.querySelector('[aria-hidden="true"]')) unlabelled++;
+      }
+      await new Promise((r) => setTimeout(r, 16));
+    }
+    return { scrambled, unlabelled };
+  });
+  expect(result.scrambled).toBeGreaterThan(0);
+  expect(result.unlabelled).toBe(0);
+  const heading = page.getByRole('heading', { name: 'Auto heading far' });
+  await expect(heading).toBeVisible();
+  await expect(heading).not.toHaveAttribute('aria-label', /.*/);
+  await expect(heading.locator('[aria-hidden]')).toHaveCount(0);
+});
+
+test('auto heading decodes then ends on its exact text', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const heading = page.locator('#auto-far');
+  await heading.scrollIntoViewIfNeeded();
+  await expect(heading).not.toHaveText('Auto heading far');
+  await expect(heading).toHaveText('Auto heading far');
+});
+
+test('html source contains real heading text', async ({ page }) => {
+  const html = await (await page.request.get(fixture)).text();
+  expect(html).toContain('>Auto heading far<');
+  expect(html).toContain('Visible later');
+});
+
+test('headings with links are skipped', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const changed = await page.evaluate(async () => {
+    const el = document.querySelector<HTMLElement>('#linked-heading')!;
+    const original = el.textContent;
+    let changed = 0;
+    for (let i = 0; i < 40; i++) {
+      if (el.textContent !== original || el.hasAttribute('aria-label')) changed++;
+      await new Promise((r) => setTimeout(r, 25));
+    }
+    return changed;
+  });
+  expect(changed).toBe(0);
+});
+
+test('each heading decodes once per page view', async ({ page }) => {
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const heading = page.locator('#auto-far');
+  await heading.scrollIntoViewIfNeeded();
+  await expect(heading).not.toHaveText('Auto heading far');
+  await expect(heading).toHaveText('Auto heading far');
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.waitForTimeout(200);
+  await heading.scrollIntoViewIfNeeded();
+  const texts = await page.evaluate(async () => {
+    const el = document.querySelector('#auto-far')!;
+    const seen: string[] = [];
+    for (let i = 0; i < 30; i++) {
+      seen.push(el.textContent || '');
+      await new Promise((r) => setTimeout(r, 25));
+    }
+    return seen;
+  });
+  expect(new Set(texts)).toEqual(new Set(['Auto heading far']));
+});
+
+test('navigation mid-decode restores on return', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto(fixture);
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  const heading = page.locator('#auto-far');
+  await heading.scrollIntoViewIfNeeded();
+  await expect(heading).not.toHaveText('Auto heading far');
+  await page.locator('a[href="/"]').click();
+  await expect(page).toHaveURL('/', { timeout: 15_000 });
+  await page.goBack();
+  await expect(page).toHaveURL(fixture, { timeout: 15_000 });
+  await expect(page.locator('#loading-screen')).toBeHidden();
+  await expect(page.locator('#unicode .decoder-text')).toHaveText('A 🧪 third word');
+  await page.waitForTimeout(1200);
+  await expect(page.locator('#auto-top')).toHaveText('Auto heading top');
+  await expect(page.locator('#auto-far')).toHaveText('Auto heading far');
+  await expect(page.locator('[aria-label][aria-hidden], #auto-far [aria-hidden]')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+// Headless browsers never really hide a page, so hiding is simulated the way Anime.js observes it.
+const setHidden = (page: Page, hidden: boolean) =>
+  page.evaluate((value) => {
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => value });
+    document.dispatchEvent(new Event('visibilitychange'));
+  }, hidden);
+
+for (const when of ['before', 'during'] as const) {
+  test(`a heading ${when === 'before' ? 'reached in an already hidden tab' : 'hidden mid-decode'} ends on real text`, async ({
+    page,
+  }) => {
+    await page.goto(fixture);
+    await expect(page.locator('#loading-screen')).toBeHidden();
+    const heading = page.locator('#auto-far');
+    if (when === 'before') await setHidden(page, true);
+    await page.evaluate(() => document.querySelector('#auto-far')!.scrollIntoView());
+    if (when === 'during') {
+      await expect(heading).not.toHaveText('Auto heading far');
+      await setHidden(page, true);
+    }
+    // Hidden: no animation frames are relied on, the text must already be real or settle on its own.
+    await expect(heading).toHaveText('Auto heading far', { timeout: 1500 });
+    await expect(heading.locator('[aria-hidden]')).toHaveCount(0);
+    await expect(heading).not.toHaveAttribute('aria-label', /.*/);
+    await setHidden(page, false);
+    await page.waitForTimeout(300);
+    await expect(heading).toHaveText('Auto heading far');
+  });
+}

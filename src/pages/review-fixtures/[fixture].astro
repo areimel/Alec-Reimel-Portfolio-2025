@@ -1,6 +1,5 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import AnimationWrapper from '~/components/AnimationComponents/AnimationWrapper.astro';
 import DecoderText from '~/components/AnimationComponents/DecoderText.astro';
 
 export function getStaticPaths() {
@@ -11,46 +10,32 @@ export function getStaticPaths() {
 <Layout metadata={{ title: 'Animation regression fixture', robots: { index: false, follow: false } }}>
   <main class="p-8">
     <h1 id="unicode"><DecoderText text="A 🧪 third word" as="span" duration={100} charDelay={10} /></h1>
+    <h2 id="auto-top">Auto heading top</h2>
+    <h2 id="linked-heading"><a href="#linked-heading">Linked heading</a></h2>
     <div id="reveal-above" class="reveal">Above the hash target</div>
     <div id="loading">
-      <AnimationWrapper
-        animation="DecoderText"
-        trigger="loadingScreenEnd"
-        text="Loading complete"
-        duration={100}
-        charDelay={10}
-      />
+      <DecoderText trigger="loadingScreenEnd" text="Loading complete" duration={100} charDelay={10} />
     </div>
     <div id="hover">
-      <AnimationWrapper animation="DecoderText" trigger="hover" text="Hover replay" duration={400} charDelay={10} />
+      <DecoderText trigger="hover" text="Hover replay" duration={400} charDelay={10} />
     </div>
     <div id="click">
-      <AnimationWrapper animation="DecoderText" trigger="click" text="Click replay" duration={400} charDelay={10} />
+      <DecoderText trigger="click" text="Click replay" duration={400} charDelay={10} />
+    </div>
+    <div id="emoji">
+      <DecoderText trigger="click" text="Beep 🧪 boop 👩‍🔬" duration={400} charDelay={10} />
     </div>
     <div id="mobile">
-      <AnimationWrapper
-        animation="DecoderText"
-        trigger="click"
-        text="Mobile readable"
-        mobileDisable
-        duration={400}
-        charDelay={10}
-      />
+      <DecoderText trigger="click" text="Mobile readable" mobileDisable duration={400} charDelay={10} />
     </div>
     <div style="height: 150vh"></div>
     <div id="in-view">
-      <AnimationWrapper
-        animation="DecoderText"
-        trigger="in-view"
-        text="Visible later"
-        delay={700}
-        duration={100}
-        charDelay={10}
-      />
+      <DecoderText trigger="in-view" text="Visible later" delay={700} duration={100} charDelay={10} />
     </div>
     <div id="reveal-tall" class="reveal" style="height: 450vh; background: #111"></div>
     <div id="reveal-target" class="reveal">Hash target</div>
     <div style="height: 150vh"></div>
+    <h2 id="auto-far">Auto heading far</h2>
     <a href="/">Home</a>
   </main>
 </Layout>

@@ -3,6 +3,7 @@ import { startOverlay } from './overlay';
 import { startBoot } from './boot';
 import { onPage } from './core';
 import { startCursors, startReveals } from './ui';
+import { startDecode } from './decode';
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ document.addEventListener('astro:page-load', startOverlay);
 
 onPage(startCursors);
 onPage(startReveals);
+onPage(startDecode);
 
 // The loader belongs to the document, not a page, so it also starts here.
 startBoot();
