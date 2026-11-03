@@ -58,12 +58,40 @@ export function pulse(el: HTMLElement): { cancel(): void } {
   return { cancel: () => animation.cancel() };
 }
 
-/** Blinks every terminal cursor, one animation each. */
-export function startCursors(_ctx: PageContext): void {
+/**
+ * Blinks every terminal cursor that is rendered, one animation each.
+ *
+ * An animation on an element with no box (for example a cursor inside a hidden modal) can't run on the
+ * compositor, so it forces a style recalculation on every frame. A cursor therefore only animates while
+ * it is intersecting the viewport, which an element with no box never does.
+ */
+export function startCursors(ctx: PageContext): void {
   if (!motionAllowed()) return;
-  document.querySelectorAll<HTMLElement>('.flashing').forEach((cursor) => {
-    waapi.animate(cursor, { opacity: [1, 0], duration: 1000, ease: 'steps(2, jump-none)', loop: true });
+  const cursors = new Map<Element, WaapiAnimation>();
+  const observer = new IntersectionObserver((entries) => {
+    for (const { target, isIntersecting } of entries) {
+      const blink = cursors.get(target);
+      if (!isIntersecting) blink?.pause();
+      else if (blink) blink.play();
+      else {
+        cursors.set(
+          target,
+          waapi.animate(target as HTMLElement, {
+            opacity: [1, 0],
+            duration: 1000,
+            ease: 'steps(2, jump-none)',
+            loop: true,
+          })
+        );
+      }
+    }
   });
+  ctx.cleanup(() => {
+    observer.disconnect();
+    cursors.forEach((blink) => blink.revert());
+    cursors.clear();
+  });
+  document.querySelectorAll('.flashing').forEach((cursor) => observer.observe(cursor));
 }
 
 const REVEAL_MIN_WIDTH = 768;

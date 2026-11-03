@@ -1,10 +1,9 @@
 import { waapi } from 'animejs/waapi';
-import { createTimer, type Timer } from 'animejs/timer';
 import { motionAllowed, fxTier, onFxTierChange } from './core';
+import { NOISE_FRAMES, noiseKeyframes } from './keyframes';
 
 export type OverlayEffect = 'noise' | 'scanline' | 'overlay';
 
-const NOISE_TILE = 256;
 const SWEEP_MS = 2625;
 const HOLD_MS = 4875;
 // Keyframes are evenly spaced and the sweep is 35% of the cycle, so 7 of 20 segments sweep and the rest hold.
@@ -43,7 +42,8 @@ export function startOverlay(): void {
   const controller = new AbortController();
 
   let sweep: WaapiAnimation | null = null;
-  let jitter: Timer | null = null;
+  let jitter: WaapiAnimation | null = null;
+  let jitterFps = 0;
 
   const syncScanline = () => {
     const wanted = !!scanline && motionAllowedFor(scanline) && isVisible(scanline);
@@ -73,16 +73,21 @@ export function startOverlay(): void {
       jitter?.pause();
       return;
     }
-    jitter ??= createTimer({
-      frameRate: noiseFps(),
-      onUpdate: () => {
-        const x = Math.floor(Math.random() * NOISE_TILE) - NOISE_TILE / 2;
-        const y = Math.floor(Math.random() * NOISE_TILE) - NOISE_TILE / 2;
-        noise.style.transform = `translate(${x}px, ${y}px)`;
-      },
+    // Random translate keyframes held in steps, so the compositor jitters the layer with no script or style work per frame.
+    const fps = noiseFps();
+    const cancelled = jitter?.animations.some((animation) => animation.playState === 'idle');
+    if (jitter && !cancelled && fps === jitterFps) {
+      jitter.play();
+      return;
+    }
+    jitter?.cancel();
+    jitterFps = fps;
+    jitter = waapi.animate(noise, {
+      transform: noiseKeyframes(),
+      duration: (NOISE_FRAMES / fps) * 1000,
+      ease: `steps(${NOISE_FRAMES}, jump-none)`,
+      loop: true,
     });
-    jitter.fps = noiseFps();
-    jitter.play();
   };
 
   const sync = () => {

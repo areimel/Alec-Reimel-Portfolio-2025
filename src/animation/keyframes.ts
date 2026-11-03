@@ -60,3 +60,18 @@ export const GLITCH_BURSTS: GlitchBurst[] = [
     duration: 160,
   },
 ];
+
+/** Frames in one noise loop. The pattern repeats every `NOISE_FRAMES / fps` seconds, which is not noticeable on random static. */
+export const NOISE_FRAMES = 60;
+/** The noise layer is inset by this much on every side, so jitter within +-this never exposes an edge. */
+export const NOISE_REACH = 128;
+
+/** Random whole-pixel `translate` keyframes for the static jitter, one per held frame. */
+export function noiseKeyframes(frames: number = NOISE_FRAMES, reach: number = NOISE_REACH): string[] {
+  const span = reach * 2;
+  return Array.from({ length: frames }, () => {
+    const x = Math.floor(Math.random() * span) - reach;
+    const y = Math.floor(Math.random() * span) - reach;
+    return `translate(${x}px, ${y}px)`;
+  });
+}

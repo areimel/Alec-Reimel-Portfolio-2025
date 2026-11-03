@@ -31,18 +31,22 @@
     contain: strict;
   }
 
-  /* Oversized by one tile on each side so the jitter translate never exposes an edge. */
+  /* Oversized by the jitter reach (NOISE_REACH in animation/keyframes.ts) on each side so the translate never exposes an edge. */
   .noise {
     pointer-events: none;
     position: absolute;
-    inset: -256px;
+    inset: -128px;
     background-image: url('/images/terminal-noise.png');
     background-size: 256px 256px;
     background-repeat: repeat;
-    will-change: transform;
     z-index: 100;
     opacity: 0.024;
     transition: opacity 0.3s ease;
+  }
+
+  .noise:not(.hidden),
+  .scanline:not(.hidden) {
+    will-change: transform;
   }
 
   .noise.hidden {
@@ -85,7 +89,6 @@
       transparent 100%
     );
     background-repeat: no-repeat;
-    will-change: transform;
     opacity: 0.5;
     z-index: 102;
     transition: opacity 0.3s ease;

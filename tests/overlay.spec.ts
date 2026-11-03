@@ -39,18 +39,48 @@ test('toggling scanline off stops its animation', async ({ page }) => {
     .toBe(0);
 });
 
-test('noise layer moves by transform with no GIF requested', async ({ page }) => {
+test('noise moves on the compositor with no script tick', async ({ page }) => {
   const requested: string[] = [];
   page.on('request', (request) => requested.push(request.url()));
   await page.goto('/');
   // Anime.js pauses its engine while the document is hidden, which parallel WebKit pages can be.
   await page.bringToFront();
   const noise = page.locator('.terminal-overlay .noise');
-  const transform = () => noise.evaluate((el) => (el as HTMLElement).style.transform);
-  // Wait for the first jitter tick (module load time varies), then require movement within 1s (loaded CI workers can stall a 15fps timer past 500ms).
-  await expect.poll(transform, { timeout: 5000 }).not.toBe('');
-  const first = await transform();
-  await expect.poll(transform, { timeout: 1000 }).not.toBe(first);
+  await expect.poll(() => animationCount(page, '.terminal-overlay .noise')).toBeGreaterThan(0);
+
+  // One stepped animation of transform keyframes does the work: no per-tick script writes the inline style.
+  const shape = await noise.evaluate((el) => {
+    const effect = el.getAnimations()[0].effect as KeyframeEffect;
+    return {
+      easing: effect.getTiming().easing,
+      properties: [...new Set(effect.getKeyframes().flatMap((frame) => Object.keys(frame)))],
+      keyframes: effect.getKeyframes().length,
+    };
+  });
+  expect(shape.easing).toMatch(/^steps\(/);
+  expect(
+    shape.properties.filter((name) => !['offset', 'computedOffset', 'easing', 'composite'].includes(name))
+  ).toEqual(['transform']);
+  expect(shape.keyframes).toBeGreaterThan(30);
+
+  const mutations = await noise.evaluate(
+    (el) =>
+      new Promise<number>((resolve) => {
+        let count = 0;
+        const observer = new MutationObserver((records) => (count += records.length));
+        observer.observe(el, { attributes: true, attributeFilter: ['style'] });
+        setTimeout(() => {
+          observer.disconnect();
+          resolve(count);
+        }, 1500);
+      })
+  );
+  expect(mutations).toBe(0);
+
+  // It still moves: the computed transform changes, and the jitter stays within the layer's inset.
+  const computed = () => noise.evaluate((el) => getComputedStyle(el).transform);
+  const first = await computed();
+  await expect.poll(computed, { timeout: 2000 }).not.toBe(first);
   expect(requested.filter((url) => url.includes('terminal-static-animated'))).toEqual([]);
 });
 

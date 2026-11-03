@@ -176,7 +176,7 @@ test('tier 3 lightens glow', async ({ page }) => {
 test('governor never enables a disabled effect', async ({ page }) => {
   await page.goto('/');
   const noise = page.locator('.terminal-overlay .noise');
-  const transform = () => noise.evaluate((el) => (el as HTMLElement).style.transform);
+  const transform = () => noise.evaluate((el) => getComputedStyle(el).transform);
   // Control: with noise on, the jitter does move it.
   const first = await transform();
   await expect.poll(transform).not.toBe(first);

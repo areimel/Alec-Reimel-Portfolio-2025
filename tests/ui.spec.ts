@@ -46,10 +46,12 @@ test('modal-opened fires with the content element', async ({ page }) => {
 
 test('cursor blinks with one animation per cursor', async ({ page }) => {
   await ready(page, '/contact');
+  // Cursors only animate while on screen, and this one starts below the fold.
+  await page.locator('.flashing:visible').first().scrollIntoViewIfNeeded();
   await expect
     .poll(() =>
       page
-        .locator('.flashing')
+        .locator('.flashing:visible')
         .first()
         .evaluate((el) => el.getAnimations().length)
     )
@@ -80,8 +82,18 @@ test('no CSS keyframes left in ui components', async ({ page }) => {
 
 test('cursor is fully on for half the cycle and fully off for the rest', async ({ page }) => {
   await ready(page, '/contact');
+  // Cursors only animate while on screen, and this one starts below the fold.
+  await page.locator('.flashing:visible').first().scrollIntoViewIfNeeded();
+  await expect
+    .poll(() =>
+      page
+        .locator('.flashing:visible')
+        .first()
+        .evaluate((el) => el.getAnimations().length)
+    )
+    .toBe(1);
   const opacities = await page
-    .locator('.flashing')
+    .locator('.flashing:visible')
     .first()
     .evaluate((el) => {
       const animation = el.getAnimations()[0];
@@ -170,4 +182,21 @@ test('navigating away mid-reveal then back shows content', async ({ page }) => {
     await expect.poll(() => item.evaluate((el) => getComputedStyle(el).transform), { timeout: 5000 }).toBe('none');
   }
   expect(errors).toEqual([]);
+});
+
+test('cursors in a hidden modal do not animate until shown', async ({ page }) => {
+  await ready(page, '/');
+  await expect(page.locator('.modal-container.hidden .flashing').first()).toHaveCount(1);
+  // A handle, because the locator would stop matching once the modal is shown.
+  const hidden = await page.locator('.modal-container.hidden .flashing').first().elementHandle();
+  if (!hidden) throw new Error('no hidden cursor');
+  // A box-less animation can't run on the compositor and costs a style recalculation every frame.
+  const running = () =>
+    hidden.evaluate(
+      (el: Element) => el.getAnimations().filter((animation) => animation.playState === 'running').length
+    );
+  await page.waitForTimeout(500);
+  expect(await running()).toBe(0);
+  await hidden.evaluate((el: Element) => el.closest('.modal-container')?.classList.remove('hidden'));
+  await expect.poll(running).toBe(1);
 });
