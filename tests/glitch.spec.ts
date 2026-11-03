@@ -13,6 +13,7 @@ async function watch(page: Page) {
       starts: 0,
       max: 0,
       inViewport: [] as boolean[],
+      times: [] as number[],
       animations: [] as number[],
       durations: [] as number[],
     };
@@ -23,6 +24,7 @@ async function watch(page: Page) {
         if (el.hasAttribute('data-fx-glitch') && !began.has(el)) {
           began.set(el, performance.now());
           log.starts++;
+          log.times.push(performance.now());
           const rect = el.getBoundingClientRect();
           log.inViewport.push(rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth);
           log.animations.push(el.getAnimations().length);
@@ -52,6 +54,7 @@ const readLog = (page: Page) =>
             inViewport: boolean[];
             animations: number[];
             durations: number[];
+            times: number[];
           };
         }
       ).__glitchLog
@@ -92,7 +95,9 @@ test('hovering many links never exceeds 3 running', async ({ page }) => {
   expect(log.starts).toBeGreaterThan(0);
   expect(log.max).toBeLessThanOrEqual(3);
   // 3 starts per rolling second, site-wide
-  expect(log.starts).toBeLessThanOrEqual(6);
+  for (const time of log.times) {
+    expect(log.times.filter((other) => other >= time && other < time + 1000).length).toBeLessThanOrEqual(3);
+  }
 });
 
 test('glitches leave layout and inline styles alone', async ({ page }) => {
