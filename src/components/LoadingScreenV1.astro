@@ -9,21 +9,17 @@
     }
   </style></noscript
 >
-<div
-  id="loading-screen"
-  aria-hidden="true"
-  class="fixed bottom-3 right-3 z-40 pointer-events-none w-[min(18rem,calc(100vw-5rem))]"
->
+<div id="loading-screen" class="fixed inset-0 bg-terminal-bg-primary z-[100] flex flex-col items-center justify-center">
   <!-- Terminal-style loading container -->
   <div
-    class="loading-container relative bg-terminal-bg-secondary border border-terminal-500 p-3 rounded-lg shadow-lg w-full"
+    class="loading-container relative bg-terminal-bg-secondary border border-terminal-500 p-8 rounded-lg shadow-lg max-w-md w-full mx-4"
   >
     <!-- Stronger shadow, revealed by fading opacity only (shadows are never animated) -->
     <div class="loading-glow" aria-hidden="true"></div>
     <!-- Terminal header -->
-    <div class="terminal-header text-center mb-2">
-      <h2 class="text-sm font-bold text-terminal-bright font-mono text-glow-strong">//LOADING</h2>
-      <p class="text-terminal-400 font-mono mt-2 text-xs">Initializing terminal interface...</p>
+    <div class="terminal-header text-center mb-6">
+      <h2 class="text-2xl font-bold text-terminal-bright font-mono text-glow-strong">//LOADING</h2>
+      <p class="text-terminal-400 font-mono mt-2">Initializing terminal interface...</p>
     </div>
 
     <!-- Progress bar container -->
@@ -97,11 +93,12 @@
   /* Responsive adjustments */
   @media (max-width: 640px) {
     .loading-container {
-      padding: 0.75rem;
+      margin: 1rem;
+      padding: 1.5rem;
     }
 
     .terminal-header h2 {
-      font-size: 0.875rem;
+      font-size: 1.5rem;
     }
   }
 </style>

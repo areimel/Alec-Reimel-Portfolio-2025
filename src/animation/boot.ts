@@ -12,6 +12,16 @@ const SHORT_FADE_MS = 300;
 // Hard stop for a hidden or throttled tab: the sequence never gets to outlive its own length by much.
 const SEQUENCE_GUARD_MS = BEAM_COLLAPSE_MS + BEAM_CLOSE_MS + FADE_MS + 150;
 
+const RESOURCES = [
+  { url: '/fonts/KodeMono-Regular.ttf', family: 'KodeMono', weight: 25 },
+  { url: '/fonts/UAV-OSD-Mono.ttf', family: 'UAVOSDMono', weight: 25 },
+  { url: '/fonts/ShareTechMono-Regular.ttf', family: 'ShareTechMono', weight: 20 },
+  { url: '/fonts/VT323-Regular.ttf', family: 'VT323', weight: 15 },
+  { url: '/fonts/Windows-Command-Prompt.woff2', family: 'WindowsCommandPrompt', weight: 10 },
+];
+const TOTAL_WEIGHT = RESOURCES.reduce((sum, resource) => sum + resource.weight, 0);
+// Progress is capped until the page itself has loaded.
+const RESOURCE_SHARE = 85;
 const STATUS = [
   'Loading terminal fonts...',
   'Initializing interface...',
@@ -61,6 +71,7 @@ export function startBoot(): void {
 
   let ended = false;
   let exiting = false;
+  let loaded = 0;
   let flicker: ReturnType<typeof waapi.animate> | null = null;
   let guard: ReturnType<typeof setTimeout> | undefined;
 
@@ -107,17 +118,25 @@ export function startBoot(): void {
     );
   };
 
-  // The decorative boot badge may start after first paint; page content stays usable.
+  // The module arrives after first paint, so the flicker may begin late; the loader is fully opaque until then.
   if (full && container) {
     flicker = waapi.animate(container, { ...BOOT_FLICKER, ease: 'linear' });
   }
 
   setProgress(0);
-  // Observe fonts already requested by CSS rather than forcing alternate-theme fonts to download.
-  // Progress is decorative and never gates page visibility or the completion event.
-  void document.fonts.ready.then(() => {
-    if (!ended && !exiting) setProgress(85);
-  });
+  for (const resource of RESOURCES) {
+    const done = () => {
+      if (ended || exiting) return;
+      loaded += resource.weight;
+      setProgress((loaded / TOTAL_WEIGHT) * RESOURCE_SHARE);
+    };
+    const face = new FontFace(resource.family, `url(${resource.url})`);
+    face
+      .load()
+      .then(() => document.fonts.add(face))
+      .catch((error) => console.warn(`Font loading failed: ${resource.url}`, error))
+      .finally(done);
+  }
 
   const fallback = setTimeout(() => {
     console.warn('Loading screen fallback timer triggered');

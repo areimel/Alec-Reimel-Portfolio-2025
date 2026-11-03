@@ -24,8 +24,8 @@ Reviewed November 3, 2026. Goal: represent Alec Reimel for broad software develo
 - [x] Preserve Open Graph dimensions and support image alternative text.
 - [x] Wire project routing/indexability settings to configuration and correct category links.
 - [x] Add responsive WebP images with intrinsic dimensions and a reproducible generation script.
-- [x] Use WOFF2 fonts, reduce preloads, and remove forced alternate-theme font downloads.
-- [x] Make the boot animation a nonblocking decorative badge.
+- [x] Use WOFF2 CSS fonts and preload both visible terminal fonts. Preserve the original boot font-progress downloads following the animation regression review.
+- [x] Preserve the original full-screen terminal boot animation. The SEO commit's corner-badge redesign was reverted during the animation regression review (see `animation-regression-review.md`).
 - [x] Fix long project-title wrapping and keep navigation readable on narrow or short screens.
 - [x] Add SEO regression coverage, including safe serialization and client navigation.
 

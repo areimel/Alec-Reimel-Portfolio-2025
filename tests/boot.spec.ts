@@ -80,6 +80,14 @@ test('a load in a hidden tab still completes', async ({ page }) => {
 test('blocked chunks still release text waiting on the loader', async ({ page }) => {
   await page.route('**/_astro/*.js', (route) => route.abort());
   await page.goto('/review-fixtures/animations');
+  // Preserve the full-screen opening sequence, even before its animation module arrives.
+  // Completion-only assertions also passed when the loader was accidentally redesigned as a badge.
+  const screen = page.locator('#loading-screen');
+  const viewport = page.viewportSize()!;
+  await expect(screen).toBeVisible();
+  expect(await screen.boundingBox()).toEqual({ x: 0, y: 0, ...viewport });
+  await expect(screen).toHaveCSS('pointer-events', 'auto');
+  await expect(page.locator('.loading-container')).toHaveCSS('max-width', '448px');
   await expect(page.locator('#loading-screen')).toBeHidden({ timeout: 8000 });
   await expect(page.locator('#loading .decoder-text')).toHaveCSS('opacity', '1');
 });
