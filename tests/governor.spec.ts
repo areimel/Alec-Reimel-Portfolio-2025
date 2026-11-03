@@ -44,10 +44,59 @@ test('sustained long frames step the tier down', async ({ page }) => {
 test('steady 30fps does not step down', async ({ page }) => {
   test.setTimeout(40_000);
   await page.goto('/');
-  // 20ms of work lands every other 60Hz vsync (about 33ms). A 33ms busy-wait overshoots the second vsync and
-  // WebKit then paces frames at 50ms, which is the long-frame threshold rather than 30fps.
-  await burn(page, 20, 10_000);
+  // Pace by frame period: each callback busy-waits until 30ms after the previous callback started.
+  const gaps = await page.evaluate(
+    (totalMs) =>
+      new Promise<number[]>((resolve) => {
+        const recorded: number[] = [];
+        const end = performance.now() + totalMs;
+        let previous = performance.now();
+        const frame = () => {
+          while (performance.now() - previous < 30);
+          const now = performance.now();
+          recorded.push(now - previous);
+          previous = now;
+          if (now < end) requestAnimationFrame(frame);
+          else resolve(recorded);
+        };
+        requestAnimationFrame(frame);
+      }),
+    10_000
+  );
+  const median = [...gaps].sort((a, b) => a - b)[Math.floor(gaps.length / 2)];
+  expect(median).toBeGreaterThanOrEqual(28);
+  expect(median).toBeLessThanOrEqual(45);
   expect(await tierOf(page)).toBe(0);
+});
+
+test('a short stall in a young window does not step down', async ({ page }) => {
+  test.setTimeout(40_000);
+  await page.goto('/');
+  await page.waitForTimeout(3_500); // measuring has started
+  await page.evaluate(async () => {
+    // Clear the window the way a tab switch does, then stall right after it starts refilling.
+    Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
+    document.dispatchEvent(new Event('visibilitychange'));
+    delete (document as unknown as Record<string, unknown>).visibilityState;
+    document.dispatchEvent(new Event('visibilitychange'));
+    const frame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+    await frame();
+    await frame();
+    const start = performance.now();
+    while (performance.now() - start < 400);
+    await frame();
+    await frame();
+  });
+  await page.waitForTimeout(1_000);
+  expect(await tierOf(page)).toBe(0);
+});
+
+test('sustained 200ms frames for 4s step the tier down', async ({ page }) => {
+  test.setTimeout(40_000);
+  await page.goto('/');
+  await page.waitForTimeout(2_500); // measuring has started
+  await burn(page, 200, 4_500);
+  expect(await tierOf(page)).toBeGreaterThanOrEqual(1);
 });
 
 test('hidden tab time does not count', async ({ page }) => {
@@ -126,16 +175,23 @@ test('tier 3 lightens glow', async ({ page }) => {
 
 test('governor never enables a disabled effect', async ({ page }) => {
   await page.goto('/');
+  const noise = page.locator('.terminal-overlay .noise');
+  const transform = () => noise.evaluate((el) => (el as HTMLElement).style.transform);
+  // Control: with noise on, the jitter does move it.
+  const first = await transform();
+  await expect.poll(transform).not.toBe(first);
   await page.locator('#theme-settings-btn').click();
   await page.locator('label[for="noise-effect"]').first().click();
-  await expect(page.locator('.terminal-overlay .noise')).toHaveClass(/hidden/);
+  await expect(noise).toHaveClass(/hidden/);
   await page.evaluate(() => localStorage.setItem('fx-tier-lock', '0'));
   await page.reload();
-  await expect(page.locator('.terminal-overlay .noise')).toHaveClass(/hidden/);
   await page.evaluate(() => localStorage.setItem('fx-tier-lock', '3'));
   await page.reload();
   await expect.poll(() => tierOf(page)).toBe(3);
-  await expect(page.locator('.terminal-overlay .noise')).toHaveClass(/hidden/);
+  await expect(noise).toHaveClass(/hidden/);
+  const before = await transform();
+  await page.waitForTimeout(500);
+  expect(await transform()).toBe(before);
 });
 
 test('blocked storage does not break it', async ({ page }) => {
