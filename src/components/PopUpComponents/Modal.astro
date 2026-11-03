@@ -29,7 +29,7 @@ const { id, title, closeOnClickOutside = true, class: className = '', contentCla
   <div
     id={`${id}-content`}
     class:list={[
-      'modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-terminal-bg-secondary border border-terminal-400 shadow-lg w-[850px] max-w-[90vw] max-h-[90vh] overflow-auto transition-all duration-300',
+      'modal-content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-terminal-bg-secondary border border-terminal-400 shadow-lg w-[850px] max-w-[90vw] max-h-[90vh] overflow-auto',
       contentClass,
     ]}
     role="dialog"
@@ -60,6 +60,8 @@ const { id, title, closeOnClickOutside = true, class: className = '', contentCla
 </div>
 
 <script>
+  import { modalIn, modalOut } from '~/animation/ui';
+
   let cleanupModals = () => {};
 
   function setupModals() {
@@ -69,21 +71,17 @@ const { id, title, closeOnClickOutside = true, class: className = '', contentCla
     document.querySelectorAll<HTMLElement>('[data-modal-id]').forEach((container) => {
       const id = container.dataset.modalId!;
       const dialog = container.querySelector<HTMLElement>('[role="dialog"]');
-      let timer: ReturnType<typeof setTimeout>;
       let opener: HTMLElement | null = null;
       const open = () => {
-        clearTimeout(timer);
         opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         container.classList.remove('hidden');
-        timer = setTimeout(() => {
-          container.classList.add('modal-active');
-          dialog?.querySelector<HTMLElement>('button, input, textarea, a[href]')?.focus();
-        }, 10);
+        if (dialog) modalIn(container, dialog);
+        dialog?.querySelector<HTMLElement>('button, input, textarea, a[href]')?.focus();
       };
       const close = () => {
-        clearTimeout(timer);
-        container.classList.remove('modal-active');
-        timer = setTimeout(() => container.classList.add('hidden'), 300);
+        const hide = () => container.classList.add('hidden');
+        if (dialog) modalOut(container, dialog, hide);
+        else hide();
         if (opener?.isConnected) opener.focus();
       };
       const openName = `open${id}Modal` as `open${string}Modal`;
@@ -119,7 +117,6 @@ const { id, title, closeOnClickOutside = true, class: className = '', contentCla
         { signal: controller.signal }
       );
       cleanups.push(() => {
-        clearTimeout(timer);
         if (window[openName] === open) delete window[openName];
         if (window[closeName] === close) delete window[closeName];
       });
@@ -134,29 +131,6 @@ const { id, title, closeOnClickOutside = true, class: className = '', contentCla
 </script>
 
 <style>
-  /* Base modal styles */
-  .modal-container {
-    opacity: 0;
-    transition: opacity 0.3s ease-out;
-  }
-
-  .modal-container.modal-active {
-    opacity: 1;
-  }
-
-  .modal-content {
-    transform: translate(-50%, -48%) scale(0.96);
-    opacity: 0;
-    transition:
-      transform 0.3s ease-out,
-      opacity 0.3s ease-out;
-  }
-
-  .modal-active .modal-content {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-
   /* Add subtle glow to modal */
   .modal-content {
     box-shadow: 0 0 15px var(--terminal-100);

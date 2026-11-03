@@ -85,6 +85,7 @@ const effectControls: EffectControl[] = [
         element.dataset.effectEnabled = String(enabled);
         element.classList.toggle('hidden', !enabled);
       });
+      document.dispatchEvent(new CustomEvent('terminal-effect-change', { detail: { effect, enabled } }));
       document.querySelectorAll<HTMLInputElement>(`.effect-toggle[data-effect="${effect}"]`).forEach((toggle) => {
         toggle.checked = enabled;
         const checkIcon = toggle.nextElementSibling?.querySelector('.check-icon');

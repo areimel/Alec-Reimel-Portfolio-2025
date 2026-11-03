@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "date": "2026-11-02T22:13:17.146Z",
+    "runs": 3,
+    "aggregate": "median",
+    "idleMs": 30000,
+    "scrollMs": 15000,
+    "note": "Headless Chromium uses software compositing, so absolute paint/frame numbers are not representative of GPU-composited browsers; compare before/after only.",
+    "longFrameThresholdMs": 50,
+    "gitSha": "5a8c8faaf1bab2b38fec9d76c4825dba5542d2d9",
+    "chromiumVersion": "156.0.8078.4",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "cpuThrottleRates": [1, 4],
+    "durationFields": "TaskDuration, ScriptDuration, LayoutDuration and RecalcStyleDuration are cumulative seconds over the measured window (Performance.getMetrics delta).",
+    "transferredBytes": "Total encoded bytes transferred up to the moment #loading-screen is hidden on the first route load.",
+    "build": "REVIEW_TEST_FIXTURES=1 astro build --outDir .test-dist"
+  },
+  "results": {
+    "/|idle|1x": {
+      "runs": 3,
+      "frameCount": 1801,
+      "longFrameShare": 0,
+      "paintEvents": 1267,
+      "TaskDuration": 1.186046,
+      "ScriptDuration": 0.057784,
+      "LayoutDuration": 0.00017800000000000107,
+      "RecalcStyleDuration": 0.14630300000000002,
+      "transferredBytes": 4080350
+    },
+    "/|idle|4x": {
+      "runs": 3,
+      "frameCount": 1801,
+      "longFrameShare": 0,
+      "paintEvents": 1267,
+      "TaskDuration": 3.122234,
+      "ScriptDuration": 0.11814399999999999,
+      "LayoutDuration": 0.0006910000000000006,
+      "RecalcStyleDuration": 0.40696,
+      "transferredBytes": 4080350
+    },
+    "/|scroll|1x": {
+      "runs": 3,
+      "frameCount": 915,
+      "longFrameShare": 0,
+      "paintEvents": 662,
+      "TaskDuration": 0.689718,
+      "ScriptDuration": 0.065101,
+      "LayoutDuration": 0,
+      "RecalcStyleDuration": 0.076896,
+      "transferredBytes": 4080350
+    },
+    "/|scroll|4x": {
+      "runs": 3,
+      "frameCount": 916,
+      "longFrameShare": 0,
+      "paintEvents": 664,
+      "TaskDuration": 1.8684029999999998,
+      "ScriptDuration": 0.18199300000000002,
+      "LayoutDuration": 0,
+      "RecalcStyleDuration": 0.22388199999999997,
+      "transferredBytes": 4080350
+    },
+    "/contact|idle|1x": {
+      "runs": 3,
+      "frameCount": 1801,
+      "longFrameShare": 0,
+      "paintEvents": 1276,
+      "TaskDuration": 1.108881,
+      "ScriptDuration": 0.059587,
+      "LayoutDuration": 0.00016400000000000095,
+      "RecalcStyleDuration": 0.207384,
+      "transferredBytes": 4022850
+    },
+    "/contact|idle|4x": {
+      "runs": 3,
+      "frameCount": 1802,
+      "longFrameShare": 0,
+      "paintEvents": 1278,
+      "TaskDuration": 2.829157,
+      "ScriptDuration": 0.12282699999999999,
+      "LayoutDuration": 0.0006639999999999997,
+      "RecalcStyleDuration": 0.636942,
+      "transferredBytes": 4022838
+    },
+    "/contact|scroll|1x": {
+      "runs": 3,
+      "frameCount": 913,
+      "longFrameShare": 0,
+      "paintEvents": 658,
+      "TaskDuration": 0.60356,
+      "ScriptDuration": 0.048613,
+      "LayoutDuration": 0,
+      "RecalcStyleDuration": 0.108495,
+      "transferredBytes": 4022850
+    },
+    "/contact|scroll|4x": {
+      "runs": 3,
+      "frameCount": 913,
+      "longFrameShare": 0,
+      "paintEvents": 658,
+      "TaskDuration": 1.6013700000000002,
+      "ScriptDuration": 0.13193499999999997,
+      "LayoutDuration": 0,
+      "RecalcStyleDuration": 0.341423,
+      "transferredBytes": 4022832
+    },
+    "/projects/arda-analytics|idle|1x": {
+      "runs": 3,
+      "frameCount": 1802,
+      "longFrameShare": 0,
+      "paintEvents": 1279,
+      "TaskDuration": 1.206512,
+      "ScriptDuration": 0.061978000000000005,
+      "LayoutDuration": 0.00016000000000000042,
+      "RecalcStyleDuration": 0.156446,
+      "transferredBytes": 9916808
+    },
+    "/projects/arda-analytics|idle|4x": {
+      "runs": 3,
+      "frameCount": 1801,
+      "longFrameShare": 0,
+      "paintEvents": 1276,
+      "TaskDuration": 3.046003,
+      "ScriptDuration": 0.11769700000000001,
+      "LayoutDuration": 0.0005339999999999998,
+      "RecalcStyleDuration": 0.432937,
+      "transferredBytes": 9916808
+    },
+    "/projects/arda-analytics|scroll|1x": {
+      "runs": 3,
+      "frameCount": 907,
+      "longFrameShare": 0.0011025358324145535,
+      "paintEvents": 646,
+      "TaskDuration": 0.6590830000000001,
+      "ScriptDuration": 0.061758999999999994,
+      "LayoutDuration": 0,
+      "RecalcStyleDuration": 0.075733,
+      "transferredBytes": 9916790
+    },
+    "/projects/arda-analytics|scroll|4x": {
+      "runs": 3,
+      "frameCount": 908,
+      "longFrameShare": 0.0011013215859030838,
+      "paintEvents": 648,
+      "TaskDuration": 1.768327,
+      "ScriptDuration": 0.166723,
+      "LayoutDuration": 0,
+      "RecalcStyleDuration": 0.24578099999999997,
+      "transferredBytes": 9916796
+    }
+  }
+}

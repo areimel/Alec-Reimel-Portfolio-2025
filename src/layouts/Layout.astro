@@ -7,6 +7,7 @@ import { I18N } from 'astrowind:config';
 import CommonMeta from '~/components/common/CommonMeta.astro';
 import Favicons from '~/components/Favicons.astro';
 import CustomStyles from '~/components/CustomStyles.astro';
+import FxBootstrap from '~/components/common/FxBootstrap.astro';
 import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
 import Metadata from '~/components/common/Metadata.astro';
 // import SiteVerification from '~/components/common/SiteVerification.astro';
@@ -39,6 +40,7 @@ const defaultTheme = 'theme-severance';
     <GoogleTagManagerHead />
     <CommonMeta />
     <Favicons />
+    <FxBootstrap />
     <CustomStyles />
     <ApplyColorMode />
     <Metadata {...metadata} />
@@ -124,6 +126,10 @@ const defaultTheme = 'theme-severance';
     <slot />
 
     <BasicScripts />
+
+    <script>
+      import '~/animation/index';
+    </script>
 
     <!-- Enhanced View Transition Coordination -->
     <script>

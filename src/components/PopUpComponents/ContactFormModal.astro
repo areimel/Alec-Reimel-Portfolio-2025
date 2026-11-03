@@ -162,6 +162,8 @@ import { Icon } from 'astro-icon/components';
 />
 
 <script>
+  import { pulse } from '~/animation/ui';
+
   const initializedForms = new WeakSet<HTMLFormElement>();
   const initializedControls = new WeakSet<HTMLInputElement>();
   // Extend window interface for modal functions
@@ -258,7 +260,8 @@ import { Icon } from 'astro-icon/components';
       // Disable submit button and show loading state
       submitBtn.disabled = true;
       const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="animate-pulse">SENDING_MESSAGE...</span>';
+      submitBtn.innerHTML = '<span class="fx-pulse">SENDING_MESSAGE...</span>';
+      const sending = pulse(submitBtn.querySelector('.fx-pulse')!);
 
       try {
         // Create form data and convert to JSON
@@ -300,6 +303,7 @@ import { Icon } from 'astro-icon/components';
         window.closecontactModal();
         window.openerrorModalModal();
       } finally {
+        sending.cancel();
         // Re-enable submit button
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
@@ -362,20 +366,5 @@ import { Icon } from 'astro-icon/components';
     text-shadow: none !important;
     box-shadow: none !important;
     filter: none !important;
-  }
-
-  /* Loading animation for submit button */
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  .animate-pulse {
-    animation: pulse 1.5s ease-in-out infinite;
   }
 </style>

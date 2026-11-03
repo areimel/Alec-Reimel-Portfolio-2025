@@ -1,5 +1,4 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
-import plugin from 'tailwindcss/plugin';
 import typographyPlugin from '@tailwindcss/typography';
 
 export default {
@@ -51,24 +50,8 @@ export default {
         'uav-sans': ['"UAV OSD Sans"', 'monospace'],
         computer: ['Computerfont', 'monospace'],
       },
-
-      animation: {
-        fade: 'fadeInUp 1s both',
-      },
-
-      keyframes: {
-        fadeInUp: {
-          '0%': { opacity: 0, transform: 'translateY(2rem)' },
-          '100%': { opacity: 1, transform: 'translateY(0)' },
-        },
-      },
     },
   },
-  plugins: [
-    typographyPlugin,
-    plugin(({ addVariant }) => {
-      addVariant('intersect', '&:not([no-intersect])');
-    }),
-  ],
+  plugins: [typographyPlugin],
   darkMode: 'class',
 };

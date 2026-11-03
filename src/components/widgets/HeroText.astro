@@ -29,32 +29,20 @@ const {
       <div class="text-center max-w-5xl mx-auto">
         {
           tagline && (
-            <p
-              class="text-base text-terminal-400 font-kode tracking-wide uppercase intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-              set:html={tagline}
-            />
+            <p class="text-base text-terminal-400 font-kode tracking-wide uppercase reveal" set:html={tagline} />
           )
         }
         {
           title && (
             <h1
-              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-uav-mono text-terminal-500 text-glow-strong intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-uav-mono text-terminal-500 text-glow-strong reveal"
               set:html={title}
             />
           )
         }
         <div class="max-w-3xl mx-auto">
-          {
-            subtitle && (
-              <p
-                class="text-xl text-terminal-400 font-kode mb-6 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-                set:html={subtitle}
-              />
-            )
-          }
-          <div
-            class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-          >
+          {subtitle && <p class="text-xl text-terminal-400 font-kode mb-6 reveal" set:html={subtitle} />}
+          <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 reveal">
             {
               callToAction && (
                 <div class="flex w-full sm:w-auto">

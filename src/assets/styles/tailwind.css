@@ -96,3 +96,9 @@
 .dd *:first-child {
   margin-top: 0;
 }
+
+/* Heading decode: the real text sizes the box while a scrambled overlay is shown (src/animation/decode.ts). */
+[data-decode-text]::before {
+  content: attr(data-decode-text);
+  visibility: hidden;
+}

@@ -25,7 +25,8 @@
     "optimize:images": "node scripts/optimize-images.js all",
     "optimize:og": "node scripts/optimize-images.js og",
     "optimize:file": "node scripts/optimize-images.js file",
-    "test:e2e": "pnpm run build && playwright test"
+    "test:e2e": "pnpm run build && playwright test",
+    "perf": "node scripts/perf-measure.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
@@ -34,6 +35,7 @@
     "@astrolib/seo": "^1.0.0-beta.8",
     "@fontsource-variable/inter": "^5.1.1",
     "@iconify-json/mdi": "^1.2.3",
+    "animejs": "^4.5.0",
     "astro": "^5.1.8",
     "astro-embed": "^0.9.0",
     "astro-icon": "^1.1.5",
