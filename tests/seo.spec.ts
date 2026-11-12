@@ -9,9 +9,32 @@ const publicRoutes = [
   '/blog',
   '/contact',
   '/resume',
+  '/projects/ai-hub',
+  '/projects/ccstatusboard',
   '/projects/arda-site-scanner',
+  '/projects/local-company-template',
+  '/projects/node-bonsai',
   '/web-development-with-cursor',
 ];
+
+// Must match the project order on bio.alecreimel.com (frontmatter `order`).
+const projectOrder = [
+  '/projects/ai-hub',
+  '/projects/ccstatusboard',
+  '/projects/arda-analytics',
+  '/projects/arda-site-scanner',
+  '/projects/local-company-template',
+  '/projects/node-bonsai',
+];
+
+test('project list follows the bio-site order and omits retired projects', async ({ page }) => {
+  await page.goto('/projects');
+  const hrefs = await page
+    .locator('main article h2 a[href^="/projects/"]')
+    .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+  expect(hrefs).toEqual(projectOrder);
+  await expect(page.locator('a[href="/projects/bio-link"], a[href="/projects/company-ai-prompts"]')).toHaveCount(0);
+});
 
 for (const route of publicRoutes) {
   test(`SEO metadata and identity: ${route}`, async ({ page }) => {
@@ -178,14 +201,7 @@ test('hiring and case-study pages fit phones and tablets without clipping naviga
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const width of [320, 390, 768]) {
     await page.setViewportSize({ width, height: 844 });
-    for (const route of [
-      '/',
-      '/about',
-      '/resume',
-      '/contact',
-      '/projects/arda-analytics',
-      '/projects/arda-site-scanner',
-    ]) {
+    for (const route of ['/', '/about', '/resume', '/contact', ...projectOrder]) {
       await page.goto(route);
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
