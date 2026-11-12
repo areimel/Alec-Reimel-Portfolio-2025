@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">ARDA Site Scan</title>
+  <desc id="desc">Architecture diagram: the CLI and Inquirer prompts select a crawl mode, a four-phase orchestrator runs the test modules, and results are written as reports.</desc>
+  <rect width="1200" height="630" fill="#07151b" />
+  <g fill="#9ae6cf" font-family="monospace">
+    <text x="49" y="92" font-size="36" font-weight="bold">ARDA Site Scan</text>
+    <text x="49" y="135" font-size="21">Playwright website auditing CLI: pipeline overview</text>
+  </g>
+  <rect x="49" y="180" width="198" height="290" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="65" y="217" fill="#6ed7b6" font-size="17" font-weight="bold" font-family="monospace">CLI + PROMPTS</text>
+  <text x="65" y="257" fill="#d1fae5" font-size="16" font-family="monospace">arda-site-scan</text>
+  <text x="65" y="291" fill="#d1fae5" font-size="16" font-family="monospace">Commander</text>
+  <text x="65" y="325" fill="#d1fae5" font-size="16" font-family="monospace">Inquirer prompts</text>
+  <text x="65" y="359" fill="#d1fae5" font-size="16" font-family="monospace">scan &lt;url&gt;</text>
+  <text x="65" y="393" fill="#d1fae5" font-size="16" font-family="monospace">playlists</text>
+  <rect x="275" y="180" width="198" height="290" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="291" y="217" fill="#6ed7b6" font-size="17" font-weight="bold" font-family="monospace">CRAWL MODES</text>
+  <text x="291" y="257" fill="#d1fae5" font-size="16" font-family="monospace">single</text>
+  <text x="291" y="291" fill="#d1fae5" font-size="16" font-family="monospace">smart</text>
+  <text x="291" y="325" fill="#d1fae5" font-size="16" font-family="monospace">full (max 50)</text>
+  <text x="291" y="359" fill="#d1fae5" font-size="16" font-family="monospace">deep + resume</text>
+  <text x="291" y="393" fill="#d1fae5" font-size="16" font-family="monospace">Crawlee</text>
+  <rect x="501" y="180" width="198" height="290" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="517" y="217" fill="#6ed7b6" font-size="17" font-weight="bold" font-family="monospace">ORCHESTRATOR</text>
+  <text x="517" y="257" fill="#d1fae5" font-size="16" font-family="monospace">1 Discovery</text>
+  <text x="517" y="291" fill="#d1fae5" font-size="16" font-family="monospace">2 Page analysis</text>
+  <text x="517" y="325" fill="#d1fae5" font-size="16" font-family="monospace">3 Screenshots</text>
+  <text x="517" y="359" fill="#d1fae5" font-size="16" font-family="monospace">4 Final analysis</text>
+  <text x="517" y="393" fill="#d1fae5" font-size="16" font-family="monospace">worker pool</text>
+  <rect x="727" y="180" width="198" height="290" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="743" y="217" fill="#6ed7b6" font-size="17" font-weight="bold" font-family="monospace">TEST MODULES</text>
+  <text x="743" y="257" fill="#d1fae5" font-size="16" font-family="monospace">Screenshots x3</text>
+  <text x="743" y="291" fill="#d1fae5" font-size="16" font-family="monospace">SEO</text>
+  <text x="743" y="325" fill="#d1fae5" font-size="16" font-family="monospace">axe-core a11y</text>
+  <text x="743" y="359" fill="#d1fae5" font-size="16" font-family="monospace">Content, sitemap</text>
+  <text x="743" y="393" fill="#d1fae5" font-size="16" font-family="monospace">Summary, llms.txt</text>
+  <text x="743" y="427" fill="#d1fae5" font-size="16" font-family="monospace">API-key scan</text>
+  <rect x="953" y="180" width="198" height="290" rx="8" fill="#102c32" stroke="#6ed7b6" stroke-width="2" />
+  <text x="969" y="217" fill="#6ed7b6" font-size="17" font-weight="bold" font-family="monospace">REPORTS</text>
+  <text x="969" y="257" fill="#d1fae5" font-size="16" font-family="monospace">Session folder</text>
+  <text x="969" y="291" fill="#d1fae5" font-size="16" font-family="monospace">HTML dashboard</text>
+  <text x="969" y="325" fill="#d1fae5" font-size="16" font-family="monospace">Markdown, PNG</text>
+  <text x="969" y="359" fill="#d1fae5" font-size="16" font-family="monospace">sitemap.xml</text>
+  <text x="969" y="393" fill="#d1fae5" font-size="16" font-family="monospace">llms.txt</text>
+  <path d="M250 325H272l-8-7m8 7-8 7" stroke="#6ed7b6" stroke-width="3" fill="none" />
+  <path d="M476 325H498l-8-7m8 7-8 7" stroke="#6ed7b6" stroke-width="3" fill="none" />
+  <path d="M702 325H724l-8-7m8 7-8 7" stroke="#6ed7b6" stroke-width="3" fill="none" />
+  <path d="M928 325H950l-8-7m8 7-8 7" stroke="#6ed7b6" stroke-width="3" fill="none" />
+  <text x="49" y="525" fill="#9ae6cf" font-size="23" font-family="monospace">YAML config defines each test, its phase and its dependencies.</text>
+  <text x="49" y="563" fill="#9ae6cf" font-size="23" font-family="monospace">Every run writes a timestamped session folder.</text>
+  <text x="49" y="605" fill="#9ae6cf" font-size="18" font-family="monospace">Alec Reimel · Public repository architecture</text>
+</svg>

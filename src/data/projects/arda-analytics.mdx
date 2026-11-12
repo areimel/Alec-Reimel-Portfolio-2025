@@ -1,10 +1,11 @@
 ---
 author: Alec Reimel
 publishDate: 2025-07-28T00:00:00Z
-updateDate: 2026-11-03T00:00:00Z
+updateDate: 2026-11-12T00:00:00Z
+order: 3
 title: ARDA Analytics — Browser Events & GTM Integration
-excerpt: A browser analytics plugin with TypeScript services for campaign attribution, form tracking, user journey triggers, and Google Tag Manager event forwarding, plus a React demo site.
-image: /images/projects/arda-analytics/arda-analytics-architecture.webp
+excerpt: TypeScript browser analytics plugin for UTM attribution, form tracking, user journey triggers and GTM event forwarding, with a React demo site and tools.
+image: /images/projects/arda-analytics/arda-analytics-card.webp
 tags:
   - analytics
   - google-tag-manager
@@ -12,11 +13,14 @@ tags:
   - typescript
   - plugin
   - web-development
+  - react
 repoUrl: https://github.com/areimel/ARDA-Analytics
+projectUrl: https://arda-analytics.netlify.app/
 technologies:
   - 'TypeScript & JavaScript: Browser analytics services'
   - 'Google Tag Manager: Event forwarding'
   - 'React: Demo and documentation interface'
+  - 'Vite & Tailwind CSS: Demo site build and styling'
   - 'Jest: Browser-oriented test definitions'
   - 'pnpm: Workspace management'
 ---
@@ -27,7 +31,7 @@ import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
   headline="Connecting Website Interactions to Analytics"
   bodyText="ARDA Analytics organizes browser tracking into reusable services rather than putting every event handler into one page script. Its public source includes campaign parameter capture, form integration, Google Tag Manager forwarding, and user journey triggers. The project also includes a React website for demonstrating events and presenting documentation."
   imageSrc="/images/projects/arda-analytics/arda-analytics-architecture.webp"
-  imageAlt="Architecture diagram: browser events flow through AnalyticsService into the GTM data layer"
+  imageAlt="Architecture diagram: browser events flow through the ARDAAnalytics entry class and AnalyticsService into the GTM data layer"
   flexDirection="text-first"
 />
 
@@ -61,6 +65,14 @@ import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
       GTM event module
     </a>{' '}
     to see these boundaries in the source.
+  </p>
+  <p>
+    The{' '}
+    <a href="https://arda-analytics.netlify.app/" className="underline">
+      live demo site
+    </a>{' '}
+    exercises the plugin in the browser with click, form, and page-view event demos, a live event viewer, a tracking URL
+    builder, a QR code generator, and documentation pages covering installation, the API, and framework guides.
   </p>
   <h2 className="text-2xl font-heading text-terminal-500">Validation and Integration Boundaries</h2>
   <p>
