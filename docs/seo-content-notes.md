@@ -8,11 +8,13 @@ Reviewed November 3, 2026. Public source was inspected read-only; the external r
 - [ARDA Analytics GTM module](https://github.com/areimel/ARDA-Analytics/blob/HEAD/plugin/src/analytics-micro-services/gtm-event-push.ts): pushes `CustomEvent` with `eventLabel` to the data layer. The portfolio describes this actual wire shape without promising automatic reporting configuration.
 - [ARDA Analytics tests](https://github.com/areimel/ARDA-Analytics/blob/HEAD/plugin/src/__tests__/index.test.js): Jest definitions cover initialization, configuration, event handling, and cleanup. Test presence is described without a claim that the suite was run or passed.
 - [ARDA Analytics repository](https://github.com/areimel/ARDA-Analytics): separate plugin and React website directories.
-- [ARDA Site Scanner CLI](https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/src/cli.tsx), [UI](https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/src/ui.tsx), and [manifest](https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/package.json): current public source is a ts-ink-template greeting application. No Playwright dependency or scanning implementation was present. The portfolio now labels it in progress and distinguishes planned features from the current scaffold.
-- [AI Prompt Directory repository](https://github.com/areimel/company-ai-prompts): README documents Astro, Tailwind CSS, content collections, prompt pages, browsing, and templating. No adoption figures or quantified outcomes were added.
-- [Bio-Link repository](https://github.com/areimel/Bio-Link): README still uses AstroWind template documentation. Existing portfolio project intent is retained, without treating template benchmark scores as Alec's results.
+- **Projects synced with bio.alecreimel.com on November 12, 2026** (spec: `docs/superpowers/specs/2026-11-12-projects-sync-design.md`). Six projects, ordered by the frontmatter `order` field: AI Hub, ccstatusboard, ARDA Analytics, ARDA Site Scan, Local Company Template, node-bonsai. Each page was written from a read-only review of its repository.
+- [ARDA Site Scan](https://github.com/areimel/playwright-site-scanner): the `/projects/arda-site-scanner` page now documents this repository (npm `arda-site-scan`), not the `ARDA-Site-Scanner` ts-ink-template scaffold. README claims not found in code (an "AI-powered" summary, broken-link detection, keyboard-navigation testing) are left out, and the roadmap items are labelled planned.
+- [AI Hub](https://github.com/areimel/alec-ai-hub) replaces the retired AI Prompt Directory; `/projects/company-ai-prompts` 301s to `/projects/ai-hub`. The repository description mentions homelab hosting, but the code deploys to GitHub Pages, so the page says "static site".
+- Local Company Template's repository is private. Its page is a case study with no repository links or client data.
+- Bio-Link was retired; `/projects/bio-link` 301s to `/projects`.
 
-Architecture diagrams for Analytics and Site Scanner are original SVG assets derived from the inspected code, with WebP display copies. They are diagrams, not screenshots of running software. The scanner diagram explicitly labels the implemented scaffold and planned scanning functionality.
+Architecture diagrams are original SVG assets derived from the inspected code, with WebP display copies. They are diagrams, not screenshots of running software. Card images for AI Hub, ccstatusboard, ARDA Analytics and ARDA Site Scan come from the bio site.
 
 ## Content changes
 
