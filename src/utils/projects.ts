@@ -125,10 +125,15 @@ const getNormalizedProject = async (project: CollectionEntry<'project'>): Promis
 
 const load = async function (): Promise<Array<Post>> {
   const projects = await getCollection('project');
-  const normalizedProjects = projects.map(async (project) => await getNormalizedProject(project));
+  const normalizedProjects = projects.map(async (project) => ({
+    order: project.data.order ?? Number.POSITIVE_INFINITY,
+    project: await getNormalizedProject(project),
+  }));
 
+  // Explicit `order` wins (ascending); ties and unordered projects fall back to newest first.
   const results = (await Promise.all(normalizedProjects))
-    .sort((a, b) => b.publishDate.valueOf() - a.publishDate.valueOf())
+    .sort((a, b) => a.order - b.order || b.project.publishDate.valueOf() - a.project.publishDate.valueOf())
+    .map(({ project }) => project)
     .filter((project) => !project.draft);
 
   return results;
