@@ -1,0 +1,128 @@
+---
+author: Alec Reimel
+publishDate: 2026-02-20T00:00:00Z
+updateDate: 2026-11-12T00:00:00Z
+order: 5
+title: Local Company Template — Whitelabel Astro Site for Service Businesses
+excerpt: Cloneable Astro template for local service businesses. Brand, navigation, FAQs and reviews live in YAML, content in Markdown, with 9 themes, 4 animation levels and swappable form providers.
+image: /images/projects/local-company-template/local-company-template-architecture.webp
+tags:
+  - astro
+  - tailwindcss
+  - animejs
+  - web3forms
+  - template
+  - whitelabel
+  - web-development
+technologies:
+  - 'Astro: Static site generation, routing and content collections'
+  - 'Tailwind CSS v4: Utility styling with per-theme tokens'
+  - 'Anime.js: Scroll reveals, hero and text motion, counters'
+  - 'Web3Forms: Contact form delivery, with SendGrid and Mailchimp adapters'
+  - 'js-yaml: Build-time loading of YAML configuration'
+  - 'Fuse.js: Client-side fuzzy site search'
+  - 'Playwright: Screenshot, accessibility, theme, search and form specs'
+  - 'Netlify adapter: Hosting and deployment'
+---
+
+import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
+
+<TextAndImage
+  headline="One Config, Whole Site"
+  bodyText="Local Company Template is a whitelabel website starter for local service businesses such as trades, clinics and studios. Business identity, navigation, FAQs, calls to action, testimonials and service areas sit in plain YAML files. Services, blog posts, careers and locations are Markdown collections. Components read from that data, so a rebrand is meant to change content and configuration rather than code."
+  imageSrc="/images/projects/local-company-template/local-company-template-architecture.webp"
+  imageAlt="Architecture diagram: YAML brand files and Markdown collections feed an Astro build, with themes, animation levels and a form provider layer producing a static site"
+  flexDirection="text-first"
+/>
+
+<TextAndImage
+  headline="A Homepage Built to Convert"
+  bodyText="The default homepage follows a familiar service-business pattern: a hero with a clear call to action, a services grid, a trust and reviews band, service locations and a contact form. A sticky phone bar, an emergency call-to-action banner and a testimonials slider are included as components. Everything shown is neutral bracketed placeholder content."
+  imageSrc="/images/projects/local-company-template/local-company-template-pages.webp"
+  imageAlt="Wireframe of a generic service-business homepage with hero, services grid, trust bar, locations and contact form"
+  flexDirection="image-first"
+/>
+
+<ProjectStats
+  title="Template Scale"
+  content="85 Astro components, 12 layouts, 5 content collections and 11 YAML config files."
+/>
+
+<ProjectStats
+  title="Themes & Motion"
+  content="9 switchable themes and 4 animation levels (none, minimal, normal, bold), each chosen with one line in the brand file."
+/>
+
+<ProjectStats
+  title="11 Playwright Specs"
+  content="Playwright specs for screenshots, accessibility, forms, themes, search, animations, navigation and Lighthouse audits."
+/>
+
+<section className="font-kode text-terminal-400 space-y-6 mb-12">
+  <h2 className="text-2xl font-heading text-terminal-500">Whitelabel by Configuration</h2>
+  <p>
+    A new client is set up by editing a short list of files. The main one is <code>src/data/branding.yaml</code>, which
+    holds the business name, tagline, contact details, social links, SEO defaults, the selected theme and the animation
+    level. Fields that must be replaced are flagged with a <code># REPLACE:</code> comment so they can be found with a
+    single search.
+  </p>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>
+      Navigation, FAQs, CTAs, testimonials, partners and service areas are separate YAML files in <code>src/data</code>.
+    </li>
+    <li>
+      Services, blog posts, careers and locations are Markdown validated by content collection schemas. Each service
+      category has a <code>_hub.md</code> file, and new service files generate their pages and search entries.
+    </li>
+    <li>
+      Themes are CSS files in <code>src/styles/themes</code> registered in <code>themes.yaml</code>. A custom theme is
+      made by copying an existing one.
+    </li>
+    <li>
+      Logos, favicons, the default Open Graph image and hero images are the remaining assets to swap. The project docs
+      estimate a full rebrand at 30 to 60 minutes; I have not independently timed it.
+    </li>
+  </ul>
+  <h2 className="text-2xl font-heading text-terminal-500">Forms, Motion and Search</h2>
+  <p>
+    Contact forms go through a provider layer: a form controller and validator in <code>src/utils/forms</code> with
+    adapters for Web3Forms (the default), SendGrid and Mailchimp. A server route handles submissions, and an environment
+    switch separates test recipients from production recipients.
+  </p>
+  <p>
+    The animation engine in <code>src/utils/animations</code> is built on Anime.js with presets for hero, reveal,
+    scroll, counter, text and interaction effects. The animation level in the brand file scales these from none to bold.
+    Site search uses Fuse.js with a modal and a dedicated search page, driven by a generated index.
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Status and Access</h2>
+  <p>
+    The template is functional, but the project plan still lists its last phases (5 to 7) as unfinished, and adding a
+    new service category still requires a manual edit to <code>navigation.yaml</code>. SEO work covers canonical and
+    social tags, a sitemap and FAQ structured data. These are planned or partial items, not finished features.
+  </p>
+  <p>
+    The source repository is private and available on request via{' '}
+    <a href="/contact" className="underline">
+      the contact page
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What This Project Demonstrates</h2>
+  <p>
+    Data-driven site architecture in Astro, content collections with schemas, a themeable design system, an animation
+    engine with configurable intensity, a swappable form backend, and an automated test suite. It shows how to turn a
+    one-off marketing site into a reusable product.
+  </p>
+  <p>
+    Hiring for a role involving frontend applications or developer tools?{' '}
+    <a href="/contact" className="underline">
+      Get in touch
+    </a>{' '}
+    or see my{' '}
+    <a href="/resume" className="underline">
+      professional overview
+    </a>
+    .
+  </p>
+</section>

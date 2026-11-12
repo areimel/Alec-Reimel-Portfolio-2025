@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Local Company Template: one config, whole site</title>
+  <desc id="desc">
+    Architecture diagram: YAML brand files and Markdown content collections feed an Astro build. Themes, Anime.js animation levels and a swappable form provider layer plug into the build. The output is a static site with service pages, blog, careers, locations, search, sitemap and JSON-LD.
+  </desc>
+  <rect width="1200" height="630" fill="#07151b" />
+  <g fill="#9ae6cf" font-family="monospace">
+    <text x="40" y="48" font-size="30" font-weight="bold">Local Company Template</text>
+    <text x="40" y="76" font-size="17">One config, whole site. Edit data, not components.</text>
+  </g>
+  <g fill="#102c32" stroke="#6ed7b6" stroke-width="2">
+    <rect x="40" y="105" width="290" height="92" rx="8" />
+    <rect x="40" y="215" width="290" height="92" rx="8" />
+    <rect x="40" y="325" width="290" height="92" rx="8" />
+    <rect x="40" y="470" width="290" height="70" rx="8" />
+    <rect x="410" y="105" width="300" height="200" rx="8" />
+    <rect x="410" y="325" width="300" height="92" rx="8" />
+    <rect x="410" y="470" width="300" height="70" rx="8" />
+    <rect x="790" y="105" width="370" height="70" rx="8" />
+    <rect x="790" y="189" width="370" height="70" rx="8" />
+    <rect x="790" y="273" width="370" height="70" rx="8" />
+    <rect x="790" y="357" width="370" height="70" rx="8" />
+    <rect x="790" y="441" width="370" height="99" rx="8" />
+  </g>
+  <g fill="#d1fae5" font-family="monospace" font-size="16">
+    <text x="58" y="134" font-weight="bold">branding.yaml</text>
+    <text x="58" y="160">name, phone, SEO, theme,</text>
+    <text x="58" y="182">animation level</text>
+    <text x="58" y="244" font-weight="bold">src/data/*.yaml</text>
+    <text x="58" y="270">nav, FAQs, CTAs, reviews,</text>
+    <text x="58" y="292">areas, partners</text>
+    <text x="58" y="354" font-weight="bold">src/content/*.md</text>
+    <text x="58" y="380">services, blog, careers,</text>
+    <text x="58" y="402">locations, docs</text>
+    <text x="58" y="498" font-weight="bold">form-config.yaml</text>
+    <text x="58" y="522">+ .env access key</text>
+    <text x="428" y="138" font-size="20" font-weight="bold">Astro build</text>
+    <text x="428" y="172">Content collections (5)</text>
+    <text x="428" y="198">js-yaml config loading</text>
+    <text x="428" y="224">12 layouts</text>
+    <text x="428" y="250">85 components</text>
+    <text x="428" y="276">Tailwind v4 theme tokens</text>
+    <text x="428" y="354" font-weight="bold">Themes + motion</text>
+    <text x="428" y="380">9 themes, 4 animation levels</text>
+    <text x="428" y="402">(Anime.js 4)</text>
+    <text x="428" y="498" font-weight="bold">Form provider layer</text>
+    <text x="428" y="522" font-size="14">Web3Forms | SendGrid | Mailchimp</text>
+    <text x="808" y="134" font-weight="bold">Home + inner pages</text>
+    <text x="808" y="158">hero, services, trust, contact</text>
+    <text x="808" y="218" font-weight="bold">Service hubs + pages</text>
+    <text x="808" y="242">3 categories x 3 services</text>
+    <text x="808" y="302" font-weight="bold">Blog / Careers / Locations</text>
+    <text x="808" y="326">Markdown-driven routes</text>
+    <text x="808" y="386" font-weight="bold">Search + sitemap + JSON-LD</text>
+    <text x="808" y="410">Fuse.js, FAQPage schema</text>
+    <text x="808" y="470" font-weight="bold">Themed, animated static site</text>
+    <text x="808" y="496">Deployed via the Netlify adapter</text>
+    <text x="808" y="520">Playwright: 11 spec files</text>
+  </g>
+  <g stroke="#6ed7b6" stroke-width="3" fill="none">
+    <path d="M330 151H395m-12-10 12 10-12 10" />
+    <path d="M330 261H395m-12-10 12 10-12 10" />
+    <path d="M330 371H395m-12-10 12 10-12 10" />
+    <path d="M330 505H395m-12-10 12 10-12 10" />
+    <path d="M560 470V432m-10 12 10-12 10 12" />
+    <path d="M560 325V318m-10 12 10-12 10 12" />
+    <path d="M710 205H775m-12-10 12 10-12 10" />
+    <path d="M740 205V140H775m-12-10 12 10-12 10" />
+    <path d="M740 205V224H775m-12-10 12 10-12 10" />
+    <path d="M740 205V308H775m-12-10 12 10-12 10" />
+    <path d="M740 205V392H775m-12-10 12 10-12 10" />
+    <path d="M710 371H755V490H775m-12-10 12 10-12 10" />
+  </g>
+  <g fill="#9ae6cf" font-family="monospace" font-size="15">
+    <text x="40" y="582">11 YAML files | 9 themes | 4 animation levels | documented 30-60 min rebrand</text>
+    <text x="40" y="606">Alec Reimel | Case study (source repository is private)</text>
+  </g>
+</svg>

@@ -24,3 +24,13 @@
   to = "https://www.alecreimel.com/:splat"
   status = 301
   force = true
+
+# Retired project pages (removed 2026-11 when Projects were synced with bio.alecreimel.com).
+[[redirects]]
+  from = "/projects/bio-link"
+  to = "/projects"
+  status = 301
+[[redirects]]
+  from = "/projects/company-ai-prompts"
+  to = "/projects/ai-hub"
+  status = 301

@@ -186,6 +186,40 @@
       "height": 960
     }
   ],
+  "/images/projects/ai-hub/ai-hub-architecture.webp": [
+    {
+      "src": "/images/optimized/projects/ai-hub/ai-hub-architecture-480.webp",
+      "width": 480,
+      "height": 252
+    },
+    {
+      "src": "/images/optimized/projects/ai-hub/ai-hub-architecture-960.webp",
+      "width": 960,
+      "height": 504
+    },
+    {
+      "src": "/images/optimized/projects/ai-hub/ai-hub-architecture-1200.webp",
+      "width": 1200,
+      "height": 630
+    }
+  ],
+  "/images/projects/ai-hub/ai-hub-card.webp": [
+    {
+      "src": "/images/optimized/projects/ai-hub/ai-hub-card-480.webp",
+      "width": 480,
+      "height": 240
+    },
+    {
+      "src": "/images/optimized/projects/ai-hub/ai-hub-card-960.webp",
+      "width": 960,
+      "height": 480
+    },
+    {
+      "src": "/images/optimized/projects/ai-hub/ai-hub-card-1440.webp",
+      "width": 1440,
+      "height": 720
+    }
+  ],
   "/images/projects/arda-analytics/arda-analytics-architecture.webp": [
     {
       "src": "/images/optimized/projects/arda-analytics/arda-analytics-architecture-480.webp",
@@ -201,6 +235,23 @@
       "src": "/images/optimized/projects/arda-analytics/arda-analytics-architecture-1200.webp",
       "width": 1200,
       "height": 630
+    }
+  ],
+  "/images/projects/arda-analytics/arda-analytics-card.webp": [
+    {
+      "src": "/images/optimized/projects/arda-analytics/arda-analytics-card-480.webp",
+      "width": 480,
+      "height": 240
+    },
+    {
+      "src": "/images/optimized/projects/arda-analytics/arda-analytics-card-960.webp",
+      "width": 960,
+      "height": 480
+    },
+    {
+      "src": "/images/optimized/projects/arda-analytics/arda-analytics-card-1440.webp",
+      "width": 1440,
+      "height": 719
     }
   ],
   "/images/projects/arda-analytics/arda-analytics-dashboard.jpg": [
@@ -288,174 +339,135 @@
       "height": 1036
     }
   ],
-  "/images/projects/arda-site-scanner/arda-scanner-playwright.jpg": [
+  "/images/projects/arda-site-scanner/arda-site-scan-architecture.webp": [
     {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-playwright-480.webp",
-      "width": 480,
-      "height": 319
-    },
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-playwright-960.webp",
-      "width": 960,
-      "height": 639
-    },
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-playwright-1440.webp",
-      "width": 1440,
-      "height": 958
-    }
-  ],
-  "/images/projects/arda-site-scanner/arda-scanner-testing.jpg": [
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-testing-480.webp",
-      "width": 480,
-      "height": 320
-    },
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-testing-960.webp",
-      "width": 960,
-      "height": 640
-    },
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-testing-1440.webp",
-      "width": 1440,
-      "height": 960
-    }
-  ],
-  "/images/projects/arda-site-scanner/arda-scanner-toolkit.jpg": [
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-toolkit-480.webp",
-      "width": 480,
-      "height": 319
-    },
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-toolkit-960.webp",
-      "width": 960,
-      "height": 639
-    },
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-scanner-toolkit-1440.webp",
-      "width": 1440,
-      "height": 958
-    }
-  ],
-  "/images/projects/arda-site-scanner/arda-site-scanner-scaffold.webp": [
-    {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scanner-scaffold-480.webp",
+      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scan-architecture-480.webp",
       "width": 480,
       "height": 252
     },
     {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scanner-scaffold-960.webp",
+      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scan-architecture-960.webp",
       "width": 960,
       "height": 504
     },
     {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scanner-scaffold-1200.webp",
+      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scan-architecture-1200.webp",
       "width": 1200,
       "height": 630
     }
   ],
-  "/images/projects/arda-site-scanner/arda-site-scanner-terminal.jpg": [
+  "/images/projects/arda-site-scanner/arda-site-scan-card.webp": [
     {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scanner-terminal-480.webp",
+      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scan-card-480.webp",
       "width": 480,
-      "height": 320
+      "height": 266
     },
     {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scanner-terminal-960.webp",
+      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scan-card-518.webp",
+      "width": 518,
+      "height": 287
+    }
+  ],
+  "/images/projects/ccstatusboard/ccstatusboard-architecture.webp": [
+    {
+      "src": "/images/optimized/projects/ccstatusboard/ccstatusboard-architecture-480.webp",
+      "width": 480,
+      "height": 252
+    },
+    {
+      "src": "/images/optimized/projects/ccstatusboard/ccstatusboard-architecture-960.webp",
       "width": 960,
-      "height": 640
+      "height": 504
     },
     {
-      "src": "/images/optimized/projects/arda-site-scanner/arda-site-scanner-terminal-1440.webp",
+      "src": "/images/optimized/projects/ccstatusboard/ccstatusboard-architecture-1200.webp",
+      "width": 1200,
+      "height": 630
+    }
+  ],
+  "/images/projects/ccstatusboard/ccstatusboard-card.webp": [
+    {
+      "src": "/images/optimized/projects/ccstatusboard/ccstatusboard-card-480.webp",
+      "width": 480,
+      "height": 240
+    },
+    {
+      "src": "/images/optimized/projects/ccstatusboard/ccstatusboard-card-960.webp",
+      "width": 960,
+      "height": 480
+    },
+    {
+      "src": "/images/optimized/projects/ccstatusboard/ccstatusboard-card-1440.webp",
       "width": 1440,
-      "height": 960
-    }
-  ],
-  "/images/projects/bio-link/bio-link-coding.jpg": [
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-coding-480.webp",
-      "width": 480,
-      "height": 320
-    },
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-coding-960.webp",
-      "width": 960,
-      "height": 641
-    },
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-coding-1200.webp",
-      "width": 1200,
-      "height": 801
-    }
-  ],
-  "/images/projects/bio-link/bio-link-customization.jpg": [
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-customization-480.webp",
-      "width": 480,
-      "height": 318
-    },
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-customization-960.webp",
-      "width": 960,
-      "height": 636
-    },
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-customization-1200.webp",
-      "width": 1200,
-      "height": 795
-    }
-  ],
-  "/images/projects/bio-link/bio-link-mobile.jpg": [
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-mobile-480.webp",
-      "width": 480,
       "height": 720
-    },
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-mobile-960.webp",
-      "width": 960,
-      "height": 1440
-    },
-    {
-      "src": "/images/optimized/projects/bio-link/bio-link-mobile-1440.webp",
-      "width": 1440,
-      "height": 2160
     }
   ],
-  "/images/projects/bio-link/bio-link-open-source.jpg": [
+  "/images/projects/local-company-template/local-company-template-architecture.webp": [
     {
-      "src": "/images/optimized/projects/bio-link/bio-link-open-source-480.webp",
+      "src": "/images/optimized/projects/local-company-template/local-company-template-architecture-480.webp",
       "width": 480,
-      "height": 320
+      "height": 252
     },
     {
-      "src": "/images/optimized/projects/bio-link/bio-link-open-source-960.webp",
+      "src": "/images/optimized/projects/local-company-template/local-company-template-architecture-960.webp",
       "width": 960,
-      "height": 640
+      "height": 504
     },
     {
-      "src": "/images/optimized/projects/bio-link/bio-link-open-source-1200.webp",
+      "src": "/images/optimized/projects/local-company-template/local-company-template-architecture-1200.webp",
       "width": 1200,
-      "height": 800
+      "height": 630
     }
   ],
-  "/images/projects/bio-link/bio-link-social-media.jpg": [
+  "/images/projects/local-company-template/local-company-template-pages.webp": [
     {
-      "src": "/images/optimized/projects/bio-link/bio-link-social-media-480.webp",
+      "src": "/images/optimized/projects/local-company-template/local-company-template-pages-480.webp",
       "width": 480,
-      "height": 600
+      "height": 252
     },
     {
-      "src": "/images/optimized/projects/bio-link/bio-link-social-media-960.webp",
+      "src": "/images/optimized/projects/local-company-template/local-company-template-pages-960.webp",
       "width": 960,
-      "height": 1200
+      "height": 504
     },
     {
-      "src": "/images/optimized/projects/bio-link/bio-link-social-media-1200.webp",
+      "src": "/images/optimized/projects/local-company-template/local-company-template-pages-1200.webp",
       "width": 1200,
-      "height": 1500
+      "height": 630
+    }
+  ],
+  "/images/projects/node-bonsai/node-bonsai-terminal.webp": [
+    {
+      "src": "/images/optimized/projects/node-bonsai/node-bonsai-terminal-480.webp",
+      "width": 480,
+      "height": 252
+    },
+    {
+      "src": "/images/optimized/projects/node-bonsai/node-bonsai-terminal-960.webp",
+      "width": 960,
+      "height": 504
+    },
+    {
+      "src": "/images/optimized/projects/node-bonsai/node-bonsai-terminal-1200.webp",
+      "width": 1200,
+      "height": 630
+    }
+  ],
+  "/images/projects/node-bonsai/node-bonsai-themes.webp": [
+    {
+      "src": "/images/optimized/projects/node-bonsai/node-bonsai-themes-480.webp",
+      "width": 480,
+      "height": 252
+    },
+    {
+      "src": "/images/optimized/projects/node-bonsai/node-bonsai-themes-960.webp",
+      "width": 960,
+      "height": 504
+    },
+    {
+      "src": "/images/optimized/projects/node-bonsai/node-bonsai-themes-1200.webp",
+      "width": 1200,
+      "height": 630
     }
   ],
   "/images/terminal-noise.png": [

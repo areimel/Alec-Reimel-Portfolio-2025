@@ -53,6 +53,6 @@ Tests should establish the intended outcome rather than merely repeat the implem
 
 A useful project write-up explains the problem, the developer's contribution, an important decision, and how the result was checked. Mention AI assistance when relevant, but keep attention on the work that can be inspected.
 
-My [ARDA Analytics project](/projects/arda-analytics) links to implementation modules and test definitions. The [AI Prompt Directory](/projects/company-ai-prompts) is another example of organizing reusable AI-related content into a developer-facing tool.
+My [ARDA Analytics project](/projects/arda-analytics) links to implementation modules and test definitions. [AI Hub](/projects/ai-hub) is another example of organizing reusable AI-related content into a developer-facing tool.
 
 For more about my technical focus, see my [professional overview](/resume). If your team is hiring a software developer, [get in touch](/contact).

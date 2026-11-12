@@ -1,0 +1,147 @@
+---
+author: Alec Reimel
+order: 2
+publishDate: 2026-10-11T00:00:00Z
+updateDate: 2026-11-12T00:00:00Z
+title: ccstatusboard — Terminal Dashboard for Claude Code Sessions
+excerpt: An htop-style terminal dashboard that reads local Claude Code session files to show usage limits, burn-rate projections, estimated cost, and per-session status. Built with TypeScript and Ink.
+image: /images/projects/ccstatusboard/ccstatusboard-card.webp
+tags:
+  - cli
+  - tui
+  - typescript
+  - react
+  - developer-tools
+  - claude-code
+repoUrl: https://github.com/areimel/ccstatusboard
+projectUrl: https://areimel.github.io/ccstatusboard/
+technologies:
+  - 'TypeScript: Strict ESM codebase'
+  - 'Node.js 22+: Runtime'
+  - 'Ink & React: Terminal UI rendering'
+  - 'Zod: Config and API response validation'
+  - 'tsup: Bundling to a single CLI file'
+  - 'Bun: Standalone Linux and macOS binaries'
+  - 'Vitest: Unit, UI, and integration tests'
+  - 'Astro: Documentation site'
+---
+
+import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
+
+<TextAndImage
+  headline="Every Claude Code Session, One Screen"
+  bodyText="ccstatusboard is a dashboard that runs in its own terminal window and lists the Claude Code sessions running on a Linux or macOS machine. Sessions are grouped by git project, with status, model, context fill, CPU, memory, and estimated cost per row; subagents appear as tree rows under their parent. It also shows 5-hour and weekly usage limits with reset countdowns. Install it with npm install -g ccstatusboard (v0.2.0 on npm) or use a standalone binary."
+  imageSrc="/images/projects/ccstatusboard/ccstatusboard-card.webp"
+  imageAlt="ccstatusboard project card"
+  flexDirection="text-first"
+/>
+
+<ProjectStats
+  title="12 Themes"
+  content="Selectable color themes, from default and mono to dracula, nord, and cyberpunk, set through the config file or a CLI flag."
+/>
+
+<ProjectStats title="4 Main Panels" content="Usage, System, Sessions, and Detail, plus Options and Help overlays." />
+
+<ProjectStats
+  title="73 Test Files"
+  content="Vitest unit, UI, and integration tests in the repository. Their presence does not establish that every release passes them."
+/>
+
+<TextAndImage
+  headline="From Local Files to Terminal Panels"
+  bodyText="Collectors do all the IO: they read session registry files from ~/.claude/sessions, tail transcript JSONL files incrementally by byte offset, and poll the usage endpoint. A runtime routes their events into a store, and Ink and React components render snapshots of that state as the Usage, System, Sessions, and Detail panels."
+  imageSrc="/images/projects/ccstatusboard/ccstatusboard-architecture.webp"
+  imageAlt="Data flow diagram: session files, transcript tailing, and usage polling feed a state store that renders four Ink panels"
+  flexDirection="image-first"
+/>
+
+<section className="font-kode text-terminal-400 space-y-6 mb-12">
+  <h2 className="text-2xl font-heading text-terminal-500">Architecture and Implementation</h2>
+  <p>
+    Collectors are kept separate from pure domain logic and from the UI. Sessions are discovered from the registry
+    files, and liveness is checked with a signal-zero kill plus, on Linux, the process start time from /proc to avoid
+    mistaking a reused PID for a live session.
+  </p>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>
+      Usage limits come from the Anthropic OAuth usage endpoint, polled every 60 seconds by default, with backoff and a
+      5-second timeout.
+    </li>
+    <li>
+      Burn-rate projection blends 60% recent trend with 40% average and maps the result to UNDER, NEAR LIMIT, OVER, and
+      CRITICAL bands. It is most reliable once a few minutes of data exist.
+    </li>
+    <li>
+      The System panel shows CPU, memory, swap, disk, and network sparklines, with extra metrics on Linux such as
+      temperatures and pressure stall information.
+    </li>
+    <li>
+      Layout is budgeted by terminal size: the System panel is hidden on short terminals and panels stack on narrow
+      ones.
+    </li>
+    <li>
+      Packaging uses tsup for the npm build and Bun compile for standalone binaries (linux-x64, darwin-arm64,
+      darwin-x64), with an install script that verifies SHA-256 checksums.
+    </li>
+  </ul>
+  <p>
+    Explore the{' '}
+    <a
+      href="https://github.com/areimel/ccstatusboard/blob/HEAD/src/collectors/sessionRegistry.ts"
+      className="underline"
+    >
+      session registry
+    </a>
+    ,{' '}
+    <a href="https://github.com/areimel/ccstatusboard/blob/HEAD/src/domain/burn-rate-formula.ts" className="underline">
+      burn-rate formula
+    </a>
+    , and{' '}
+    <a href="https://github.com/areimel/ccstatusboard/blob/HEAD/src/ui/App.tsx" className="underline">
+      root UI component
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Limits and Caveats</h2>
+  <p>
+    Costs shown are estimates calculated at API list prices from a public price table. They are not actual billing, and
+    they can differ from what a Pro or Max subscription is charged. The tool reads local Claude Code session files
+    read-only, and it uses the stored OAuth token only for the usage call; the --no-usage-api flag turns that network
+    call off.
+  </p>
+  <p>
+    ccstatusboard relies on undocumented Claude Code internals (the session registry, transcript format, and usage
+    endpoint), verified against Claude Code 2.1.x, so a Claude Code update may break it. It shows a warning for versions
+    it has not been tested against. Windows is not supported, and there is no standalone binary for Linux arm64, where
+    the npm install is the option.
+  </p>
+  <p>
+    See the{' '}
+    <a href="https://areimel.github.io/ccstatusboard/" className="underline">
+      documentation site
+    </a>{' '}
+    or the{' '}
+    <a href="https://github.com/areimel/ccstatusboard" className="underline">
+      project repository
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What This Project Demonstrates</h2>
+  <p>
+    TypeScript tooling for developers, a React-based terminal UI, incremental file tailing, defensive handling of
+    undocumented data sources, and packaging for both npm and standalone binaries.
+  </p>
+  <p>
+    Hiring for a role involving frontend applications or developer tools?{' '}
+    <a href="/contact" className="underline">
+      Get in touch
+    </a>{' '}
+    or see my{' '}
+    <a href="/resume" className="underline">
+      professional overview
+    </a>
+    .
+  </p>
+</section>

@@ -73,6 +73,8 @@ const projectCollection = defineCollection({
     publishDate: z.date().optional(),
     updateDate: z.date().optional(),
     draft: z.boolean().optional(),
+    // Lower numbers list first; projects without an order follow, newest first.
+    order: z.number().int().optional(),
 
     title: z.string(),
     excerpt: z.string().optional(),

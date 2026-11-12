@@ -1,76 +1,186 @@
 ---
 author: Alec Reimel
-publishDate: 2025-07-20T00:00:00Z
-updateDate: 2026-11-03T00:00:00Z
-title: ARDA Site Scanner — CLI Project in Progress
-excerpt: An in-progress website auditing CLI concept. The public repository currently provides a Node.js, TypeScript, and Ink command-line scaffold; Playwright scanning and reporting are planned.
-image: /images/projects/arda-site-scanner/arda-site-scanner-scaffold.webp
+publishDate: 2025-07-24T00:00:00Z
+updateDate: 2026-11-12T00:00:00Z
+title: ARDA Site Scan — Playwright Website Auditing CLI
+excerpt: A TypeScript command-line tool that crawls a site with Playwright and Crawlee, runs SEO, axe-core accessibility, screenshot, content and API-key checks, and writes a timestamped report folder. Published on npm.
+image: /images/projects/arda-site-scanner/arda-site-scan-architecture.webp
+order: 4
 tags:
   - cli
-  - terminal
+  - playwright
   - typescript
+  - accessibility
+  - seo
   - nodejs
-  - utility
-repoUrl: https://github.com/areimel/ARDA-Site-Scanner
+repoUrl: https://github.com/areimel/playwright-site-scanner
+projectUrl: https://www.npmjs.com/package/arda-site-scan
 technologies:
-  - 'Node.js: Command-line runtime'
-  - 'TypeScript & React Ink: Existing CLI scaffold'
-  - 'Commander: Argument parsing'
-  - 'Playwright: Planned browser automation'
+  - 'Node.js: Runtime (18 or newer)'
+  - 'TypeScript: Strongly typed CLI source, compiled to CommonJS'
+  - 'Playwright: Browser automation, screenshots, page inspection'
+  - 'Crawlee: PlaywrightCrawler and CheerioCrawler site discovery'
+  - 'axe-core: Accessibility rule engine injected into pages'
+  - 'Commander & Inquirer: CLI commands and interactive walkthrough'
+  - 'js-yaml: Loads the project-config.yaml test definitions'
 ---
 
 import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
 
 <TextAndImage
-  headline="A Website Auditing CLI in Progress"
-  bodyText="ARDA Site Scanner is a project concept for collecting website observations from a command-line interface. The intended direction is browser automation with Playwright: visiting pages, capturing screenshots, and reporting useful checks. The current public repository is a TypeScript and Ink starter scaffold. Website crawling, Playwright integration, and audit reports are not implemented in that public scaffold."
-  imageSrc="/images/projects/arda-site-scanner/arda-site-scanner-scaffold.webp"
-  imageAlt="Current scaffold diagram: Commander reads a name and React Ink renders a greeting; scanning is planned"
+  headline="One Command, Nine Tests"
+  bodyText="ARDA Site Scan is a standalone TypeScript CLI that drives Playwright to analyze a website by URL. An Inquirer walkthrough, or a one-shot scan command, picks a crawl mode and a set of tests or a preset playlist. The tests cover viewport screenshots, SEO, axe-core accessibility, content scraping to markdown, an XML sitemap, a site summary, an llms.txt file, and an API-key exposure scan. Results land in a timestamped session folder."
+  imageSrc="/images/projects/arda-site-scanner/arda-site-scan-architecture.webp"
+  imageAlt="Architecture diagram: CLI and prompts select a crawl mode, a four-phase orchestrator runs the test modules, and reports are written to a session folder"
   flexDirection="text-first"
 />
 
+<ProjectStats
+  title="9 Test Types"
+  content="Selectable tests: full-page and above-the-fold screenshots, SEO, accessibility, sitemap, content scraping, site summary, llms.txt and API-key scan."
+/>
+
+<ProjectStats
+  title="4 Crawl Modes"
+  content="Single page, smart, full and deep, with 3 preset playlists (SEO Optimization, Security Audit, Content Analysis)."
+/>
+
+<ProjectStats
+  title="3 Viewports"
+  content="Screenshots are captured at desktop 1920x1080, tablet 768x1024 and mobile 375x667."
+/>
+
+<ProjectStats
+  title="Published on npm"
+  content="Installable as <a href='https://www.npmjs.com/package/arda-site-scan' target='_blank'>arda-site-scan</a> (v1.0.1, ISC license). The repository has moved on since that release."
+/>
+
+<TextAndImage
+  headline="Built for Repeatable Site Audits"
+  bodyText="The CLI is meant to replace a checklist of separate tools with one run. Each test writes its own markdown, PNG, XML or text output, so the results can be read, diffed and shared from the session folder, and an HTML report summarizes pages tested, passed and failed."
+  imageSrc="/images/projects/arda-site-scanner/arda-site-scan-card.webp"
+  imageAlt="ARDA Site Scan project card"
+  flexDirection="image-first"
+/>
+
 <section className="font-kode text-terminal-400 space-y-6 mb-12">
-  <h2 className="text-2xl font-heading text-terminal-500">Current Public Implementation</h2>
+  <h2 className="text-2xl font-heading text-terminal-500">Four-Phase Orchestration</h2>
   <p>
-    The repository starts from the ts-ink-template project. Its CLI entry point uses Commander to read a name argument
-    and renders a greeting with React Ink. This provides a starting structure for a terminal application, rather than a
-    working website scanner.
+    A single YAML file defines every test, its phase, its dependencies and its scope, along with viewports, playlists
+    and crawl limits. A phased orchestrator reads it and runs a worker-pool executor with a concurrency cap per phase.
   </p>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>Phase 1, site discovery: crawling and sitemap generation.</li>
+    <li>Phase 2, page analysis: content scraping, SEO collection and the API-key scan.</li>
+    <li>Phase 3, screenshot testing: one capture set per viewport.</li>
+    <li>Phase 4, final analysis: accessibility, site summary and llms.txt, which depend on earlier results.</li>
+  </ul>
   <p>
     See the{' '}
-    <a href="https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/src/cli.tsx" className="underline">
-      CLI entry point
+    <a
+      href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/orchestrator/test-orchestrator.ts"
+      className="underline"
+    >
+      test orchestrator
     </a>
     ,{' '}
-    <a href="https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/src/ui.tsx" className="underline">
-      current terminal interface
+    <a
+      href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/utils/parallel-executor.ts"
+      className="underline"
+    >
+      parallel executor
     </a>
     , and{' '}
-    <a href="https://github.com/areimel/ARDA-Site-Scanner/blob/HEAD/package.json" className="underline">
-      package manifest
+    <a href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/project-config.yaml" className="underline">
+      project configuration
     </a>
     .
   </p>
-  <h2 className="text-2xl font-heading text-terminal-500">Planned Direction</h2>
+  <h2 className="text-2xl font-heading text-terminal-500">Crawling at Scale</h2>
   <ul className="list-disc pl-6 space-y-3">
-    <li>Accept a website URL and visit pages using browser automation.</li>
-    <li>Capture screenshots and extract page metadata for inspection.</li>
-    <li>Present repeatable observations in a useful terminal or exported report.</li>
-    <li>Make failures and incomplete scans visible instead of presenting partial results as a full audit.</li>
+    <li>Smart mode skips templated slug pages such as individual blog posts to avoid scanning near-duplicates.</li>
+    <li>Full mode is capped at 50 pages.</li>
+    <li>
+      Deep mode has no page limit and can use a browserless Cheerio crawler. It saves a checkpoint every 100 pages,
+      retries failures three times and can resume from the checkpoint file.
+    </li>
   </ul>
-  <h2 className="text-2xl font-heading text-terminal-500">Limits of Automated Auditing</h2>
   <p>
-    Future automated checks would provide evidence for review, not a guarantee of search rankings or accessibility
-    compliance. Accessibility also requires human evaluation, and performance results depend on the tested environment.
+    Read the{' '}
+    <a
+      href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/lib/crawlee-site-crawler.ts"
+      className="underline"
+    >
+      Crawlee crawler
+    </a>{' '}
+    and{' '}
+    <a
+      href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/lib/crawl-checkpoint-manager.ts"
+      className="underline"
+    >
+      checkpoint manager
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What the Checks Do</h2>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>
+      The{' '}
+      <a
+        href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/lib/accessibility-tester.ts"
+        className="underline"
+      >
+        accessibility test
+      </a>{' '}
+      injects axe-core and reports violations grouped by impact, with the help URL, HTML snippet and selector.
+    </li>
+    <li>
+      The{' '}
+      <a
+        href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/lib/api-key-tester.ts"
+        className="underline"
+      >
+        API-key scan
+      </a>{' '}
+      applies 27 named patterns plus 3 entropy-based patterns to page HTML, scripts, styles and comments, with severity,
+      a confidence score and a false-positive filter.
+    </li>
+    <li>
+      The{' '}
+      <a
+        href="https://github.com/areimel/playwright-site-scanner/blob/HEAD/src/lib/seo-tester.ts"
+        className="underline"
+      >
+        SEO test
+      </a>{' '}
+      collects titles, meta tags, headings, image alt text, links, Open Graph, canonical, robots and JSON-LD data.
+    </li>
+    <li>
+      The site summary is heuristic: it counts words, images and links and guesses a page type. It does not call a
+      language model.
+    </li>
+  </ul>
+  <h2 className="text-2xl font-heading text-terminal-500">Limits and Roadmap</h2>
+  <p>
+    Automated findings are evidence for review, not a guarantee of rankings or accessibility compliance. The repository
+    has no automated test suite yet; <code>npm test</code> is a placeholder. Planned but not built: an improved results
+    dashboard, broader security testing, Lighthouse performance audits, form testing, CI/CD helpers and custom SEO and
+    accessibility rule configuration.
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What This Project Demonstrates</h2>
+  <p>
+    Browser automation, a config-driven task orchestrator with dependency-aware phases, resumable large-scale crawling,
+    and an interactive terminal walkthrough, taken as far as an npm release.
   </p>
   <p>
-    For a more developed example of browser-focused software, see{' '}
-    <a href="/projects/arda-analytics" className="underline">
-      ARDA Analytics
-    </a>
-    . To discuss developer roles,{' '}
+    Hiring for a role involving developer tools or browser automation?{' '}
     <a href="/contact" className="underline">
-      contact me
+      Get in touch
+    </a>{' '}
+    or see my{' '}
+    <a href="/resume" className="underline">
+      professional overview
     </a>
     .
   </p>
