@@ -1,0 +1,92 @@
+---
+author: Alec Reimel
+publishDate: 2026-06-13T00:00:00Z
+updateDate: 2026-11-12T00:00:00Z
+title: node-bonsai — Terminal Bonsai Trees in Node.js
+order: 6
+excerpt: A TypeScript port of cbonsai that grows animated, colour-themed ASCII bonsai trees in the terminal, with a browser playground and seeded, reproducible output.
+image: /images/projects/node-bonsai/node-bonsai-terminal.webp
+tags:
+  - terminal
+  - cli
+  - typescript
+  - nodejs
+  - ink
+  - fun-project
+repoUrl: https://github.com/areimel/node-bonsai
+projectUrl: https://areimel.github.io/node-bonsai/
+technologies:
+  - 'TypeScript: Language for the engine and CLI'
+  - 'Node.js: Runtime (v22 or later)'
+  - 'Ink: React-based terminal rendering'
+  - 'Astro: Browser playground microsite'
+  - 'Playwright: End-to-end tests for the site'
+---
+
+import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+
+<TextAndImage
+  headline="A Bonsai Tree in Your Terminal"
+  bodyText="node-bonsai grows a randomly generated bonsai above an ASCII pot. Each character carries its own colour, and --live animates the growth one step at a time. Run it with --screensaver to keep a loop of new trees on screen until a key is pressed."
+  imageSrc="/images/projects/node-bonsai/node-bonsai-terminal.webp"
+  imageAlt="Terminal window running bonsai --live, showing an ASCII bonsai tree with green leaves above a pot"
+  flexDirection="text-first"
+/>
+
+<TextAndImage
+  headline="Four Colour Themes"
+  bodyText="Named themes change the canopy colours while the wood stays brown. The four themes are green (the default), cherry, maple and wisteria. An explicit --colors option overrides the theme."
+  imageSrc="/images/projects/node-bonsai/node-bonsai-themes.webp"
+  imageAlt="Four small bonsai trees side by side, one each in green, cherry, maple and wisteria colours"
+  flexDirection="image-first"
+/>
+
+<section className="font-kode text-terminal-400 space-y-6 mb-12">
+  <h2 className="text-2xl font-heading text-terminal-500">Implementation Notes</h2>
+  <p>
+    node-bonsai is a TypeScript port of{' '}
+    <a href="https://gitlab.com/jallbrit/cbonsai" className="underline">
+      cbonsai
+    </a>
+    , the C and ncurses bonsai generator by John Allbritten. It keeps cbonsai's flags and defaults, and adds the named
+    themes. It is not published to npm, so install it by cloning the repository and running npm install.
+  </p>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>
+      The growth engine follows cbonsai's recursive branch algorithm and produces an ordered list of steps. Static, live
+      and screensaver modes all replay that same list.
+    </li>
+    <li>
+      One seeded random generator drives every choice, so a given --seed reproduces the same tree. The output is not
+      identical to cbonsai's, because cbonsai uses the C library's rand().
+    </li>
+    <li>An Astro microsite runs the same engine in the browser, with a playground for each option.</li>
+  </ul>
+  <p>
+    Explore the{' '}
+    <a href="https://github.com/areimel/node-bonsai/blob/HEAD/src/engine/grow.ts" className="underline">
+      growth engine
+    </a>{' '}
+    and the{' '}
+    <a href="https://github.com/areimel/node-bonsai/blob/HEAD/src/flags.ts" className="underline">
+      flag definitions
+    </a>{' '}
+    in the source. node-bonsai is licensed under GPL-3.0-or-later.
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What This Project Demonstrates</h2>
+  <p>
+    Porting a recursive algorithm to typed code, keeping the engine separate from the terminal and browser front ends,
+    and making random output reproducible with a seed.
+  </p>
+  <p>
+    Hiring for a role involving frontend applications or developer tools?{' '}
+    <a href="/contact" className="underline">
+      Get in touch
+    </a>{' '}
+    or see my{' '}
+    <a href="/resume" className="underline">
+      professional overview
+    </a>
+    .
+  </p>
+</section>

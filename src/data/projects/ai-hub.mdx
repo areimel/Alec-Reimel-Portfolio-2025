@@ -1,0 +1,136 @@
+---
+author: Alec Reimel
+publishDate: 2026-10-28T00:00:00Z
+updateDate: 2026-11-12T00:00:00Z
+title: AI Hub — Prompt Library, Claude Code Agents & Skills
+order: 1
+excerpt: An open-source static site that publishes copyable AI prompts, Claude Code agents, and skills, with search, filters, fill-in templates, and one-click copy, built with Astro content collections.
+image: /images/projects/ai-hub/ai-hub-card.webp
+tags:
+  - ai
+  - prompts
+  - claude-code
+  - astro
+  - typescript
+  - open-source
+repoUrl: https://github.com/areimel/alec-ai-hub
+projectUrl: https://ai-hub.alecreimel.com/
+technologies:
+  - 'Astro 5: Static site generation, routing, content collections'
+  - 'React 19: Navbar and FAQ accordion islands'
+  - 'Tailwind CSS 4: Styling through the Vite plugin'
+  - 'TypeScript: Browser scripts for filters, copy, templates, and forms'
+  - 'MDX & Markdown: Prompt, agent, and skill content'
+  - 'Zod: Content schema validation'
+  - 'Web3Forms: Contact and prompt-submission forms'
+  - 'Playwright & axe-core: End-to-end and accessibility tests'
+  - 'GitHub Actions & GitHub Pages: CI and hosting'
+---
+
+import TextAndImage from '~/components/ProjectComponents/TextAndImage.astro';
+import ProjectStats from '~/components/ProjectComponents/ProjectStats.astro';
+
+<TextAndImage
+  headline="One Directory, Three Kinds of Resource"
+  bodyText="AI Hub is a static, open-source site that publishes a library of copyable AI resources: prompts for tools such as ChatGPT, Claude, Cursor and MidJourney, Claude Code custom agents, and Claude Code skills and plugins. All three share the same search, filter, detail page, and copy interface, driven by a per-collection configuration. AI Hub succeeds the earlier Astro prompt directory, the In-House AI Prompt Directory."
+  imageSrc="/images/projects/ai-hub/ai-hub-card.webp"
+  imageAlt="AI Hub project card showing the prompt, agent, and skill library"
+  flexDirection="text-first"
+/>
+
+<ProjectStats
+  title="The Library"
+  content="30 prompts (27 are fill-in templates)<br/>9 Claude Code custom agents<br/>8 skills and plugins<br/>3 content collections, 47 entries total<br/><br/>Counted from the content files in the repository."
+/>
+
+<TextAndImage
+  headline="Content as Files, Validated at Build"
+  bodyText="Each entry is a Markdown or MDX file in an Astro content collection, checked by a Zod schema before the site builds. Adding a file adds a detail page, a directory card, and its filter options. The output is static HTML with small TypeScript scripts, and React is used only for the navbar and the FAQ accordion."
+  imageSrc="/images/projects/ai-hub/ai-hub-architecture.webp"
+  imageAlt="Architecture diagram: content files are validated by Zod collections, built by Astro into a static site, and deployed to GitHub Pages, with a CI test lane"
+  flexDirection="image-first"
+/>
+
+<section className="font-kode text-terminal-400 space-y-6 mb-12">
+  <h2 className="text-2xl font-heading text-terminal-500">Features</h2>
+  <ul className="list-disc pl-6 space-y-3">
+    <li>
+      Search plus category, AI tool, and tag filters, with a result count, reset, empty state, and a mobile filter
+      toggle.
+    </li>
+    <li>One-click copy from a card or a detail page, with confirmation.</li>
+    <li>
+      Fill-in templates: <code>@name</code> placeholders are parsed from the prompt text, one input is generated per
+      variable, and the prompt updates as you type.
+    </li>
+    <li>Contact and prompt-submission forms posted to Web3Forms.</li>
+    <li>
+      Dark and light theme toggle saved in localStorage, plus sitemap, SEO metadata, and redirects for retired URLs.
+    </li>
+  </ul>
+  <p>
+    See the{' '}
+    <a href="https://github.com/areimel/alec-ai-hub/blob/HEAD/src/scripts/template-menu.ts" className="underline">
+      template filler
+    </a>
+    , the{' '}
+    <a href="https://github.com/areimel/alec-ai-hub/blob/HEAD/src/scripts/directory-filters.ts" className="underline">
+      directory filters
+    </a>
+    , and the{' '}
+    <a href="https://github.com/areimel/alec-ai-hub/blob/HEAD/src/lib/collections.ts" className="underline">
+      per-collection config
+    </a>{' '}
+    that lets one set of components serve all three collections.
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Content Model</h2>
+  <p>
+    The <code>prompts</code>, <code>agents</code>, and <code>skills</code> collections share fields such as title,
+    description, usage instructions, category, tags, version, and a featured flag. Each adds its own: prompts have AI
+    tool filters, agents declare an access level (read-only, runs commands, or can edit), and skills are marked as a
+    skill or a plugin. The schemas live in{' '}
+    <a href="https://github.com/areimel/alec-ai-hub/blob/HEAD/src/content/config.ts" className="underline">
+      src/content/config.ts
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Static, Tested, Open Source</h2>
+  <p>
+    The site is fully static, with no search backend, database, or user accounts. On each push to main, GitHub Actions
+    runs Playwright end-to-end and axe accessibility tests, then builds with Astro and deploys to GitHub Pages under a
+    custom domain. The repository is MIT licensed, so it can be forked as a personal prompt library.
+  </p>
+  <p>
+    Review the{' '}
+    <a href="https://github.com/areimel/alec-ai-hub/blob/HEAD/.github/workflows/deploy.yml" className="underline">
+      deploy workflow
+    </a>{' '}
+    and the{' '}
+    <a href="https://github.com/areimel/alec-ai-hub" className="underline">
+      project repository
+    </a>
+    .
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">Current Limits</h2>
+  <p>
+    The Git Writing Kit plugin entry is not on a marketplace and must be assembled by hand. Earlier AI Personas and blog
+    sections were removed and now redirect elsewhere.
+  </p>
+  <h2 className="text-2xl font-heading text-terminal-500">What This Project Demonstrates</h2>
+  <p>
+    Content modeling with schema-validated collections, reusable UI driven by configuration, small browser scripts
+    instead of heavy client frameworks, and a tested static deployment pipeline. It connects frontend implementation
+    with practical tooling for AI-assisted development.
+  </p>
+  <p>
+    Hiring for a role involving frontend applications or developer tools?{' '}
+    <a href="/contact" className="underline">
+      Get in touch
+    </a>{' '}
+    or see my{' '}
+    <a href="/resume" className="underline">
+      professional overview
+    </a>
+    .
+  </p>
+</section>
